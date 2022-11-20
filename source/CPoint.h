@@ -1,8 +1,6 @@
 #ifndef __CPoint__
 #define __CPoint__
 
-#include <inttypes.h>
-
 
 struct SCoord{
     unsigned int x;
@@ -13,7 +11,6 @@ class CPoint
 {
 private:
     SCoord coord;
-    
     
 public:
     CPoint(unsigned int x,unsigned int y);

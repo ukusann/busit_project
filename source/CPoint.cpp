@@ -6,14 +6,14 @@
 //=================Constructor========================
 CPoint::CPoint(unsigned int x, unsigned int y)
 {
-    this->coord.x = x;
-    this->coord.y = y;
+    coord.x = x;
+    coord.y = y;
 }
 
+//----------------------------------------------------
+
 CPoint::CPoint(SCoord c)
-{
-    this->coord = c;
-}
+    : coord(c) {}
 //====================================================
 
 //=================Destructor=========================
