@@ -1,9 +1,21 @@
-CC = g++
-DEPS = ~/busit_project/header/CPoint.h
+CC = g++ 
+DEPS = ../execute/
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $<
+output: main.o CNode.o CPoint.o
+	$(CC) $(DEPS)main.o $(DEPS)CNode.o $(DEPS)CPoint.o -o $(DEPS)busit
 
-CPoint: main.o CPoint.o
-	$(CC) -o CPoint main.o CPoint.o
+main.o: main.cpp
+	$(CC) -c main.cpp -o $(DEPS)main.o
 
+CPoint.o: CPoint.cpp CPoint.h
+	$(CC) -c CPoint.cpp -o $(DEPS)CPoint.o
+
+
+CNode.o: CNode.cpp CNode.h
+	$(CC) -c CNode.cpp -o $(DEPS)CNode.o
+
+clean:
+	rm *.o output
+
+run:
+	./$(DEPS)busit

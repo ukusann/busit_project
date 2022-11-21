@@ -1,8 +1,14 @@
 #include "CNode.h"
 
+#define MASK_OPEN  128
+
 //=================Constructor========================
-CNode::CNode(uint16_t id, uint8_t byte_info, uint16_t gain = 0)
-    : id(id), byte_info(byte_info), gain(gain) {}
+CNode::CNode(uint16_t id, uint8_t byte_info, uint16_t gain = 0, SCoord c = {0,0}): CPoint(c) 
+{
+    this->id         = id;
+    this->byte_info  = byte_info;
+    this->gain       = gain;
+}
 //====================================================
 
 //=================Destructor=========================
@@ -26,29 +32,18 @@ void CNode::set_nodeInfo(uint8_t byte_info)
 //=================Is open============================
 bool CNode::is_open()
 {
-    /*
-        1XXX XXXX
+    bool flag = true;
 
-        mask    1000 0000       1000 0000
-                NAND            NAND
-        byte    1010 1100       0010 1100
-
-        result  0111 1111       1111 1111
-                XOR             XOR
-        mask    1000 0000       1000 0000
-
-        result  1111 1111       0111 1111
-                is open         not open
-    */
-
-   //CODE HERE
+    if (MASK_OPEN & byte_info == 0)
+        flag = false;
+    
+    return flag;
 }
 //====================================================
 
 //=================Get Direction======================
-uint8_t CNode::get_direction()
-{
-    //CODE HERE
+uint8_t CNode::get_direction(){
+    return 0;
 }
 //====================================================
 
