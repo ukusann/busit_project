@@ -1,8 +1,8 @@
 #ifndef __CNode__
 #define __CNode__
 
-#include <inttypes.h>
 #include "CPoint.h"
+#include <inttypes.h>
 
 
 class CNode : public CPoint
@@ -15,12 +15,12 @@ private:
 public:
     CNode(uint16_t id, uint8_t byte_info, uint16_t gain, SCoord c);
     ~CNode();
-    uint8_t      get_node_info();
-    void         set_node_info(uint8_t byte_info);
-    bool         is_open();
-    float        get_direction(CPoint &p);
-    void         set_gain(uint16_t G);
-    uint16_t	 get_gain(); 
+    uint8_t      getNodeInfo();
+    void         setNodeInfo(uint8_t byte_info);
+    bool         isOpen();
+    float        getDirection(CPoint &p);
+    void         setGain(uint16_t G);
+    uint16_t	 getGain(); 
 };
 
 #endif /*__CNode__*/
