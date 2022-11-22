@@ -21,7 +21,7 @@ CPoint::~CPoint(){}
 //====================================================
 
 //=================Get Distance=======================
-float CPoint::get_distance(CPoint &p)
+float CPoint::getDistance(CPoint &p)
 {
     return sqrt(pow(p.coord.x - this->coord.x, 2) + 
             pow(p.coord.y - this->coord.y, 2));
@@ -29,7 +29,7 @@ float CPoint::get_distance(CPoint &p)
 
 //----------------------------------------------------
 
-float CPoint::get_distance(SCoord &c)
+float CPoint::getDistance(SCoord &c)
 {
     return sqrt(pow(c.x - this->coord.x, 2) +
             pow(c.y - this->coord.y, 2));
@@ -37,14 +37,14 @@ float CPoint::get_distance(SCoord &c)
 //====================================================
 
 //=================Get Point==========================
-SCoord CPoint::get_point()
+SCoord CPoint::getPoint()
 {
     return this->coord;
 }
 //====================================================
 
 //=================Set Point==========================
-bool CPoint::set_point(SCoord &c)
+bool CPoint::setPoint(SCoord &c)
 {
     if(c.x < 0 || c.y < 0)
         return false;
@@ -58,7 +58,7 @@ bool CPoint::set_point(SCoord &c)
 
 //----------------------------------------------------
 
-bool CPoint::set_point(CPoint &p)
+bool CPoint::setPoint(CPoint &p)
 {
     if(p.coord.x < 0 || p.coord.y < 0)
         return false;

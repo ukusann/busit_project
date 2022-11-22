@@ -12,21 +12,21 @@ CNode::~CNode(){}
 //====================================================
 
 //=================Get Node Info======================
-uint8_t CNode::get_node_info()
+uint8_t CNode::getNodeInfo()
 {
     return this->byte_info;
 }
 //====================================================
 
 //=================Set Node Info======================
-void CNode::set_node_info(uint8_t byte_info)
+void CNode::setNodeInfo(uint8_t byte_info)
 {
     this->byte_info = byte_info;
 }
 //====================================================
 
 //=================Is open============================
-bool CNode::is_open()
+bool CNode::isOpen()
 {
     bool flag = true;
 
@@ -38,21 +38,21 @@ bool CNode::is_open()
 //====================================================
 
 //=================Get Direction======================
-float CNode::get_direction(CPoint &p){
-    return this->get_distance(p); 
+float CNode::getDirection(CPoint &p){
+    return this->getDistance(p); 
 }
 //====================================================
 
 //=================Set Gain===========================
-void CNode::set_gain(uint16_t G)
+void CNode::setGain(uint16_t G)
 {
     this->gain = G;
 }
 //====================================================
 
 //=================Get Gain===========================
-uint16_t CNode::get_gain()
+uint16_t CNode::getGain()
 {
     return this->gain;
 }
-//====================================================
+//====================================================1
