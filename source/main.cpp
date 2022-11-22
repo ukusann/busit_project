@@ -1,6 +1,9 @@
 //#include "CPoint.h"
-#include "CNode.h"
+//#include "CNode.h"
+#include "CBusStop.h"
 #include <iostream>
+#include <string>
+
 using namespace std;
 
 int main()
@@ -39,6 +42,7 @@ int main()
 
      //TODO:================CNode test=======================
      //================================================= 
+     /*
      //*----------------Init variable--------------------
      CPoint p(2,2);
      SCoord s{0, 0};
@@ -48,41 +52,70 @@ int main()
      //-------------------------------------------------
 
      //*----------------Get Node Info--------------------
-     cout << "Node 1 Byte info: " << (unsigned)n.get_node_info() << endl;
-     cout << "Node 2 Byte info: " << (unsigned)n2.get_node_info() << endl;
+     cout << "Node 1 Byte info: " << (unsigned)n.getNodeInfo() << endl;
+     cout << "Node 2 Byte info: " << (unsigned)n2.getNodeInfo() << endl;
      //-------------------------------------------------
 
      //*----------------Set Node Info--------------------
-     n.set_node_info(5);
-     cout << "Node 1 new Byte info: " << (unsigned)n.get_node_info() << endl;
+     n.setNodeInfo(5);
+     cout << "Node 1 new Byte info: " << (unsigned)n.getNodeInfo() << endl;
      //-------------------------------------------------
 
      //*----------------Is Open--------------------------
-     if(n.is_open() == true)
+     if(n.isOpen() == true)
           cout << "Node 1 is open. " << endl;
      else
           cout << "Node 1 is not open. " << endl;
 
-     if(n2.is_open() == true)
+     if(n2.isOpen() == true)
           cout << "Node 2 is open. " << endl;
      else
           cout << "Node 2 is not open. " << endl;
      //-------------------------------------------------
 
      //*----------------Get Direction--------------------
-     cout << "Node 1 distance to goal: " << n.get_direction(p) << endl;
+     cout << "Node 1 distance to goal: " << n.getDirection(p) << endl;
      //-------------------------------------------------
 
      //*----------------Get Gain-------------------------
-     cout << "Node 2 current gain: " << n2.get_gain() << endl;
+     cout << "Node 2 current gain: " << n2.getGain() << endl;
      //-------------------------------------------------
 
      //*----------------Set Gain-------------------------
-     n2.set_gain(2);
-     cout << "Node 2 new gain: " << n2.get_gain() << endl;
+     n2.setGain(2);
+     cout << "Node 2 new gain: " << n2.getGain() << endl;
 
      //-------------------------------------------------
+     */
      //================================================= 
 
-    return 0;
+     //TODO================CBusStop test======================
+     //================================================= 
+     /*
+     //*----------------Init variable--------------------
+     CPoint p(1,1);
+     CPoint p2(1,2);
+     SCoord c{1, 3};
+     string str = "av. liberdade";
+     CBusStop bs(str, p, 1);
+     //-------------------------------------------------
+
+     //*----------------Get ID test---------------------
+     cout << "Bus Stop ID: " << bs.getID() << endl;
+     //-------------------------------------------------
+
+     //*----------------Get pos test---------------------
+     SCoord c2 = bs.getPos().getPoint();
+     cout << "Bus Stop pos:\n" << "x = " << c2.x 
+          << endl << "y = " << c2.y << endl;
+     //--------------------------------------------------
+
+     //*----------------Get name test--------------------
+     cout << "Bus Stop name: " << bs.getName() << endl;
+     //--------------------------------------------------
+     */
+     //================================================= 
+
+     
+     return 0;
 }
