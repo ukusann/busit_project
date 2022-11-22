@@ -3,7 +3,7 @@ KDIR := ../header
 DEPS = ../execute/
 OBJS = CNode.o CPoint.o main.o
 
-output: CNode.o CPoint.o main.o
+output: $(OBJS)
 	$(CC) -I $(KDIR) $(DEPS)CNode.o $(DEPS)CPoint.o $(DEPS)main.o -o $(DEPS)busit.elf
 
 %.o: %.cpp
