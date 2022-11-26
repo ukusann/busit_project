@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <list>
 #include "CNode.h"
+#include <vector>
 #include <string>
 #include <fstream>
 
@@ -13,20 +14,21 @@ class CMap
 {
 private:
 
-    unsigned int        len_i;
-    unsigned int        len_j;
-    list<list<CNode>>   map;
+    uint16_t            len_i;
+    uint16_t            len_j;
+    vector<vector<CNode>>   map;
     string              file_name;
     uint8_t             map_id;
+    fstream             file_map;
 
-
-    bool get_map_init_file(string file_name);
-    bool save_map();
+    bool loadMapFile(string file_name);
+    bool saveMap();
 
 public:
     CMap(uint8_t map_id);
     ~CMap();
-    bool input_map(string file_name);     
+    bool    inputMap(string file_name);
+
 };
 
 #endif /*__CMap__*/
