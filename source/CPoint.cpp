@@ -4,7 +4,7 @@
 
 
 //=================Constructor========================
-CPoint::CPoint(unsigned int x, unsigned int y)
+CPoint::CPoint(uint16_t x, uint16_t y)
 {
     coord.x = x;
     coord.y = y;

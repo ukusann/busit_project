@@ -3,8 +3,10 @@
 #define MASK_OPEN  128
 
 //=================Constructor========================
-CNode::CNode(uint16_t id, uint8_t byte_info, uint16_t gain = 0, SCoord c = {0,0})
-    : CPoint(c), id(id), byte_info(byte_info), gain(gain)  {}
+CNode::CNode(uint16_t id, unsigned int byte_info, uint16_t x, uint16_t y)
+    : CPoint(x,y), id(id), byte_info(byte_info)  {
+        this->gain = 0;
+    }
 //====================================================
 
 //=================Destructor=========================
@@ -12,14 +14,14 @@ CNode::~CNode(){}
 //====================================================
 
 //=================Get Node Info======================
-uint8_t CNode::getNodeInfo()
+unsigned int CNode::getNodeInfo()
 {
     return this->byte_info;
 }
 //====================================================
 
 //=================Set Node Info======================
-void CNode::setNodeInfo(uint8_t byte_info)
+void CNode::setNodeInfo(unsigned int byte_info)
 {
     this->byte_info = byte_info;
 }
@@ -55,4 +57,4 @@ uint16_t CNode::getGain()
 {
     return this->gain;
 }
-//====================================================1
+//====================================================
