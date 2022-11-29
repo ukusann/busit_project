@@ -14,6 +14,7 @@ private:
 
 public:
     CNode(uint16_t id, unsigned int byte_info, uint16_t x, uint16_t y);
+    CNode(uint16_t id, unsigned int byte_info, SCoord s);
     ~CNode();
     unsigned int    getNodeInfo();
     void            setNodeInfo(unsigned int byte_info);
