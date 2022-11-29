@@ -1,14 +1,15 @@
-//#include "CPoint.h"
+#include "CPoint.h"
 #include "CNode.h"
 #include <iostream>
 #include "CMap.h"
+//#include "CBusStop.h"
 using namespace std;
 
 int main()
 {
      //TODO================CPoint test======================
      //================================================= 
-     
+     /*
      //*----------------Init variable--------------------
      CPoint p(1,1);
      CPoint p2(1,2);
@@ -35,55 +36,56 @@ int main()
      cout << "new point position:\n" << "x = " << p.getPoint().x
           << endl << "y = " << p.getPoint().y << endl;
      //--------------------------------------------------
-     
+     */
      //================================================= 
 
      //TODO================CNode test=======================
      //================================================= 
      //*----------------Init variable--------------------
-  /*   CPoint p(2,2);
+     CPoint p(2,2);
      SCoord s{0, 0};
      SCoord s2{2, 1};
-     CNode n(1, 4, 0, s);        // byte -> 0000 0100
-     CNode n2(2, 133, 0, s2);    // byte -> 1000 0101 
+     CNode n(1, 4, 0, 0);     // byte -> 0000 0100
+     CNode n2(2, 133, s2);    // byte -> 1000 0101 
      //-------------------------------------------------
-
+     /*
      //*----------------Get Node Info--------------------
-     cout << "Node 1 Byte info: " << (unsigned)n.get_node_info() << endl;
-     cout << "Node 2 Byte info: " << (unsigned)n2.get_node_info() << endl;
+     cout << "Node 1 Byte info: " << n.getNodeInfo() << endl;
+     cout << "Node 2 Byte info: " << n2.getNodeInfo() << endl;
      //-------------------------------------------------
 
      //*----------------Set Node Info--------------------
-     n.set_node_info(5);
-     cout << "Node 1 new Byte info: " << (unsigned)n.get_node_info() << endl;
+     n.setNodeInfo(5);
+     cout << "Node 1 new Byte info: " << n.getNodeInfo() << endl;
      //-------------------------------------------------
 
      //*----------------Is Open--------------------------
-     if(n.is_open() == true)
+     if(n.isOpen() == true)
           cout << "Node 1 is open. " << endl;
      else
           cout << "Node 1 is not open. " << endl;
 
-     if(n2.is_open() == true)
+     if(n2.isOpen() == true)
           cout << "Node 2 is open. " << endl;
      else
           cout << "Node 2 is not open. " << endl;
      //*-------------------------------------------------
 
      //*----------------Get Direction--------------------
-     cout << "Node 1 distance to goal: " << n.get_direction(p) << endl;
+     cout << "Node 1 distance to goal: " << n.getDirection(p) << endl;
      //-------------------------------------------------
 
      //*----------------Get Gain-------------------------
-     cout << "Node 2 current gain: " << n2.get_gain() << endl;
+     cout << "Node 2 current gain: " << n2.getGain() << endl;
      //-------------------------------------------------
 
      //*----------------Set Gain-------------------------
-     n2.set_gain(2);
-     cout << "Node 2 new gain: " << n2.get_gain() << endl;
+     n2.setGain(2);
+     cout << "Node 2 new gain: " << n2.getGain() << endl;
+     */
      //-------------------------------------------------
      //================================================= 
-*/
+
      //TODO================CMap test=======================
      //================================================
      /*
