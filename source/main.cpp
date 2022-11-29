@@ -8,7 +8,7 @@ int main()
 {
      //TODO================CPoint test======================
      //================================================= 
-     /*
+     
      //*----------------Init variable--------------------
      CPoint p(1,1);
      CPoint p2(1,2);
@@ -16,26 +16,26 @@ int main()
      //-------------------------------------------------
 
      //*----------------Distance test--------------------
-     cout << "distance: " << p.get_distance(p2) << endl;
-     cout << "distance: " << p.get_distance(c) << endl;
+     cout << "distance: " << p.getDistance(p2) << endl;
+     cout << "distance: " << p.getDistance(c) << endl;
      //-------------------------------------------------
 
     //*----------------Get point test--------------------
-     SCoord c2 = p.get_point();
+     SCoord c2 = p.getPoint();
      cout << "initial point:\n" << "x = " << c2.x
           << endl << "y = " << c2.y << endl;
      //--------------------------------------------------
 
      //*----------------Set point test--------------------
-     p.set_point(c);
-     cout << "new point position:\n" << "x = " << p.get_point().x
-          << endl << "y = " << p.get_point().y << endl;
+     p.setPoint(c);
+     cout << "new point position:\n" << "x = " << p.getPoint().x
+          << endl << "y = " << p.getPoint().y << endl;
 
-     p.set_point(p2);
-     cout << "new point position:\n" << "x = " << p.get_point().x
-          << endl << "y = " << p.get_point().y << endl;
+     p.setPoint(p2);
+     cout << "new point position:\n" << "x = " << p.getPoint().x
+          << endl << "y = " << p.getPoint().y << endl;
      //--------------------------------------------------
-     */
+     
      //================================================= 
 
      //TODO================CNode test=======================
@@ -86,13 +86,14 @@ int main()
 */
      //TODO================CMap test=======================
      //================================================
-     
+     /*
       CMap map(1);
      
       if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
+     */
+     //================================================
 
-   
      //TODO================list test=======================
      //================================================
    /*  
