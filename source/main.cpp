@@ -1,8 +1,10 @@
-#include "CPoint.h"
-#include "CNode.h"
-#include <iostream>
-#include "CMap.h"
+//#include "CPoint.h"
+//#include "CNode.h"
 //#include "CBusStop.h"
+#include "CMap.h"
+
+#include <iostream>
+
 using namespace std;
 
 int main()
@@ -41,6 +43,7 @@ int main()
 
      //TODO================CNode test=======================
      //================================================= 
+     /*
      //*----------------Init variable--------------------
      CPoint p(2,2);
      SCoord s{0, 0};
@@ -86,14 +89,23 @@ int main()
      //-------------------------------------------------
      //================================================= 
 
-     //TODO================CMap test=======================
+     //TODO================CBusStop test====================
      //================================================
      /*
-      CMap map(1);
-     
-      if (map.inputMap("map_1") == false) 
-          cout << "ERROR creating the input"<< endl;
+     CPoint pnt(1,1);
+     CBusStop bs("Av. Liberdade", pnt, 1);
+     bs.updateDisplay();
      */
+     //================================================
+
+     //TODO================CMap test=======================
+     //================================================
+     
+     CMap map(1);
+
+     if (map.inputMap("map_1") == false) 
+     cout << "ERROR creating the input"<< endl;
+     
      //================================================
 
      //TODO================list test=======================

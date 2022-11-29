@@ -7,34 +7,39 @@
 #define  F_TYPE_TXT     ".txt"
 
 using namespace std;
+
 //===========================================================
 //===========================================================
-// **************** Constructor/Destructor: ***************
+// ****************Beginning of Constructor/Destructor: *****
 
-CMap::CMap(uint8_t map_id){
-
-    list<list<CNode>> zero;
-    //this->map       = new list<list<CNode>>(zero);
+CMap::CMap(uint8_t map_id)
+{
+    //vector<vector<CNode>> zero;
+    this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
     this->len_j     = 0; 
 }
 
-CMap::~CMap(){}
+CMap::~CMap()
+{
+    delete this->pmap;
+}
 
-// **************** Constructor/Destructor: ***************
+// ******************End of Constructor/Destructor: *********
 //===========================================================
 //===========================================================
-// ****************** Private Functions: ******************
+// ******************Beginning of Private Functions: ********
 
-bool CMap::loadMapFile(string file_name){
-
+bool CMap::loadMapFile(string file_name)
+{
     bool flag = true;
     ifstream rd_map_file;
 
     rd_map_file.open(file_name, ifstream::in);
-    if (!rd_map_file){
+    if (!rd_map_file)
+    {
         flag = false;
         cout << "Error opening the input file: " << DIR_INPUT_MAP + file_name + F_TYPE_TXT << endl;
     }
@@ -45,7 +50,8 @@ bool CMap::loadMapFile(string file_name){
 
         rd_map_file >> temp_len_j >> temp_len_i;
         
-        if (temp_len_i < 0 && temp_len_j < 0){
+        if (temp_len_i < 0 && temp_len_j < 0)
+        {
             cout << "ERROR: Invalid map length" << endl;
             flag = false;
         }
@@ -56,10 +62,12 @@ bool CMap::loadMapFile(string file_name){
             len_j = temp_len_j;
   
 
-            for (uint16_t j = 0 ; j < len_j ; j++){
+            for (uint16_t j = 0 ; j < len_j ; j++)
+            {
                 vector<CNode> map_temp;
 
-                for (uint16_t i = 0 ; i < len_i ; i++){
+                for (uint16_t i = 0 ; i < len_i ; i++)
+                {
                     
                     unsigned int temp_byte_info;
                     rd_map_file >> temp_byte_info;
@@ -69,7 +77,7 @@ bool CMap::loadMapFile(string file_name){
                     cout << map_temp[i].getNodeInfo() << " ";
                 }
                 cout << endl;
-                map.push_back(map_temp);
+                pmap->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -80,19 +88,19 @@ bool CMap::loadMapFile(string file_name){
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 
-bool CMap::saveMap(){
-    
+bool CMap::saveMap()
+{
     bool flag = true;
-    
     
     this->file_map.open(DIR_SAVE_MAP + this->file_name + F_TYPE_TXT, ofstream::out);
     
     if (!this->file_map)
         flag = false;
-    else{
+    else
+    {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map.begin(); itr != map.end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != pmap->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -108,13 +116,14 @@ bool CMap::saveMap(){
     return flag;
 }
 
-// ****************** Private Functions: ******************
+// ******************End of Private Functions: **************
 //===========================================================
 //===========================================================
-// ****************** Public Functions: *******************
+// ******************Beginning of Public Functions: *********
 
 
-bool CMap::inputMap(string file_name){
+bool CMap::inputMap(string file_name)
+{
 
     bool flag = true;
     string file = "";
@@ -132,6 +141,6 @@ bool CMap::inputMap(string file_name){
     return flag;
 }
 
-// ****************** Public Functions: *******************
+// ****************** End of Public Functions: **************
 //===========================================================
 //===========================================================
