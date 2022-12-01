@@ -3,25 +3,25 @@
 
 #include "CPoint.h"
 //#include "CBus.h"
-#include <list>
+#include <vector>
 #include <string>
 
 
 class CBusStop
 {
 private:
-    const unsigned int ID;
-    //list <CBus> expected_buses[];
-    CPoint bus_stop_pos;
     std::string name;
-
-    void updateDisplay();
+    const unsigned int ID;
+    CPoint bus_stop_pos;
+    //vector <CBus> expected_buses;
+    
 public:
     CBusStop(std::string name, CPoint pos, unsigned int id);
     ~CBusStop();
     unsigned int getID();
     CPoint       getPos();
     std::string  getName(); 
+    void updateDisplay();
 };
 
 #endif /*__CBusStop__*/

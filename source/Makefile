@@ -2,8 +2,8 @@ CC = g++
 KDIR := ../header
 DEPS = ../execute/
 
-output: CPoint.o CBusStop.o CNode.o CMap.o main.o
-	$(CC) -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CBusStop.o $(DEPS)CNode.o $(DEPS)CMap.o $(DEPS)main.o -o $(DEPS)busit.elf
+output: CPoint.o CNode.o CBusStop.o CBus.o CMap.o main.o
+	$(CC) -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CBusStop.o $(DEPS)CBus.o $(DEPS)CMap.o $(DEPS)main.o -o $(DEPS)busit.elf
 
 %.o: %.cpp
 	$(CC) -c -I $(KDIR) $< -o $(DEPS)$@ 

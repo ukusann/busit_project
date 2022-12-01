@@ -2,7 +2,7 @@
 #define __CBus__
 
 #include "CBusStop.h"
-#include <list>
+#include <vector>
 #include <inttypes.h>
 #include <string>
 
@@ -10,15 +10,15 @@ enum class EBus {normal_bus = 0, small_bus = 1};
 
 struct STime
 {
-    STime time;
-    std::string busStopName;
+    uint8_t sec;
+    uint8_t min;
+    uint8_t hour;
 };
 
 struct SSchedule
 {
-    uint8_t sec;
-    uint8_t min;
-    uint8_t hour;
+    STime time;
+    std::string busStopName;
 };
 
 class CBus
@@ -26,9 +26,9 @@ class CBus
 private:
     const uint16_t BUS_ID;
     EBus bus_type;
-    //list <CRoute> bus_routes; 
-    list<CBusStop> busStopsList;
-    list<SSchedule> schedule;
+    //vector<CRoute> bus_routes; 
+    std::vector<CBusStop> *pBusStopsList;
+    std::vector<SSchedule> *pSchedule;
 
     bool nextRoute();
     bool validadeFinish();
@@ -36,14 +36,16 @@ private:
     bool answerPickup();
     bool createSchedule();
 public:
-    list<SSchedule> getSchedule();
+    CBus(uint16_t id, EBus bus_type);
+    ~CBus();
+    std::vector<SSchedule> getSchedule();
     uint16_t getNumRoutes();
     uint16_t getBusID();
     EBus     getBusType();
     double   getBusTimeArrival();
     bool     insertBusStop(CBusStop);     
     bool     removeBusStop(CBusStop);
-    //bool     setRoutes(list<CRoute> route);
+    //bool     setRoutes(vector<CRoute> route);
 };
 
 #endif /*__CBus__*/

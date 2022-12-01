@@ -10,7 +10,7 @@ using namespace std;
 
 //===========================================================
 //===========================================================
-// ****************Beginning of Constructor/Destructor: *****
+// ***********Beginning of Constructor/Destructor: **********
 
 CMap::CMap(uint8_t map_id)
 {
@@ -27,10 +27,10 @@ CMap::~CMap()
     delete this->pmap;
 }
 
-// ******************End of Constructor/Destructor: *********
+// ***********End of Constructor/Destructor: ****************
 //===========================================================
 //===========================================================
-// ******************Beginning of Private Functions: ********
+// ***********Beginning of Private Functions: ***************
 
 bool CMap::loadMapFile(string file_name)
 {
@@ -116,10 +116,10 @@ bool CMap::saveMap()
     return flag;
 }
 
-// ******************End of Private Functions: **************
+// ***********End of Private Functions: *********************
 //===========================================================
 //===========================================================
-// ******************Beginning of Public Functions: *********
+// ***********Beginning of Public Functions: ****************
 
 
 bool CMap::inputMap(string file_name)
@@ -141,6 +141,6 @@ bool CMap::inputMap(string file_name)
     return flag;
 }
 
-// ****************** End of Public Functions: **************
+// ***********End of Public Functions: **********************
 //===========================================================
 //===========================================================
