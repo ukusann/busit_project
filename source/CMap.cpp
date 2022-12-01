@@ -1,5 +1,4 @@
 #include "CMap.h"
-#include <fstream>
 #include <iostream>
 
 #define  DIR_INPUT_MAP  "../maps/input_maps/"
@@ -15,7 +14,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
     //vector<vector<CNode>> zero;
-    this->pmap       = new vector<vector<CNode>>(0);
+    this->pmap      = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -73,8 +72,10 @@ bool CMap::loadMapFile(string file_name)
                     rd_map_file >> temp_byte_info;
 
                     map_temp.push_back( CNode( i+j , temp_byte_info, j, i) );
+                    
+                    cout << temp_byte_info << " ";
 
-                    cout << map_temp[i].getNodeInfo() << " ";
+                    //cout << map_temp[i].getNodeInfo() << " ";
                 }
                 cout << endl;
                 pmap->push_back(map_temp);

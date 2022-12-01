@@ -20,21 +20,12 @@ CNode::CNode(uint16_t id, unsigned int byte_info, SCoord s)
 CNode::~CNode(){}
 //====================================================
 
-//=================Get Node Info======================
-unsigned int CNode::getNodeInfo()
-{
-    return this->byte_info;
-}
-//====================================================
 
-//=================Set Node Info======================
-void CNode::setNodeInfo(unsigned int byte_info)
-{
-    this->byte_info = byte_info;
-}
 //====================================================
-
-//=================Is open============================
+//====================================================
+//**************** Public Funtions *******************
+//____________________________________________________
+//----------------- Is open --------------------------
 bool CNode::isOpen()
 {
     bool flag = true;
@@ -46,22 +37,29 @@ bool CNode::isOpen()
 }
 //====================================================
 
-//=================Get Direction======================
-float CNode::getDirection(CPoint &p){
-    return this->getDistance(p); 
-}
-//====================================================
+//**************** Gets and Sets *********************
 
-//=================Set Gain===========================
-void CNode::setGain(uint16_t G)
-{
-    this->gain = G;
-}
-//====================================================
+//---------------- Get Node Info ---------------------
+unsigned int CNode::getNodeInfo()
+    {return this->byte_info;}
 
-//=================Get Gain===========================
+//---------------- Get Direction ---------------------
+float CNode::getDirection(CPoint &p)
+    {return this->getDistance(p);}
+
+//---------------- Get Gain --------------------------
 uint16_t CNode::getGain()
-{
-    return this->gain;
-}
-//====================================================
+    {return this->gain;}
+
+//----------------- Get Point ------------------------
+SCoord CNode::getPos()
+    {return this->getPoint();}
+
+
+//----------------- Set Gain -------------------------
+void CNode::setGain(uint16_t G)
+    {this->gain = G;}
+
+//---------------- Set Node Info ---------------------
+void CNode::setNodeInfo(unsigned int byte_info)
+    {this->byte_info = byte_info;}
