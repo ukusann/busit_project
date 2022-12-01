@@ -11,10 +11,16 @@ class CRoute
 private:
     std::vector <CNode> route;
     unsigned short int  r_ID;
-    unsigned short int  r_total_gain;
-    double              r_total_time;
 
 public:
+    CRoute(unsigned short int id );
+    ~CRoute();
+
+    void addNode(CNode n);
+    bool insertNode(CNode n, unsigned short int index);
+    bool removeNode(unsigned short int index);
+
+    CNode getNode(unsigned short int index);
     unsigned short int getRouteID();
     unsigned short int getTotalGain();
     double             getRouteTime();
