@@ -22,6 +22,7 @@ public:
     float           getDirection(CPoint &p);
     void            setGain(uint16_t G);
     uint16_t	    getGain(); 
+    SCoord          getPos(); 
 };
 
 #endif /*__CNode__*/

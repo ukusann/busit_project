@@ -1,8 +1,9 @@
-//#include "CPoint.h"
-//#include "CNode.h"
-//#include "CBusStop.h"
+#include "CPoint.h"
+#include "CNode.h"
+#include "CBusStop.h"
+#include "CRoute.h"
 #include "CMap.h"
-
+#include <vector>
 #include <iostream>
 
 using namespace std;
@@ -100,45 +101,37 @@ int main()
 
      //TODO================CMap test=======================
      //================================================
-     
+ /*    
      CMap map(1);
 
      if (map.inputMap("map_1") == false) 
      cout << "ERROR creating the input"<< endl;
+ */    //================================================
+
+     //TODO================CRoute test=======================
+     //================================================
      
+     vector <CNode> vn;
+     CRoute r(1);
+
+     CNode n1(1,8,0,0);
+     CNode n2(2,6,4,3);
+     CNode n3(3,12,1,2);
+
+     r.addNode(n1);
+     r.addNode(n2);
+     r.insertNode(n3, 1);
+     vn.push_back( r.getNode(0));
+     vn.push_back( r.getNode(1));
+     vn.push_back( r.getNode(2));
+     r.removeNode(1);
+     vn.push_back( r.getNode(1));
+     cout << " route[0].byteInfo =  "<< vn[0].getNodeInfo() << endl;
+     cout << " route[1].byteInfo =  "<< vn[1].getNodeInfo() << endl;
+     cout << " route[2].byteInfo =  "<< vn[2].getNodeInfo() << endl;
+     cout << " remove route[1], now :\nroute[1].byteInfo =  "<< vn[3].getNodeInfo() << endl;
+     cout << "route info:\n total gain = " << r.getTotalGain()<< "\ntotal time = " << r.getRouteTime() << endl;
      //================================================
 
-     //TODO================list test=======================
-     //================================================
-   /*  
-   list<int> l{1,2,3,4};
-   list<int> l1{5,6,7,8};
-   list<list<int>> ll;
-   ll.push_back(l);
-   ll.push_back(l1);
-
-   list<list<int>>::iterator itr = ll.begin();
-
-   list<int>::iterator it = itr->begin();
-   itr->insert(it, 88);
-   itr->insert(it, 89);
-
-   itr++;
-   it = itr->begin();
-   itr->insert(it, 98);
-   itr->insert(it, 99);
-
-
-   for (itr=ll.begin(); itr != ll.end(); itr++)
-   {
-       list<int>tl=*itr;
-
-       for (it=tl.begin(); it != tl.end(); it++)
-       {
-           cout<<*it;
-       }
-       cout<<endl<<"End"<<endl;
-   }      
-*/
     return 0;
 }
