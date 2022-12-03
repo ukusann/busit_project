@@ -101,16 +101,16 @@ int main()
 
      //TODO================CMap test=======================
      //================================================
- /*    
+     
      CMap map(1);
 
      if (map.inputMap("map_1") == false) 
      cout << "ERROR creating the input"<< endl;
- */    //================================================
+     //================================================
 
      //TODO================CRoute test=======================
      //================================================
-     
+/*     
      vector <CNode> vn;
      CRoute r(1);
 
@@ -131,7 +131,7 @@ int main()
      cout << " route[2].byteInfo =  "<< vn[2].getNodeInfo() << endl;
      cout << " remove route[1], now :\nroute[1].byteInfo =  "<< vn[3].getNodeInfo() << endl;
      cout << "route info:\n total gain = " << r.getTotalGain()<< "\ntotal time = " << r.getRouteTime() << endl;
-     //================================================
+*/     //================================================
 
     return 0;
 }

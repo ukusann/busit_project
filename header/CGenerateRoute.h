@@ -13,8 +13,8 @@ private:
     std::vector<CRoute> multi_route;
     CMap *map_info;
 
-    bool make_route( CNode i_node, CNode f_node,
-                     bool opt, unsigned short int max_g);
+    bool make_route(CNode i_node, CNode f_node,
+                    bool opt, unsigned short int max_g);
     CNode decisionMaker(vector <CNode> &l_node);
     CNode lastOpen();
     void saveRoute();
