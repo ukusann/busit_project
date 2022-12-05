@@ -21,29 +21,6 @@ using namespace std;
 //====================================================
 //**************** Public Funtions *******************
 //____________________________________________________
-//----------------- Add Node -------------------------
-    void CRoute::addNode(CNode n){
-        this->route.push_back(n);
-    }
-
-//____________________________________________________
-//----------------- Insert Node ----------------------
-    bool CRoute::insertNode(CNode n, unsigned short int index){
-        if (index > route.size())
-            return false;
-        this->route.insert(route.begin() + index, n);
-        return true;
-    }
-
-//____________________________________________________
-//---------------- Remove Node -----------------------
-    bool CRoute::removeNode(unsigned short int index){
-        if (index >= route.size())
-            return false;
-
-        route.erase(route.begin() + index);
-        return true;
-    }
 
 //**************** Gets and Sets *********************
 //----------------- Get index Node -------------------

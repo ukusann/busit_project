@@ -11,20 +11,12 @@ class CMap
 {
 private:
 
-
-    uint16_t                        len_i;
-    uint16_t                        len_j;
+    unsigned short int              len_i;
+    unsigned short int              len_j;
     std::vector<std::vector<CNode>> *pmap;
     std::string                     file_name;
     uint8_t                         map_id;
     std::fstream                    file_map;
-
-    uint16_t                    len_i;
-    uint16_t                    len_j;
-    std::vector< std::vector <CNode> >  *pmap;
-    std::string                 file_name;
-    uint8_t                     map_id;
-    std::fstream                file_map;
 
     bool loadMapFile(std::string file_name);
     bool saveMap();

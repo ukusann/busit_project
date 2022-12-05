@@ -4,7 +4,8 @@ using namespace std;
 
 //============ Constructor and Destructor ============
 
-CGenerateRoute::CGenerateRoute(CMap &map){}
+CGenerateRoute::CGenerateRoute(){
+}
 
 //------------------------------------------------
 CGenerateRoute::~CGenerateRoute(){}
@@ -22,8 +23,10 @@ bool CGenerateRoute::make_route( CNode i_node, CNode f_node, bool opt, unsigned 
     bool r_finished = false;
 
     if(opt)
-        gain = this->single_route.mem_route.size();
+        gain = this->single_route->mem_route.size();
     
+    pnode->closeNode();
+     this->single_route->mem_route.insert(*pnode);
         
 
     return r_finished;
@@ -32,14 +35,14 @@ bool CGenerateRoute::make_route( CNode i_node, CNode f_node, bool opt, unsigned 
 //____________________________________________________
 //---------------- Decision Maker --------------------
 CNode CGenerateRoute::decisionMaker(vector <CNode> &l_node){
-    CNode n;
+    CNode n(5,12,1,1);
     return n;
 }
 
 //____________________________________________________
 //---------------- Last Open node --------------------
 CNode CGenerateRoute::lastOpen(){
-    CNode n;
+    CNode n(5,12,1,1);
     return n;
 }
 
@@ -62,19 +65,19 @@ void CGenerateRoute::optimizeRoute(){
 //____________________________________________________
 //---------------- Simple Route ----------------------
 CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node){
-    CRoute r;
+    CRoute r(1);
     return r;
 }
 
 //____________________________________________________
 //---------------- Multiple Route --------------------
-CGenerateRoute::vector<CRoute> multRoutes(vector<CNodes> l_nodes){
+vector<CRoute> CGenerateRoute::multRoutes(vector<CNode> l_nodes){
     vector<CRoute> vr;
     return vr;
 }
 
 //____________________________________________________
 //------------------ Change Map ----------------------
-CGenerateRoute::bool changeMap(CMap map){
+bool CGenerateRoute::changeMap(CMap map){
     return false;
 }

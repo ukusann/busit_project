@@ -4,6 +4,8 @@
 #include <inttypes.h>
 #include "CPoint.h"
 
+#define NODE_OPEN  128
+#define NODE_CLOSE 0
 
 class CNode : public CPoint
 {
@@ -16,6 +18,8 @@ public:
     CNode(uint16_t id, unsigned int byte_info, uint16_t x, uint16_t y);
     CNode(uint16_t id, unsigned int byte_info, SCoord s);
     ~CNode();
+    void            openNode();
+    void            closeNode();
     unsigned int    getNodeInfo();
     void            setNodeInfo(unsigned int byte_info);
     bool            isOpen();

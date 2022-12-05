@@ -15,11 +15,6 @@ public:
     CRoute(unsigned short int id );
     ~CRoute();
 
-    void addNode(CNode n);
-    bool insertNode(CNode n, unsigned short int index);
-    bool removeNode(unsigned short int index);
-    void saveMemoryRoute(std::vector<std::vector<CNode>> mem_r);
-
     CNode getNode(unsigned short int index);
     unsigned short int getRouteID();
     unsigned short int getTotalGain();
