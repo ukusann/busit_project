@@ -7,7 +7,14 @@
 #include <vector>
 #include <iostream>
 #include <signal.h>
-#include  <sys/syslog.h>
+#include <sys/syslog.h>
+#include <sys/types.h> 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h> 
+#include <cstdlib>
+
+
 
 using namespace std;
 
@@ -17,7 +24,7 @@ void signal_handler(int sig) {
 			syslog(LOG_INFO,"Hangup signal catched");
 			break;
 
-        case SIGUSR1:
+          case SIGUSR1:
             syslog(LOG_INFO,"User signal catched");
             break;
 
@@ -156,8 +163,31 @@ int main()
 
      //TODO================Daemon test=======================
      //================================================
-     signalHandler(raise(SIGUSR1));
+     pid_t pid;
+     signal(SIGUSR1, signal_handler); // Register signal handler
+     signal(SIGTERM, signal_handler); // Register signal handler
+     pid = getpid();      //Process ID of itself
+     printf("Busit PID: %d\n", pid);
      
+     int total_length = 1024; 
+
+     char line[total_length];
+     FILE * command = popen("pidof -s daemons.elf","r");
+
+     fgets(line,total_length,command);
+
+     pid_t pid2 = strtoul(line,NULL,10);
+     pclose(command);
+     
+     printf("Daemon PID: %d\n", pid2);
+     
+     kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
+
+     kill(pid2, 1);
+
+     raise(SIGUSR1);
+
+     kill(pid, SIGTERM);
      //================================================
 
     return 0;
