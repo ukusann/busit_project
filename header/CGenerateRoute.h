@@ -14,9 +14,14 @@ private:
 
     bool make_route(CNode i_node, CNode f_node,
                     bool opt, unsigned short int max_g);
+    
     std::vector<CNode> openNodes(CNode *pnodes);
     bool openCondition(short int x, short int y);
-    CNode decisionMaker(std::vector <CNode> &l_node);
+
+    CNode decisionDir(std::vector <CNode> &l_node, CNode *pnode);
+    unsigned short int directionMask(SCoord ppos, SCoord nxpos);   
+    void decisionDistReservedBus(std::vector <CNode> &l_node, CNode *pnode_f);
+    
     CNode lastOpen();
     void saveRoute();
     void optimizeRoute();
