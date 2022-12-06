@@ -3,10 +3,37 @@
 #include "CBusStop.h"
 #include "CRoute.h"
 #include "CMap.h"
+
 #include <vector>
 #include <iostream>
+#include <signal.h>
+#include <sys/syslog.h>
+#include <sys/types.h> 
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h> 
+#include <cstdlib>
+
+
 
 using namespace std;
+
+void signal_handler(int sig) {
+	switch(sig) {
+		case SIGHUP:
+			syslog(LOG_INFO,"Hangup signal catched");
+			break;
+
+          case SIGUSR1:
+            syslog(LOG_INFO,"User signal catched");
+            break;
+
+		case SIGTERM:
+			syslog(LOG_INFO,"Terminate signal catched");
+			exit(0);
+			break;
+	}
+}
 
 int main()
 {
@@ -101,12 +128,12 @@ int main()
 
      //TODO================CMap test=======================
      //================================================
-     
+ /*    
      CMap map(1);
 
      if (map.inputMap("map_1") == false) 
      cout << "ERROR creating the input"<< endl;
-     //================================================
+ */    //================================================
 
      //TODO================CRoute test=======================
      //================================================
@@ -131,7 +158,37 @@ int main()
      cout << " route[2].byteInfo =  "<< vn[2].getNodeInfo() << endl;
      cout << " remove route[1], now :\nroute[1].byteInfo =  "<< vn[3].getNodeInfo() << endl;
      cout << "route info:\n total gain = " << r.getTotalGain()<< "\ntotal time = " << r.getRouteTime() << endl;
-*/     //================================================
+*/
+     //================================================
+
+     //TODO================Daemon test=======================
+     //================================================
+     pid_t pid;
+     signal(SIGUSR1, signal_handler); // Register signal handler
+     signal(SIGTERM, signal_handler); // Register signal handler
+     pid = getpid();      //Process ID of itself
+     printf("Busit PID: %d\n", pid);
+     
+     int total_length = 1024; 
+
+     char line[total_length];
+     FILE * command = popen("pidof -s daemons.elf","r");
+
+     fgets(line,total_length,command);
+
+     pid_t pid2 = strtoul(line,NULL,10);
+     pclose(command);
+     
+     printf("Daemon PID: %d\n", pid2);
+     
+     kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
+
+     kill(pid2, 1);
+
+     raise(SIGUSR1);
+
+     kill(pid, SIGTERM);
+     //================================================
 
     return 0;
 }
