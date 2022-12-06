@@ -25,11 +25,51 @@ bool CGenerateRoute::make_route( CNode i_node, CNode f_node, bool opt, unsigned 
     if(opt)
         gain = this->single_route->mem_route.size();
     
-    pnode->closeNode();
-     this->single_route->mem_route.insert(*pnode);
+    pnode->closeNode();                             // Close the Node
+    single_route->mem_route.push_back(next_node.push_back(*pnode));   // Add to Route memory
+
+    while (pnode->getId() != f_node.getId()){
         
+        gain ++;
+        next_node.push_back(CGenerateRoute::openNodes(pnode));
+    }
+
 
     return r_finished;
+}
+//____________________________________________________
+//------------------ Open Condition ------------------
+bool CGenerateRoute::openCondition(short int x, short int y){
+    bool flag = false;
+    SCoord len = pmap_info->getMapLen();
+    CNode node_temp = pmap_info->getMapNode(x, y);
+
+    if(&node_temp != NULL)
+        if(node_temp.isOpen() && node_temp.getNodeInfo() != 0)
+            flag = true;     
+    return flag;
+}
+
+//____________________________________________________
+//------------------ Open Nodes ----------------------
+
+vector<CNode> CGenerateRoute::openNodes(CNode *pnodes){
+    vector<CNode> temp_nodes;
+    SCoord ppos = pnodes->getPos();
+
+    if(CGenerateRoute::openCondition( (short int)(ppos.x +1), (short int)(ppos.y) ))
+        temp_nodes.push_back(pmap_info->getMapNode(ppos.x+1, ppos.y));
+    
+    if(CGenerateRoute::openCondition( (short int)(ppos.x -1), (short int)(ppos.y) ))
+        temp_nodes.push_back(pmap_info->getMapNode(ppos.x-1, ppos.y));
+    
+    if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y +1) ))
+        temp_nodes.push_back(pmap_info->getMapNode(ppos.x, ppos.y +1));
+    
+    if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y -1) ))
+        temp_nodes.push_back(pmap_info->getMapNode(ppos.x, ppos.y -1));
+        
+    return temp_nodes;
 }
 
 //____________________________________________________

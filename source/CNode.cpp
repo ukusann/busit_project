@@ -49,6 +49,11 @@ bool CNode::isOpen()
 
 //**************** Gets and Sets *********************
 
+//--------------------- Get ID -----------------------
+unsigned short int CNode::getId(){
+    return this->id;
+}
+
 //---------------- Get Node Info ---------------------
 unsigned int CNode::getNodeInfo()
     {return this->byte_info;}

@@ -145,3 +145,20 @@ bool CMap::inputMap(string file_name)
 // ***********End of Public Functions: **********************
 //===========================================================
 //===========================================================
+
+
+
+//**************** Gets and Sets *********************
+
+//--------------------- Get ID -----------------------
+
+    SCoord CMap::getMapLen(){
+        SCoord coord_len = {this->len_j, this->len_i };
+        return coord_len;
+    }
+
+    CNode  CMap::getMapNode( unsigned short int x, unsigned short int y ){
+        if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i)
+            return this->pmap[y][x];
+        return NULL;
+    }
