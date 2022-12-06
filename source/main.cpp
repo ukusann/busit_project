@@ -172,7 +172,7 @@ int main()
      int total_length = 1024; 
 
      char line[total_length];
-     FILE * command = popen("pidof -s daemons.elf","r");
+     FILE * command = popen("pidof -s daemon.elf","r");
 
      fgets(line,total_length,command);
 
@@ -183,9 +183,7 @@ int main()
      
      kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
 
-     kill(pid2, 1);
-
-     raise(SIGUSR1);
+     kill(pid2, SIGTERM);
 
      kill(pid, SIGTERM);
      //================================================
