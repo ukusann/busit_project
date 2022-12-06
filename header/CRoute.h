@@ -8,7 +8,7 @@ class CRoute
 {
 private:
     std::vector <CNode> route;
-    std::vector<std::vector <CNode> > mem_route;
+    std::vector<vector <CNode> > mem_route;
     unsigned short int  r_ID;
 
 public:

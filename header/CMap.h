@@ -26,6 +26,9 @@ public:
     ~CMap();
     bool    inputMap(std::string file_name);
 
+    SCoord getMapLen();
+    CNode  getMapNode(unsigned short int x, unsigned short int y);
+
 };
 
 #endif /*__CMap__*/

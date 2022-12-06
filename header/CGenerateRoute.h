@@ -10,10 +10,12 @@ class CGenerateRoute
 private:
     CRoute *single_route;
     std::vector<CRoute> multi_route;
-    CMap *map_info;
+    CMap *pmap_info;
 
     bool make_route(CNode i_node, CNode f_node,
                     bool opt, unsigned short int max_g);
+    std::vector<CNode> openNodes(CNode *pnodes);
+    bool openCondition(short int x, short int y);
     CNode decisionMaker(std::vector <CNode> &l_node);
     CNode lastOpen();
     void saveRoute();

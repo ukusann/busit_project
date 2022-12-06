@@ -20,6 +20,7 @@ public:
     ~CNode();
     void            openNode();
     void            closeNode();
+    unsigned short int getId();
     unsigned int    getNodeInfo();
     void            setNodeInfo(unsigned int byte_info);
     bool            isOpen();
