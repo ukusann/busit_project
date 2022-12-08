@@ -1,6 +1,6 @@
 CC = g++ 
-KDIR := ../header  # Folder with all the header files
-DEPS = ../execute/ # Folder where all obj and executable files will be located
+KDIR := ../header  
+DEPS = ../execute/
 
 #===========================================================
 #===========================================================
@@ -15,8 +15,8 @@ output: CDaemons.o daemons_main.o CPoint.o CNode.o CRoute.o CBusStop.o \
 	-o $(DEPS)busit.elf
 
 	#TODO ******daemon.elf creation*****
-	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o -o \
-	$(DEPS)daemon.elf
+	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o \
+	-o $(DEPS)daemon.elf
 
 # ***********End of Executable creation: *******************
 #===========================================================
