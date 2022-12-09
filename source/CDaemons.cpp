@@ -5,9 +5,16 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <cstring>
-
+#include <iostream>
 using namespace std;
 
+//===========================================================
+//===========================================================
+// ***********Beginning of Static Variables: ****************
+
+bool CDaemons::exit_flag = false;
+
+// ***********End of Static Variables: **********************
 //===========================================================
 //===========================================================
 // ***********Beginning of Constructor/Destructor: **********
@@ -73,6 +80,7 @@ void CDaemons::signalHandler(int sig)
 			break;
 
         case SIGUSR1:
+			CDaemons::exit_flag = true;
             syslog(LOG_INFO,"User signal catched");
             break;
 
@@ -92,16 +100,17 @@ void CDaemons::idle()
     signal(SIGHUP,signalHandler); /* catch hangup signal */
 	signal(SIGTERM,signalHandler); /* catch kill signal */
     signal(SIGUSR1,signalHandler); /* catch user signal */
-    while (1) {
+    while (~this->exit_flag) 
+	{
 		char *buf = (char *)malloc(sizeof(char) + len + 1);
 		if (buf == NULL) {
 			perror("malloc");
-            throw length_error("Buf creation incomplete!");
+			throw length_error("Buf creation incomplete!");
 			exit(EXIT_FAILURE);
 		}
 		if ((fd = open("/var/log/daemons.log",	O_CREAT | O_WRONLY | O_APPEND, 0600)) < 0) {
 			perror("open");
-            throw runtime_error("Could not open log file!");
+			throw runtime_error("Could not open log file!");
 			exit(EXIT_FAILURE);
 		}
 		time((time_t*)&timebuf);
@@ -110,6 +119,7 @@ void CDaemons::idle()
 		close(fd);
 		sleep(15);
 	}
+	syslog(LOG_INFO,"EXITING DAEMON LOOP!");
     exit(EXIT_SUCCESS);	
 }
 

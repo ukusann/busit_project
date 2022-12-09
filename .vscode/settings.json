@@ -2,6 +2,14 @@
     "files.associations": {
         "limits": "cpp",
         "vector": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "typeinfo": "cpp",
+        "cstdlib": "cpp",
+        "iostream": "cpp"
     }
 }

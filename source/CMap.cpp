@@ -157,8 +157,9 @@ bool CMap::inputMap(string file_name)
         return coord_len;
     }
 
-    CNode  CMap::getMapNode( unsigned short int x, unsigned short int y ){
+    CNode CMap::getMapNode( unsigned short int x, unsigned short int y ){
         if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i)
-            return this->pmap[y][x];
+            //return this->pmap[y][x];
+            return this->pmap->at(y).at(x);
         return NULL;
     }
