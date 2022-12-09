@@ -151,14 +151,22 @@ bool CMap::inputMap(string file_name)
 //**************** Gets and Sets *********************
 
 //--------------------- Get ID -----------------------
+SCoord CMap::getMapLen(){
+    SCoord coord_len = {this->len_j, this->len_i };
+    return coord_len;
+}
 
-    SCoord CMap::getMapLen(){
-        SCoord coord_len = {this->len_j, this->len_i };
-        return coord_len;
+//-------- Get desired Node on the map[y][x]  --------
+bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode *_pmap ){
+    bool flag = false;
+    if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
+        flag = true;
+        _pmap = &this->pmap->at(y).at(x);
     }
+    return flag;
+}
 
-    CNode  CMap::getMapNode( unsigned short int x, unsigned short int y ){
-        if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i)
-            return this->pmap[y][x];
-        return NULL;
-    }
+//-------------- Get The pointer pmap ----------------
+vector<vector<CNode>>* CMap::getPointerMap(){
+    return this->pmap;
+}
