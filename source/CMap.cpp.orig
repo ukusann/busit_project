@@ -1,6 +1,5 @@
 #include "CMap.h"
 #include <iostream>
-#include <stdexcept>
 
 #define  DIR_INPUT_MAP  "../maps/input_maps/"
 #define  DIR_SAVE_MAP   "../maps/saved_maps/"
@@ -15,7 +14,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
     //vector<vector<CNode>> zero;
-    this->map       = new vector<vector<CNode>>(0);
+    this->pmap      = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -24,7 +23,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-    delete this->map;
+    delete this->pmap;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -79,7 +78,7 @@ bool CMap::loadMapFile(string file_name)
                     //cout << map_temp[i].getNodeInfo() << " ";
                 }
                 cout << endl;
-                map->push_back(map_temp);
+                pmap->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -102,7 +101,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != pmap->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -143,7 +142,11 @@ bool CMap::inputMap(string file_name)
     return flag;
 }
 
-//____________________________________________________
+// ***********End of Public Functions: **********************
+//===========================================================
+//===========================================================
+
+
 
 //**************** Gets and Sets *********************
 
@@ -163,11 +166,16 @@ bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode *_pmap
     return flag;
 }
 
+<<<<<<< HEAD
 //-------------- Get The pointer pmap ----------------
 vector<vector<CNode>>* CMap::getPointerMap(){
     return this->pmap;
 }
-
-// ***********End of Public Functions: **********************
-//===========================================================
-//===========================================================
+=======
+    CNode CMap::getMapNode( unsigned short int x, unsigned short int y ){
+        if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i)
+            //return this->pmap[y][x];
+            return this->pmap->at(y).at(x);
+        return NULL;
+    }
+>>>>>>> 92a569bb9465500239a34597654524eb2038439f

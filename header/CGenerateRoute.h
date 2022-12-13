@@ -12,7 +12,7 @@ private:
     std::vector<CRoute> multi_route;
     CMap *pmap_info;
 
-    bool make_route(CNode i_node, CNode f_node,
+    bool makeRoute(CNode i_node, CNode f_node,
                     bool opt, unsigned short int max_g);
     
     std::vector<CNode> openNodes(CNode *pnodes);
@@ -22,17 +22,17 @@ private:
     unsigned short int directionMask(SCoord ppos, SCoord nxpos);   
     void decisionDistReservedBus(std::vector <CNode> &l_node, CNode *pnode_f);
     
-    CNode lastOpen();
+    unsigned short int lastOpen(CNode *pnode);
     void saveRoute();
     void optimizeRoute();
 
 public:
-    CGenerateRoute(unsigned short int id);
+    CGenerateRoute(CMap *pmap, CRoute *route);
     ~CGenerateRoute();
 
-    CRoute simpleRoute(CNode i_node, CNode f_node);
+    CRoute simpleRoute(CNode i_node, CNode f_node, unsigned short int id);
     std::vector<CRoute> multRoutes(std::vector<CNode> l_nodes);
-    bool changeMap(CMap map);
+    void changeMap(CMap *pmap);
 };
 
 #endif /*__CGenerateRoute__*/
