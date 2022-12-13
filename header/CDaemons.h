@@ -10,9 +10,10 @@ private:
     int fd;
     time_t timebuf;
     void setInfo(); 
-    static void signalHandler(int sig);
 public:
+    static void signalHandler(int sig);
     CDaemons();
     ~CDaemons();
     void idle();
+    pid_t getPid();
 };
