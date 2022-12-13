@@ -12,19 +12,19 @@ int main()
 		d.idle();
 	}
 
-	catch(invalid_argument& e)
+	catch(invalid_argument &e)
 	{
 		cerr << e.what() << endl;
         return -1;
 	}
 
-	catch(length_error& e)
+	catch(length_error &e)
 	{
 		cerr << e.what() << endl;
         return -1;
 	}
 
-	catch(runtime_error& e)
+	catch(runtime_error &e)
 	{
 		cerr << e.what() << endl;
         return -1;

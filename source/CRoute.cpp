@@ -3,20 +3,26 @@
 #define JUMP_TIME 300  // 300s -> 5 min
 
 using namespace std;
-
-//============ Constructor and Destructor ============
+//=====================================================
+//=====================================================
+// ***********Beginning of Constructor/Destructor: ****
 
     CRoute::CRoute(unsigned short int id)
+        : r_ID(id) 
     {
-        this->r_ID         = id;
+        this->route = new vector<CNode>;
+        this->mem_route = new vector<vector<CNode>>(0);
     }
 
     //------------------------------------------------
 
-    CRoute::~CRoute(){
-        route.clear();
+    CRoute::~CRoute()
+    {
+        delete this->route;
+        delete this->mem_route;
     }
 
+// ***********End of Constructor/Destructor: *********
 //====================================================
 //====================================================
 //**************** Public Funtions *******************
@@ -25,20 +31,33 @@ using namespace std;
 //**************** Gets and Sets *********************
 //----------------- Get index Node -------------------
 CNode CRoute::getNode(unsigned short int index)
-    {return this->route[index];}
-
+{
+    return this->route->at(index);
+}
 //----------------- Get Route ID ---------------------
 unsigned short int CRoute::getRouteID()  
-    {return this->r_ID;}
+{
+    return this->r_ID;
+}
 
 //----------------- Get Total Gain -------------------
 unsigned short int CRoute::getTotalGain()
-    {return this->route.size();}
+{
+    return this->route->size();
+}
 
 //----------------- Get Route Time -------------------
 double CRoute::getRouteTime()
-    {return (double)(this->route.size() * JUMP_TIME);}
+{
+    return (double)(this->route->size() * JUMP_TIME);
+}
 
 //-------------- Get Route Position ------------------
 SCoord CRoute::getRoutePos(unsigned short int index) 
-    {return this->route[index].getPoint();}
+{
+    return this->route->at(index).getPoint();
+}
+
+// ***********End of Public Functions: ***************
+//====================================================
+//====================================================

@@ -6,20 +6,20 @@ DEPS = ../execute/
 #===========================================================
 # ***********Beginning of Executable creation: *************
 
-output: threads.o CDaemons.o daemons_main.o CPoint.o CNode.o CRoute.o CBusStop.o \
-		main.o
+output: threads.o CDaemons.o daemons_main.o CPoint.o CNode.o CMap.o 		\
+	CRoute.o CGenerateRoute.o CBusStop.o main.o
 
 	#TODO ******busit.elf creation******
-	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CRoute.o \
-	$(DEPS)CBusStop.o $(DEPS)main.o \
+	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CMap.o 		\
+	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o $(DEPS)main.o \
 	-o $(DEPS)busit.elf
 
 	#TODO ******daemon.elf creation*****
-	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o \
+	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o				\
 	-o $(DEPS)daemon.elf
 
 	#TODO ******thread.elf creation*****
-	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)threads.o \
+	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)threads.o 					\
 	-o $(DEPS)threads.elf
 
 # ***********End of Executable creation: *******************

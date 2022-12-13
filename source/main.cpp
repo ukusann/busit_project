@@ -1,8 +1,9 @@
-#include "CPoint.h"
-#include "CNode.h"
-#include "CBusStop.h"
-#include "CRoute.h"
-#include "CMap.h"
+// #include "CPoint.h"
+// #include "CNode.h"
+// #include "CBusStop.h"
+// #include "CRoute.h"
+// #include "CMap.h"
+#include "CGenerateRoute.h"
 
 #include <vector>
 #include <iostream>
@@ -13,6 +14,7 @@
 #include <fcntl.h>
 #include <unistd.h> 
 #include <cstdlib>
+#include <stdexcept>
 
 
 
@@ -144,25 +146,33 @@ int main()
      CNode n1(1,8,0,0);
      CNode n2(2,6,4,3);
      CNode n3(3,12,1,2);
+     //CNode n4 = r.getNode(4);
 
-     r.addNode(n1);
-     r.addNode(n2);
-     r.insertNode(n3, 1);
-     vn.push_back( r.getNode(0));
-     vn.push_back( r.getNode(1));
-     vn.push_back( r.getNode(2));
-     r.removeNode(1);
-     vn.push_back( r.getNode(1));
-     cout << " route[0].byteInfo =  "<< vn[0].getNodeInfo() << endl;
-     cout << " route[1].byteInfo =  "<< vn[1].getNodeInfo() << endl;
-     cout << " route[2].byteInfo =  "<< vn[2].getNodeInfo() << endl;
-     cout << " remove route[1], now :\nroute[1].byteInfo =  "<< vn[3].getNodeInfo() << endl;
-     cout << "route info:\n total gain = " << r.getTotalGain()<< "\ntotal time = " << r.getRouteTime() << endl;
+     cout << "Route ID: " << r.getRouteID() << endl;
+     cout << "Route total gain: " << r.getTotalGain() << endl;
+     cout << "Route Time: " << r.getRouteTime() << endl;
+     //cout << "Route Pos: " << r.getRoutePos(0) << endl;
+     //================================================
 */
+     //TODO================CGenerateRoute test=======================
+     //================================================
+     try
+     {
+          CGenerateRoute gr(1);
+     }
+
+     catch(invalid_argument &e)
+     {
+          cerr << e.what() << endl;
+          return -1;
+     }
+
+
      //================================================
 
      //TODO================Daemon test=======================
      //================================================
+/*
      pid_t pid;
      signal(SIGUSR1, signal_handler); // Register signal handler
      signal(SIGTERM, signal_handler); // Register signal handler
@@ -186,6 +196,7 @@ int main()
      //kill(pid2, SIGTERM);
 
      kill(pid, SIGTERM);
+*/
      //================================================
 
     return 0;

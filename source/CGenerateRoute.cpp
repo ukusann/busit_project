@@ -10,7 +10,9 @@ using namespace std;
 
 //============ Constructor and Destructor ============
 
-CGenerateRoute::CGenerateRoute(){
+CGenerateRoute::CGenerateRoute(unsigned short int id)
+{
+    this->single_route = new CRoute(id);
 }
 
 //------------------------------------------------
@@ -29,11 +31,11 @@ bool CGenerateRoute::make_route( CNode i_node, CNode f_node, bool opt, unsigned 
     bool r_finished = false;
 
     if(opt)
-        gain = this->single_route->mem_route.size();
+        gain = this->single_route->mem_route->size();
     
     pnode->closeNode();                             // Close the Node
     next_node.push_back(*pnode);
-    single_route->mem_route.push_back(next_node);   // Add to Route memory
+    this->single_route->mem_route->push_back(next_node);   // Add to Route memory
 
     while (pnode->getId() != f_node.getId()){
         

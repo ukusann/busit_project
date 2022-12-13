@@ -7,12 +7,12 @@
 class CRoute 
 {
 private:
-    std::vector <CNode> route;
-    std::vector<std::vector <CNode> > mem_route;
+    std::vector <CNode> *route;
+    std::vector<std::vector <CNode> > *mem_route;
     unsigned short int  r_ID;
 
 public:
-    CRoute(unsigned short int id );
+    CRoute(unsigned short int id);
     ~CRoute();
 
     CNode getNode(unsigned short int index);

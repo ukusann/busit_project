@@ -1,5 +1,6 @@
 #include "CMap.h"
 #include <iostream>
+#include <stdexcept>
 
 #define  DIR_INPUT_MAP  "../maps/input_maps/"
 #define  DIR_SAVE_MAP   "../maps/saved_maps/"
@@ -14,7 +15,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
     //vector<vector<CNode>> zero;
-    this->pmap      = new vector<vector<CNode>>(0);
+    this->map       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -23,7 +24,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-    delete this->pmap;
+    delete this->map;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -78,7 +79,7 @@ bool CMap::loadMapFile(string file_name)
                     //cout << map_temp[i].getNodeInfo() << " ";
                 }
                 cout << endl;
-                pmap->push_back(map_temp);
+                map->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -101,7 +102,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != pmap->end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -142,11 +143,7 @@ bool CMap::inputMap(string file_name)
     return flag;
 }
 
-// ***********End of Public Functions: **********************
-//===========================================================
-//===========================================================
-
-
+//____________________________________________________
 
 //**************** Gets and Sets *********************
 
@@ -159,7 +156,12 @@ bool CMap::inputMap(string file_name)
 
     CNode CMap::getMapNode( unsigned short int x, unsigned short int y ){
         if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i)
-            //return this->pmap[y][x];
-            return this->pmap->at(y).at(x);
-        return NULL;
+            //return this->map[y][x];
+            return this->map->at(y).at(x);
+        else
+            throw invalid_argument("Node out of bounds!");
     }
+
+// ***********End of Public Functions: **********************
+//===========================================================
+//===========================================================

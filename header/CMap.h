@@ -13,7 +13,7 @@ private:
 
     unsigned short int              len_i;
     unsigned short int              len_j;
-    std::vector<std::vector<CNode>> *pmap;
+    std::vector<std::vector<CNode>> *map;
     std::string                     file_name;
     uint8_t                         map_id;
     std::fstream                    file_map;

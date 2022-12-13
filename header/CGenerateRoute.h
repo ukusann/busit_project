@@ -27,7 +27,7 @@ private:
     void optimizeRoute();
 
 public:
-    CGenerateRoute();
+    CGenerateRoute(unsigned short int id);
     ~CGenerateRoute();
 
     CRoute simpleRoute(CNode i_node, CNode f_node);
