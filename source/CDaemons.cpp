@@ -8,13 +8,7 @@
 #include <iostream>
 using namespace std;
 
-//===========================================================
-//===========================================================
-// ***********Beginning of Static Variables: ****************
 
-bool CDaemons::exit_flag = false;
-
-// ***********End of Static Variables: **********************
 //===========================================================
 //===========================================================
 // ***********Beginning of Constructor/Destructor: **********
@@ -80,8 +74,8 @@ void CDaemons::signalHandler(int sig)
 			break;
 
         case SIGUSR1:
-			CDaemons::exit_flag = true;
             syslog(LOG_INFO,"User signal catched");
+			raise(SIGTERM);
             break;
 
 		case SIGTERM:
@@ -97,10 +91,10 @@ void CDaemons::signalHandler(int sig)
 
 void CDaemons::idle()
 {
-    signal(SIGHUP,signalHandler); /* catch hangup signal */
-	signal(SIGTERM,signalHandler); /* catch kill signal */
-    signal(SIGUSR1,signalHandler); /* catch user signal */
-    while (~this->exit_flag) 
+    signal(SIGHUP,signalHandler);  /* catch hangup signal */
+	signal(SIGTERM,signalHandler); /* catch kill signal   */
+    signal(SIGUSR1,signalHandler); /* catch user signal   */
+    while (1) 
 	{
 		char *buf = (char *)malloc(sizeof(char) + len + 1);
 		if (buf == NULL) {
@@ -119,9 +113,17 @@ void CDaemons::idle()
 		close(fd);
 		sleep(15);
 	}
-	syslog(LOG_INFO,"EXITING DAEMON LOOP!");
+	//code will never reach this line
     exit(EXIT_SUCCESS);	
 }
+
+//-----------------------------------------------------------
+
+pid_t CDaemons::getPid()
+{
+	return this->pid;
+}
+
 
 // ***********End of Public Functions: **********************
 //===========================================================

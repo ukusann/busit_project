@@ -172,7 +172,7 @@ int main()
      int total_length = 1024; 
 
      char line[total_length];
-     FILE * command = popen("pidof -s threads.elf","r");
+     FILE * command = popen("pidof -s daemon.elf","r");
 
      fgets(line,total_length,command);
 
