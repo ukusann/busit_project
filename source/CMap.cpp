@@ -15,7 +15,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
     //vector<vector<CNode>> zero;
-    this->map       = new vector<vector<CNode>>(0);
+    this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -24,7 +24,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-    delete this->map;
+    delete this->pmap;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -79,7 +79,7 @@ bool CMap::loadMapFile(string file_name)
                     //cout << map_temp[i].getNodeInfo() << " ";
                 }
                 cout << endl;
-                map->push_back(map_temp);
+                pmap->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -102,7 +102,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != map->end(); itr++)
         {
             vector<CNode> tl = *itr;
 

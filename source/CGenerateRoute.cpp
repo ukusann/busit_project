@@ -42,11 +42,11 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         {r_finished = false; /*ERROR*/}
 
     if(opt)
-        gain = this->single_route->mem_route.size();
+        gain = this->single_route->pMem_route->size();
     else{
         pnode->closeNode();                             // Close the Node
         next_node.push_back(*pnode);
-        single_route->mem_route.push_back(next_node);   // Add to Route memory
+        single_route->pMem_route->push_back(next_node);   // Add to Route memory
     }
     while (pnode->getId() != f_node.getId() && r_finished == true){
         
@@ -62,7 +62,7 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
                 decisionDistReservedBus(next_node,pnode);   // make a decision
             pnode = &next_node[0];                          // pnode points to the new node
             pnode->closeNode();                             // close it
-            single_route->mem_route.push_back(next_node);   // save's it in the memory
+            single_route->pMem_route->push_back(next_node);   // save's it in the memory
             next_node.clear();                              // clears the vector
         }
         else
@@ -183,17 +183,20 @@ void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pno
 //---------------- Last Open node --------------------
 unsigned short int CGenerateRoute::lastOpen(CNode *pnode){
 
-    unsigned short int mem_len = single_route->mem_route.size(); 
+    unsigned short int mem_len = single_route->pMem_route->size(); 
     
-    for ( int i = mem_len -1 ; i >= 0; i-- ){
-        for(unsigned short int j = 0 ; j < single_route->mem_route[i].size(); j++){
-            if (single_route->mem_route[i][j].isOpen()){
-            
-                SCoord pos = single_route->mem_route[i][j].getPoint();
-                if(this->pmap_info->getMapNode(pos.x, pos.y, pnode) ){
+    for ( int i = mem_len -1 ; i >= 0; i-- )
+    {
+        for(unsigned short int j = 0 ; j < single_route->pMem_route[i].size(); j++)
+        {
+            if (single_route->pMem_route->at(i).at(j).isOpen())
+            {
+                SCoord pos = single_route->pMem_route->at(i).at(j).getPoint();
+                if(this->pmap_info->getMapNode(pos.x, pos.y, pnode))
+                {
                     pnode->closeNode();
-                    single_route->mem_route.erase(single_route->mem_route.begin() +(mem_len -i ),
-                                              single_route->mem_route.end());
+                    single_route->pMem_route->erase(single_route->pMem_route->begin() +(mem_len -i ),
+                                              single_route->pMem_route->end());
                 }
                 return (unsigned short int)i;
             }
@@ -206,11 +209,11 @@ unsigned short int CGenerateRoute::lastOpen(CNode *pnode){
 //------------------ Save Route ----------------------
 void CGenerateRoute::saveRoute(){
 
-    unsigned short int mem_len = this->single_route->mem_route.size();
-    this->single_route->route.clear();
+    unsigned short int mem_len = this->single_route->pMem_route->size();
+    this->single_route->pRoute->clear();
 
     for(unsigned short int i = 0 ; i < mem_len ; i++ )
-        this->single_route->route.push_back(this->single_route->mem_route[i][0]);
+        this->single_route->pRoute->push_back(this->single_route->pMem_route->at(i).at(0));
     return;
 }
 
@@ -218,25 +221,25 @@ void CGenerateRoute::saveRoute(){
 //---------------- Optimize Route --------------------
 void CGenerateRoute::optimizeRoute(){
     
-    vector<vector<CNode>> temp_mem;
+    vector<vector<CNode>> *temp_mem;
     CNode *temp_pnode;
 
-    unsigned short int gain         = single_route->route.size();
+    unsigned short int gain         = single_route->pRoute->size();
     unsigned short int total_gain   = gain;
-    CNode f_node                    = this->single_route->route[gain-1];
+    CNode f_node                    = this->single_route->pRoute->at(gain-1);
 
     gain = lastOpen(temp_pnode);
 
     while(gain != 0){
         if(CGenerateRoute::makeRoute(*temp_pnode, f_node, ENABLE_OPTIMIZATION, total_gain))
         {
-            temp_mem   = single_route->mem_route;
-            total_gain = single_route->route.size();
+            temp_mem   = single_route->pMem_route;
+            total_gain = single_route->pRoute->size();
         }
         
         gain = lastOpen(temp_pnode);
     }
-    this->single_route->mem_route = temp_mem;
+    this->single_route->pMem_route = temp_mem;
     return;
 }
 
