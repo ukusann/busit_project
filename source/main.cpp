@@ -156,12 +156,25 @@ int main()
      //TODO================CGenerateRoute test=======================
      //================================================
      CMap map(1);
+     CRoute r(1);
+
+     CNode n1(1,8,0,0);
+     CNode n2(2,6,4,3);
+     CNode n3(3,12,1,2);
 
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
-     //CGenerateRoute gr(&map, );
 
-
+     cout << "Route 1 ID: " << r.getRouteID() << endl;
+     cout << "Route 1 total gain: " << r.getTotalGain() << endl;
+     cout << "Route 1 Time: " << r.getRouteTime() << endl;
+     
+     CGenerateRoute gr(&map, &r);
+     
+     CRoute r2 = gr.simpleRoute(n1, n2, 2);
+     cout << "Route 2 ID: " << r2.getRouteID() << endl;
+     cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
+     cout << "Route 2 Time: " << r2.getRouteTime() << endl;
      //================================================
 
      //TODO================Daemon test=======================

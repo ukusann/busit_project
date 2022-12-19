@@ -1,4 +1,6 @@
 #include "CGenerateRoute.h"
+#include<iostream>
+
 
 #define M_JUMP_DOWN     14   // 0000 1110
 #define M_JUMP_UP       13   // 0000 1101
@@ -38,8 +40,12 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
     bool r_finished         = true;
     SCoord i_pos            = i_node.getPos();
     
-    if(this->pmap_info->getMapNode(i_pos.x, i_pos.y, pnode))
+    if(!this->pmap_info->getMapNode(i_pos.x, i_pos.y, pnode))
+    {
+        cout << "ERROR GETMAPNODE!" << endl;
         r_finished = false; //! ***ERROR Throw here!***
+        return r_finished;
+    }
 
     if(opt)
         gain = this->single_route->pMem_route->size();

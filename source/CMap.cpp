@@ -14,7 +14,6 @@ using namespace std;
 
 CMap::CMap(uint8_t map_id)
 {
-    //vector<vector<CNode>> zero;
     this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
