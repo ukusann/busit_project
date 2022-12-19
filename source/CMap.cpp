@@ -102,7 +102,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != map->end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != pmap->end(); itr++)
         {
             vector<CNode> tl = *itr;
 

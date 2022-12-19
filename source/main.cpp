@@ -14,7 +14,6 @@
 #include <fcntl.h>
 #include <unistd.h> 
 #include <cstdlib>
-#include <stdexcept>
 
 
 
@@ -130,13 +129,13 @@ int main()
 
      //TODO================CMap test=======================
      //================================================
- /*    
+/*     
      CMap map(1);
 
      if (map.inputMap("map_1") == false) 
-     cout << "ERROR creating the input"<< endl;
- */    //================================================
-
+          cout << "ERROR creating the input"<< endl;
+     //================================================
+*/
      //TODO================CRoute test=======================
      //================================================
 /*     
@@ -156,16 +155,11 @@ int main()
 */
      //TODO================CGenerateRoute test=======================
      //================================================
-     try
-     {
-          CGenerateRoute gr(1);
-     }
+     CMap map(1);
 
-     catch(invalid_argument &e)
-     {
-          cerr << e.what() << endl;
-          return -1;
-     }
+     if (map.inputMap("map_1") == false) 
+          cout << "ERROR creating the input"<< endl;
+     //CGenerateRoute gr(&map, );
 
 
      //================================================

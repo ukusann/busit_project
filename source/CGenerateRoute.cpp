@@ -39,16 +39,19 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
     SCoord i_pos            = i_node.getPos();
     
     if(this->pmap_info->getMapNode(i_pos.x, i_pos.y, pnode))
-        {r_finished = false; /*ERROR*/}
+        r_finished = false; //! ***ERROR Throw here!***
 
     if(opt)
         gain = this->single_route->pMem_route->size();
-    else{
+    else
+    {
         pnode->closeNode();                             // Close the Node
         next_node.push_back(*pnode);
         single_route->pMem_route->push_back(next_node);   // Add to Route memory
     }
-    while (pnode->getId() != f_node.getId() && r_finished == true){
+    
+    while (pnode->getId() != f_node.getId() && r_finished == true)
+    {
         
         gain ++;
         next_node = CGenerateRoute::openNodes(pnode);    // Open the nodes 
@@ -57,7 +60,8 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         if (opt && (gain < max_g )){ r_finished = false; /*ERROR*/ break;} 
         
         unsigned int nx_size = next_node.size();
-        if (nx_size > 0){
+        if (nx_size > 0)
+        {
             if (nx_size > 1)                                // if more than 1 node is open...
                 decisionDistReservedBus(next_node,pnode);   // make a decision
             pnode = &next_node[0];                          // pnode points to the new node
@@ -68,7 +72,8 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         else
         {
             gain = CGenerateRoute::lastOpen(pnode);
-            if(gain == 0){
+            if(gain == 0)
+            {
                 r_finished = false;
                 // --------------------
                 // ERROR
@@ -78,16 +83,15 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         }
     }
 
-    if (r_finished){   // if no ERROR occurred, saves the route
+    if (r_finished)   // if no ERROR occurred, saves the route
         CGenerateRoute::saveRoute();
-    }
 
     return r_finished;
 }
 //____________________________________________________
 //------------------ Open Condition ------------------
-bool CGenerateRoute::openCondition(short int x, short int y){
-    
+bool CGenerateRoute::openCondition(short int x, short int y)
+{
     CNode *node_temp;
     bool flag  = false;
     SCoord len = pmap_info->getMapLen();
@@ -102,7 +106,8 @@ bool CGenerateRoute::openCondition(short int x, short int y){
 //____________________________________________________
 //------------------ Open Nodes ----------------------
 
-vector<CNode> CGenerateRoute::openNodes(CNode *pnodes){
+vector<CNode> CGenerateRoute::openNodes(CNode *pnodes)
+{
     vector<CNode> temp_nodes;
     CNode *temp_pnode;
     SCoord ppos = pnodes->getPos();
@@ -128,8 +133,8 @@ vector<CNode> CGenerateRoute::openNodes(CNode *pnodes){
 
 //____________________________________________________
 //---------------- Decision Direction ----------------
-CNode CGenerateRoute::decisionDir(vector <CNode> &l_node, CNode *pnode){
-
+void CGenerateRoute::decisionDir(vector <CNode> &l_node, CNode *pnode)
+{
     for( unsigned int i = 0 ; i < l_node.size() ; i++)  // The node only has one direction? and it is backwards? 
         if(l_node[i].getNodeInfo() & CGenerateRoute::directionMask(pnode->getPos(), l_node[i].getPos()) == 0)
             l_node.erase(l_node.begin() +i);
@@ -137,8 +142,8 @@ CNode CGenerateRoute::decisionDir(vector <CNode> &l_node, CNode *pnode){
 
 //____________________________________________________
 //---------------- Direction Mask --------------------
-unsigned short int CGenerateRoute::directionMask(SCoord ppos, SCoord nxpos){
- 
+unsigned short int CGenerateRoute::directionMask(SCoord ppos, SCoord nxpos)
+{
     unsigned short int mask = 0;
     if ((nxpos.x - ppos.x) == 0)
         if(nxpos.y < ppos.y)
@@ -150,15 +155,17 @@ unsigned short int CGenerateRoute::directionMask(SCoord ppos, SCoord nxpos){
             mask = M_JUMP_RIGHT;
         else
             mask = M_JUMP_LEFT;
+    
+    return mask;
 }
 //____________________________________________________
 //----- Decision Distance and Bus Reserved Road! -----
 
 // Ordenates the vector next_node by the most priority decision to the least
-void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pnode_f){
-
-    for(unsigned int i = 0 ; i < (nx_node.size()-1) ; i++ ){
-
+void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pnode_f)
+{
+    for(unsigned int i = 0 ; i < (nx_node.size()-1) ; i++ )
+    {
         bool bubble_sort    = false;
         SCoord pos_f        = pnode_f->getPos();
         float dist_0        = nx_node[i   ].getDistance(pos_f);
@@ -171,7 +178,8 @@ void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pno
         else if (node_info0 & M_RESERVED_BUS == 0 &&  node_info1 & M_RESERVED_BUS == M_RESERVED_BUS )
             bubble_sort = true;
 
-        if (bubble_sort){
+        if (bubble_sort)
+        {
             CNode temp_n = nx_node[i];
             nx_node[i] = nx_node[i+1];
             nx_node[i+1] = temp_n; 
@@ -181,8 +189,8 @@ void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pno
 
 //____________________________________________________
 //---------------- Last Open node --------------------
-unsigned short int CGenerateRoute::lastOpen(CNode *pnode){
-
+unsigned short int CGenerateRoute::lastOpen(CNode *pnode)
+{
     unsigned short int mem_len = single_route->pMem_route->size(); 
     
     for ( int i = mem_len -1 ; i >= 0; i-- )
@@ -207,8 +215,8 @@ unsigned short int CGenerateRoute::lastOpen(CNode *pnode){
 
 //____________________________________________________
 //------------------ Save Route ----------------------
-void CGenerateRoute::saveRoute(){
-
+void CGenerateRoute::saveRoute()
+{
     unsigned short int mem_len = this->single_route->pMem_route->size();
     this->single_route->pRoute->clear();
 
@@ -219,8 +227,8 @@ void CGenerateRoute::saveRoute(){
 
 //____________________________________________________
 //---------------- Optimize Route --------------------
-void CGenerateRoute::optimizeRoute(){
-    
+void CGenerateRoute::optimizeRoute()
+{
     vector<vector<CNode>> *temp_mem;
     CNode *temp_pnode;
 
@@ -230,7 +238,8 @@ void CGenerateRoute::optimizeRoute(){
 
     gain = lastOpen(temp_pnode);
 
-    while(gain != 0){
+    while(gain != 0)
+    {
         if(CGenerateRoute::makeRoute(*temp_pnode, f_node, ENABLE_OPTIMIZATION, total_gain))
         {
             temp_mem   = single_route->pMem_route;
@@ -249,8 +258,8 @@ void CGenerateRoute::optimizeRoute(){
 //**************** Public Funtions *******************
 //____________________________________________________
 //---------------- Simple Route ----------------------
-CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short int id){
-    
+CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short int id)
+{
     CRoute route(id);
     bool err_flag = false;
     //-----------------------
@@ -272,14 +281,15 @@ CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short in
 
 //____________________________________________________
 //---------------- Multiple Route --------------------
-vector<CRoute> CGenerateRoute::multRoutes(vector<CNode> l_nodes){
+vector<CRoute> CGenerateRoute::multRoutes(vector<CNode> l_nodes)
+{
     vector<CRoute> vr;
     return vr;
 }
 
 //____________________________________________________
 //------------------ Change Map ----------------------
-void CGenerateRoute::changeMap(CMap *pmap){
+void CGenerateRoute::changeMap(CMap *pmap)
+{
     this->pmap_info = pmap;
-    return;
 }

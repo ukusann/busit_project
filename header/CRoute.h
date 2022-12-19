@@ -7,8 +7,8 @@
 class CRoute 
 {
 private:
-    std::vector <CNode> *route;
-    std::vector<std::vector <CNode> > *mem_route;
+    std::vector <CNode> *pRoute;
+    std::vector<std::vector <CNode> > *pMem_route;
     unsigned short int  r_ID;
 
 public:
