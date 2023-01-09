@@ -35,7 +35,9 @@
     </h2>
     <div style="border: 2px solid Black;background-color:rgba(210, 216, 163, 0.7);color:black;padding:20px;">
         <p id='request' > Rua Rafael Bordalo Pinheiro. 
-            <input type="button" onclick ="flag_req_acepted = true" value="Acept Pick up!"> Time: <output id="num_req_timeout"></output> 
+            <input type="button" onclick ="reqAcepted()" value="Acept Pick up!">
+            <input type="button" onclick ="reqDenied()"  value="Decline Pick up!">
+            Time: <output id="num_req_timeout"></output> 
         </p>
         <p id='request_acepted' > Acepted!</p>
         
@@ -55,6 +57,7 @@
     const image = document.getElementById("image");
 
     let flag_req_acepted = false; 
+    let flag_req_denied  = false;
 
     document.getElementById('request').style.display         = 'none';
     document.getElementById('request_acepted').style.display = 'none';
@@ -62,6 +65,7 @@
 
 
     image.src = go;
+    requestPickUp();
     setTimeout(function(){
         var i = 1;
         
@@ -73,26 +77,44 @@
 
 }, 3000);
 
+// -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 
 
 function requestPickUp(){
+    
     document.getElementById('request').style.display = 'block';
-    let i;
-    for ( i = reqTimeout; i >= 0; i--) {
-        document.getElementById("num_req_timeout").innerHTML = i;
-        if (flag_req_acepted)
+    
+    for (let i = reqTimeout; i >= 0; i--) {
+        setTimeout(function(){
+            document.getElementById("num_req_timeout").innerHTML = i;
+        }, 1000);
+        if (flag_req_acepted || flag_req_denied)
             break;
     }
-
+    document.getElementById('request').style.display = 'block';
+    
+    if (flag_req_acepted){
+        flag_req_acepted = false;
+        flag_req_denied  = false;
+        document.getElementById('request_acepted').style.display = 'block';
+    }
+    else {
+        flag_req_acepted = false;
+        flag_req_denied  = false;
+        document.getElementById('request_denied').style.display  = 'block';
+    }        
 }
 
-function reqDenied(){
-    flag_req_acepted = false;
-}
+// -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
 
-function reqAcepted(){
-    flag_req_acepted = false;
-}
+    function reqDenied(){
+        flag_req_denied = false;
+    }
+    function reqAcepted(){
+        flag_req_acepted = false;
+    }
 
 </script>
 
