@@ -200,7 +200,7 @@ int main()
      
      kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
 
-     //kill(pid2, SIGTERM);
+     kill(pid2, SIGTERM);
 
      kill(pid, SIGTERM);
 */
