@@ -1,6 +1,6 @@
 #include "CNode.h"
 
-#define MASK_OPEN  128
+#define MASK_CLOSE  0x80
 
 //=================Constructor========================
 CNode::CNode(uint16_t id, unsigned int byte_info, uint16_t x, uint16_t y)
@@ -34,12 +34,12 @@ CNode::~CNode(){}
 //____________________________________________________
 //------------------ Open Node -----------------------
 void CNode::openNode(){
-    byte_info |= MASK_OPEN; // 128 1000 0000
+    byte_info &= MASK_CLOSE;     // 128 0000 0000
 }
 //____________________________________________________
 //------------------ Close Node-----------------------
 void CNode::closeNode(){
-    byte_info &= (MASK_OPEN -1); // 127 -> 0111 1111 
+    byte_info |= MASK_CLOSE;     // 128 1000 0000
 }
 //____________________________________________________
 //----------------- Is open --------------------------
@@ -47,7 +47,7 @@ bool CNode::isOpen()
 {
     bool flag = true;
 
-    if ((MASK_OPEN & byte_info) == 0)
+    if ((MASK_CLOSE & byte_info) == MASK_CLOSE)
         flag = false;
     
     return flag;

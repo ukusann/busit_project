@@ -202,6 +202,8 @@ int main ()
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
      cout << "IN" << endl << endl;
+     map.getMapNode(1,5,*i_n);
+     map.getMapNode(13,26,*f_n);
           
      CGenerateRoute gr(&map, &r);     
      cout << "out" << endl << endl;

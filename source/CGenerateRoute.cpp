@@ -65,17 +65,17 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
     {
 
         
-        cout << "IN_make route" << endl;
         gain ++;
-        next_node = CGenerateRoute::openNodes(pnode);    // Open the nodes 
+        next_node = CGenerateRoute::openNodes(pnode);    // Open the nodes
+        cout << "Decision Open fin" << endl; 
         CGenerateRoute::decisionDir(next_node, pnode);   // Decision: directions
-        cout << "Decision Dir fin" << endl;
+        cout << "Decision Dir fin\n\n" << endl;
         if (opt && (gain < max_g )){ r_finished = false; /*ERROR*/ break;} 
         
         unsigned int nx_size = next_node.size();
         if (nx_size > 0)
         {
-            cout << "Biguer than 1" << endl;
+            cout << "Biguer than 0\n\n" << endl;
             if (nx_size > 1)                                // if more than 1 node is open...
                 decisionDistReservedBus(next_node,pnode);   // make a decision
             pnode = &next_node[0];                          // pnode points to the new node
@@ -85,7 +85,7 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         }
         else
         {
-            cout << "Biguer than 1" << endl;
+            cout << "less than 0\n\n" << endl;
             gain = CGenerateRoute::lastOpen(pnode);
             if(gain == 0)
             {
@@ -96,25 +96,28 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
                 break;
             }
         }
+        cout << "ID of pnode: " << pnode->getId() << "ID of f_node: " << f_node.getId() << "\n\n" << endl;
     }
 
     if (r_finished)   // if no ERROR occurred, saves the route
         CGenerateRoute::saveRoute();
-
+    
     return r_finished;
 }
 //____________________________________________________
 //------------------ Open Condition ------------------
 bool CGenerateRoute::openCondition(short int x, short int y)
 {
-    CNode *node_temp;
+    CNode *node_temp = new CNode;
     bool flag  = false;
-    SCoord len = pmap_info->getMapLen();
     
 
     if(pmap_info->getMapNode(x, y, *node_temp))                      // The node on this positions exists?
+    {
+        cout <<  " is open? " << node_temp->isOpen() << " info " << node_temp->getNodeInfo() << endl;
         if(node_temp->isOpen() && node_temp->getNodeInfo() != 0)    // Is the node close? Is it a wall?
             flag = true;     
+    }
     return flag;
 }
 
@@ -124,25 +127,38 @@ bool CGenerateRoute::openCondition(short int x, short int y)
 vector<CNode> CGenerateRoute::openNodes(CNode *pnodes)
 {
     vector<CNode> temp_nodes;
-    CNode *temp_pnode;
+    CNode *temp_pnode = new CNode;
     SCoord ppos = pnodes->getPos();
-
+    cout << " open: get pos" << ppos.x << " " << ppos.y << endl;
     if(CGenerateRoute::openCondition( (short int)(ppos.x +1), (short int)(ppos.y) )) // Right of the node pointer
+    {
+        cout << "open: first if begin" << endl;       
         if(pmap_info->getMapNode(ppos.x+1, ppos.y, *temp_pnode))
             temp_nodes.push_back(*temp_pnode);
-    
+    cout << "open: first if end" << endl;
+    }
     if(CGenerateRoute::openCondition( (short int)(ppos.x -1), (short int)(ppos.y) )) // Left of the node pointer
+    {
+        cout << "open: second if begin" << endl; 
         if(pmap_info->getMapNode(ppos.x-1, ppos.y, *temp_pnode))
             temp_nodes.push_back(*temp_pnode);
-    
+        cout << "open: second if end" << endl;
+    }
     if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y +1) )) // Down of the node pointer
+    {
+        cout << "open: 3th if begin" << endl;
         if(pmap_info->getMapNode(ppos.x, ppos.y +1, *temp_pnode));
             temp_nodes.push_back(*temp_pnode);
-    
+        cout << "open: 3th if end" << endl;
+    }
     if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y -1) )) // Up of the node pointer
+    {
+        cout << "open: 4th if begin" << endl;
         if(pmap_info->getMapNode(ppos.x, ppos.y -1, *temp_pnode));
            temp_nodes.push_back(*temp_pnode);
-    
+        cout << "open: 4th if end" << endl;
+    }
+    cout << "return\n\n" << endl;
     return temp_nodes;
 }
 
