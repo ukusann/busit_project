@@ -191,7 +191,6 @@ int main ()
 }
 */
 
-
      CMap map(1);
      CRoute r(1);
 
@@ -203,15 +202,9 @@ int main ()
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
      cout << "IN" << endl << endl;
-
-     map.getMapNode(0, 0, *i_n);
-     map.getMapNode(8, 2, *f_n);
-     cout << "out" << endl << endl;
-     
-     cout << "begin node info "<< i_n->getNodeInfo() <<endl;
-     cout << "end node info "  << f_n->getNodeInfo() <<endl;
           
      CGenerateRoute gr(&map, &r);     
+     cout << "out" << endl << endl;
 
      CRoute r2 = gr.simpleRoute(*i_n, *f_n, 2);
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
