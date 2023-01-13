@@ -35,12 +35,12 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
 {
     vector<CNode> next_node;
     CNode *pnode;
-
+    
     unsigned short int gain = 0;            
     bool r_finished         = true;
     SCoord i_pos            = i_node.getPos();
     
-    if(!this->pmap_info->getMapNode(i_pos.x, i_pos.y, pnode))
+    if(!this->pmap_info->getMapNode(i_pos.x, i_pos.y, *pnode))
     {
         cout << "ERROR GETMAPNODE!" << endl;
         r_finished = false; //! ***ERROR Throw here!***
@@ -103,7 +103,7 @@ bool CGenerateRoute::openCondition(short int x, short int y)
     SCoord len = pmap_info->getMapLen();
     
 
-    if(pmap_info->getMapNode(x, y, node_temp))                      // The node on this positions exists?
+    if(pmap_info->getMapNode(x, y, *node_temp))                      // The node on this positions exists?
         if(node_temp->isOpen() && node_temp->getNodeInfo() != 0)    // Is the node close? Is it a wall?
             flag = true;     
     return flag;
@@ -119,19 +119,19 @@ vector<CNode> CGenerateRoute::openNodes(CNode *pnodes)
     SCoord ppos = pnodes->getPos();
 
     if(CGenerateRoute::openCondition( (short int)(ppos.x +1), (short int)(ppos.y) )) // Right of the node pointer
-        if(pmap_info->getMapNode(ppos.x+1, ppos.y, temp_pnode))
+        if(pmap_info->getMapNode(ppos.x+1, ppos.y, *temp_pnode))
             temp_nodes.push_back(*temp_pnode);
     
     if(CGenerateRoute::openCondition( (short int)(ppos.x -1), (short int)(ppos.y) )) // Left of the node pointer
-        if(pmap_info->getMapNode(ppos.x-1, ppos.y, temp_pnode))
+        if(pmap_info->getMapNode(ppos.x-1, ppos.y, *temp_pnode))
             temp_nodes.push_back(*temp_pnode);
     
     if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y +1) )) // Down of the node pointer
-        if(pmap_info->getMapNode(ppos.x, ppos.y +1, temp_pnode));
+        if(pmap_info->getMapNode(ppos.x, ppos.y +1, *temp_pnode));
             temp_nodes.push_back(*temp_pnode);
     
     if(CGenerateRoute::openCondition( (short int)(ppos.x), (short int)(ppos.y -1) )) // Up of the node pointer
-        if(pmap_info->getMapNode(ppos.x, ppos.y -1, temp_pnode));
+        if(pmap_info->getMapNode(ppos.x, ppos.y -1, *temp_pnode));
            temp_nodes.push_back(*temp_pnode);
     
     return temp_nodes;
@@ -206,7 +206,7 @@ unsigned short int CGenerateRoute::lastOpen(CNode *pnode)
             if (single_route->pMem_route->at(i).at(j).isOpen())
             {
                 SCoord pos = single_route->pMem_route->at(i).at(j).getPoint();
-                if(this->pmap_info->getMapNode(pos.x, pos.y, pnode))
+                if(this->pmap_info->getMapNode(pos.x, pos.y, *pnode))
                 {
                     pnode->closeNode();
                     single_route->pMem_route->erase(single_route->pMem_route->begin() +(mem_len -i ),

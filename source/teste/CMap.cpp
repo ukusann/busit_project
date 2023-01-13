@@ -14,7 +14,7 @@ using namespace std;
 
 CMap::CMap(uint8_t map_id)
 {
-   // this->pmap       = new vector<vector<CNode>>(0);
+    this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -23,7 +23,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-   // delete this->pmap;
+    delete this->pmap;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -71,12 +71,12 @@ bool CMap::loadMapFile(string file_name)
 
                     map_temp.push_back( CNode( i+j , temp_byte_info, j, i) );
                     
-               //     cout << temp_byte_info << " ";
+                    cout << temp_byte_info << " ";
 
-             //       cout << map_temp[i].getNodeInfo() << " ";
+                    cout << map_temp[i].getNodeInfo() << " ";
                 }
                 // cout << endl;
-                map.push_back(map_temp);
+                pmap->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -99,7 +99,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map.begin(); itr != map.end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = pmap->begin(); itr != pmap->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -151,21 +151,20 @@ SCoord CMap::getMapLen(){
 }
 
 //-------- Get desired Node on the map[y][x]  --------
-bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode ){
+bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode *_pnode ){
     bool flag = false;
-    
-    cout << "get_map_node 1" << endl;
-
     if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
-        cout << "get_map_node 2" << endl;
         flag = true;
-        // _pnode = &this->pmap[y].at(x);
-        _pnode = this->map.at(y).at(x);
-        cout << "get_map_node 3" << endl;
+         _pnode = &this->pmap->at(y).at(x);
+        //_pmap = &this->pmap->at(y).at(x);
     }
     return flag;
 }
 
+//-------------- Get The pointer pmap ----------------
+vector<vector<CNode>>* CMap::getPointerMap(){
+    return this->pmap;
+}
 
 // ***********End of Public Functions: **********************
 //===========================================================

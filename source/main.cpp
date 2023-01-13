@@ -155,23 +155,64 @@ int main()
 */
      //TODO================CGenerateRoute test=======================
      //================================================
+
+// vector::at
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void getVector(unsigned ind, int &r){
+    vector<vector<int>> *v;
+    vector<vector<int>> a;
+    v = &a;
+    vector<int> myvector (10);   // 10 zero-initialized ints
+
+      // assign some values:
+    for (unsigned i=0; i<myvector.size(); i++)
+        myvector.at(i)=i;
+    v->push_back(myvector);
+    r = v->at(0).at(ind);
+    cout << "my number is:" << r << endl;
+    return;  
+    }
+
+int main ()
+{
+    int a = 0;
+    int *r = &a;
+    getVector(2,*r);
+    
+  cout << "my number is:" << *r << endl;
+  
+
+  return 0;
+}
+
+
+
      CMap map(1);
      CRoute r(1);
 
-     CNode n1(1,8,0,0);
-     CNode n2(2,6,4,3);
-     CNode n3(3,12,1,2);
+     CNode *i_n;
+     CNode *f_n;
 
+
+     
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
+     cout << "IN" << endl << endl;
 
-     cout << "Route 1 ID: " << r.getRouteID() << endl;
-     cout << "Route 1 total gain: " << r.getTotalGain() << endl;
-     cout << "Route 1 Time: " << r.getRouteTime() << endl;
+     map.getMapNode(0, 0, *i_n);
+     map.getMapNode(8, 2, *f_n);
+     cout << "out" << endl << endl;
      
-     CGenerateRoute gr(&map, &r);
-     
-     CRoute r2 = gr.simpleRoute(n1, n2, 2);
+     cout << "begin node"<< i_n->getNodeInfo() <<endl;
+     cout << "end node"  << f_n->getNodeInfo() <<endl;
+          
+     CGenerateRoute gr(&map, &r);     
+
+     CRoute r2 = gr.simpleRoute(*i_n, *f_n, 2);
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
      cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
      cout << "Route 2 Time: " << r2.getRouteTime() << endl;

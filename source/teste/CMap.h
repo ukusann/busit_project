@@ -13,7 +13,7 @@ private:
 
     unsigned short int              len_i;
     unsigned short int              len_j;
-    std::vector<std::vector<CNode>> map;
+    std::vector<std::vector<CNode>> *pmap;
     std::string                     file_name;
     uint8_t                         map_id;
     std::fstream                    file_map;
@@ -28,7 +28,7 @@ public:
 
     SCoord getMapLen();
     std::vector<std::vector<CNode>> * getPointerMap();
-    bool   getMapNode(unsigned short int x, unsigned short int y, CNode &_pmap);
+    bool   getMapNode(unsigned short int x, unsigned short int y, CNode *_pmap);
 
 };
 
