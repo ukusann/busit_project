@@ -36,21 +36,24 @@ output: threads.o CDaemons.o daemons_main.o CPoint.o CNode.o CMap.o 		\
 #===========================================================
 # ***********Beginning of make commands: *******************
 
-#? 'make clean' removes all files in the executable folder
-clean:
+clean: # 'make clean' removes all files in the executable folder
 	rm $(DEPS)*.o $(DEPS)*.elf
 
-#? 'make run' executes busit.elf
-run:
+run: # 'make run' executes busit.elf
 	sudo ./$(DEPS)busit.elf
 
-#? 'make run_daemon' executes daemon.elf
-run_daemon:
+daemon: # 'make daemon' executes daemon.elf
 	sudo ./$(DEPS)daemon.elf
 
-#? 'make run_thread' executes threads.elf
-run_thread:
+thread: # 'make thread' executes threads.elf
 	sudo ./$(DEPS)threads.elf
+
+default: help
+
+.PHONY: help 
+
+help: # 'make help' Show help for each of the Makefile commands.
+	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
 # ***********End of make commands: *************************
 #===========================================================
