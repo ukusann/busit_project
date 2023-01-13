@@ -61,7 +61,7 @@ bool CMap::loadMapFile(string file_name)
         {
             len_i = temp_len_i;
             len_j = temp_len_j;
-  
+            unsigned short int id = 1;
             for (uint16_t j = 0 ; j < len_j ; j++)
             {
                 vector<CNode> map_temp;
@@ -72,7 +72,7 @@ bool CMap::loadMapFile(string file_name)
                     unsigned int temp_byte_info;
                     rd_map_file >> temp_byte_info;
 
-                    map_temp.push_back(CNode( id++ , temp_byte_info, j, i) );
+                    map_temp.push_back( CNode( id++ , temp_byte_info, j, i) );
                     
                     //cout << temp_byte_info << " ";
 

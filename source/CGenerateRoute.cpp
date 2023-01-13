@@ -18,6 +18,7 @@ using namespace std;
 CGenerateRoute::CGenerateRoute(CMap *pmap, CRoute *route){
     this->pmap_info     = pmap;
     this->single_route  = route;
+    
 }
 
 //------------------------------------------------
@@ -34,7 +35,7 @@ CGenerateRoute::~CGenerateRoute(){
 bool CGenerateRoute::makeRoute(CNode &i_node, CNode &f_node, bool opt, unsigned short int max_g)
 {
     vector<CNode> next_node;
-    CNode *pnode;
+    CNode *pnode = new CNode;
     
     unsigned short int gain = 0;            
     bool r_finished         = true;
@@ -46,7 +47,11 @@ bool CGenerateRoute::makeRoute(CNode &i_node, CNode &f_node, bool opt, unsigned 
         r_finished = false; //! ***ERROR Throw here!***
         return r_finished;
     }
+<<<<<<< HEAD
     cout << "After getMapNode\n";
+=======
+    cout << "pnode (node info) = " << pnode->getNodeInfo()  << endl;
+>>>>>>> origin/main
 
     if(opt)
         gain = this->single_route->pMem_route->size();
@@ -55,20 +60,26 @@ bool CGenerateRoute::makeRoute(CNode &i_node, CNode &f_node, bool opt, unsigned 
         pnode->closeNode();                             // Close the Node
         next_node.push_back(*pnode);
         single_route->pMem_route->push_back(next_node);   // Add to Route memory
+        
+        cout << "next node[i_node] (byte info) = " << next_node[0].getNodeInfo()  << endl;
     }
+    
     
     while (pnode->getId() != f_node.getId() && r_finished == true)
     {
+
         
+        cout << "IN_make route" << endl;
         gain ++;
         next_node = CGenerateRoute::openNodes(pnode);    // Open the nodes 
         CGenerateRoute::decisionDir(next_node, pnode);   // Decision: directions
-        
+        cout << "Decision Dir fin" << endl;
         if (opt && (gain < max_g )){ r_finished = false; /*ERROR*/ break;} 
         
         unsigned int nx_size = next_node.size();
         if (nx_size > 0)
         {
+            cout << "Biguer than 1" << endl;
             if (nx_size > 1)                                // if more than 1 node is open...
                 decisionDistReservedBus(next_node,pnode);   // make a decision
             pnode = &next_node[0];                          // pnode points to the new node
@@ -78,6 +89,7 @@ bool CGenerateRoute::makeRoute(CNode &i_node, CNode &f_node, bool opt, unsigned 
         }
         else
         {
+            cout << "Biguer than 1" << endl;
             gain = CGenerateRoute::lastOpen(pnode);
             if(gain == 0)
             {
