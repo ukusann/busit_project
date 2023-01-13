@@ -12,7 +12,7 @@ private:
     std::vector<CRoute> multi_route;
     CMap *pmap_info;
 
-    bool makeRoute(CNode i_node, CNode f_node,
+    bool makeRoute(CNode &i_node, CNode &f_node,
                     bool opt, unsigned short int max_g);
     
     std::vector<CNode> openNodes(CNode *pnodes);
@@ -30,7 +30,7 @@ public:
     CGenerateRoute(CMap *pmap, CRoute *route);
     ~CGenerateRoute();
 
-    CRoute simpleRoute(CNode i_node, CNode f_node, unsigned short int id);
+    CRoute simpleRoute(CNode &i_node, CNode &f_node, unsigned short int id);
     std::vector<CRoute> multRoutes(std::vector<CNode> l_nodes);
     void changeMap(CMap *pmap);
 };

@@ -15,7 +15,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
 
-   // this->pmap       = new vector<vector<CNode>>(0);
+    this->map       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -25,7 +25,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-   // delete this->pmap;
+   delete this->map;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -48,6 +48,7 @@ bool CMap::loadMapFile(string file_name)
     {
         uint16_t temp_len_i;
         uint16_t temp_len_j;
+        unsigned short int id = 1;
 
         rd_map_file >> temp_len_j >> temp_len_i;
         
@@ -71,14 +72,14 @@ bool CMap::loadMapFile(string file_name)
                     unsigned int temp_byte_info;
                     rd_map_file >> temp_byte_info;
 
-                    map_temp.push_back( CNode( i+j , temp_byte_info, j, i) );
+                    map_temp.push_back(CNode( id++ , temp_byte_info, j, i) );
                     
-               //     cout << temp_byte_info << " ";
+                    //cout << temp_byte_info << " ";
 
-             //       cout << map_temp[i].getNodeInfo() << " ";
+                    //cout << map_temp[i].getNodeInfo() << " ";
                 }
                 // cout << endl;
-                map.push_back(map_temp);
+                map->push_back(map_temp);
             }
             cout << this->file_name << endl;
         }
@@ -101,7 +102,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map.begin(); itr != map.end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -153,13 +154,15 @@ SCoord CMap::getMapLen(){
 }
 
 //-------- Get desired Node on the map[y][x]  --------
-bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode ){
+bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode){
     bool flag = false;
     
     if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
         flag = true;
         // _pnode = &this->pmap[y].at(x);
-        _pnode = this->map.at(y).at(x);
+        cout << "Before pnode atribution\n";
+        _pnode = this->map->at(y).at(x);
+        cout << "After pnode atribution\n";
         
     }
     return flag;

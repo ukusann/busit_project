@@ -31,7 +31,7 @@ CGenerateRoute::~CGenerateRoute(){
 //**************** Private Funtions ******************
 //____________________________________________________
 //------------------ Make Route ----------------------
-bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned short int max_g)
+bool CGenerateRoute::makeRoute(CNode &i_node, CNode &f_node, bool opt, unsigned short int max_g)
 {
     vector<CNode> next_node;
     CNode *pnode;
@@ -39,13 +39,14 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
     unsigned short int gain = 0;            
     bool r_finished         = true;
     SCoord i_pos            = i_node.getPos();
-    
+    cout << "Before getMapNode\n";
     if(!this->pmap_info->getMapNode(i_pos.x, i_pos.y, *pnode))
     {
         cout << "ERROR GETMAPNODE!" << endl;
         r_finished = false; //! ***ERROR Throw here!***
         return r_finished;
     }
+    cout << "After getMapNode\n";
 
     if(opt)
         gain = this->single_route->pMem_route->size();
@@ -264,16 +265,21 @@ void CGenerateRoute::optimizeRoute()
 //**************** Public Funtions *******************
 //____________________________________________________
 //---------------- Simple Route ----------------------
-CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short int id)
+CRoute CGenerateRoute::simpleRoute(CNode &i_node, CNode &f_node, unsigned short int id)
 {
     CRoute route(id);
     bool err_flag = false;
     //-----------------------
     //      Mutex wait -> pmap (CMap)
     //-----------------------
-
+    cout << "Before makeroute\n";
     if(CGenerateRoute::makeRoute(i_node,f_node,DISABLE_OPTIMIZATION, 0))
-        CGenerateRoute::optimizeRoute();
+        {
+            cout << "After makeroute and before optmization\n";
+            CGenerateRoute::optimizeRoute();
+            cout << "After optimization\n";
+        }
+            
     else
         err_flag = true;
     

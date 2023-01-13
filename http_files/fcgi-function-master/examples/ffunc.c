@@ -10,10 +10,10 @@
 #include <execinfo.h>
 #include <unistd.h> /* needed to define getpid() */
 #include <signal.h>
-#include <setjmp.h>
+// #include <setjmp.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <fcgi_config.h>
+//#include <fcgi_config.h>
 #include "fcgiapp.h"
 #include <dlfcn.h>
 #include <pthread.h>

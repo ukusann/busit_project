@@ -204,8 +204,8 @@ int main ()
           cout << "ERROR creating the input"<< endl;
      cout << "IN" << endl << endl;
 
-     map.getMapNode(0, 0, *i_n);
-     map.getMapNode(8, 2, *f_n);
+     map.getMapNode(0, 0, *i_n) ? cout << "Node 1 ok\n" : cout << "Node 1 fail!\n";
+     map.getMapNode(8, 2, *f_n) ? cout << "Node 2 ok\n" : cout << "Node 2 fail!\n";
      cout << "out" << endl << endl;
      
      cout << "begin node info "<< i_n->getNodeInfo() <<endl;
@@ -217,6 +217,9 @@ int main ()
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
      cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
      cout << "Route 2 Time: " << r2.getRouteTime() << endl;
+
+     delete i_n;
+     delete f_n;
      //================================================
 
      //TODO================Daemon test=======================
