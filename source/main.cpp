@@ -157,6 +157,7 @@ int main()
      //================================================
 
 // vector::at
+/*
 #include <iostream>
 #include <vector>
 
@@ -188,14 +189,14 @@ int main ()
 
   return 0;
 }
-
+*/
 
 
      CMap map(1);
      CRoute r(1);
 
-     CNode *i_n;
-     CNode *f_n;
+     CNode *i_n = new CNode;
+     CNode *f_n = new CNode;
 
 
      
@@ -207,8 +208,8 @@ int main ()
      map.getMapNode(8, 2, *f_n);
      cout << "out" << endl << endl;
      
-     cout << "begin node"<< i_n->getNodeInfo() <<endl;
-     cout << "end node"  << f_n->getNodeInfo() <<endl;
+     cout << "begin node info "<< i_n->getNodeInfo() <<endl;
+     cout << "end node info "  << f_n->getNodeInfo() <<endl;
           
      CGenerateRoute gr(&map, &r);     
 

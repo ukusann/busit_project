@@ -14,11 +14,13 @@ using namespace std;
 
 CMap::CMap(uint8_t map_id)
 {
+
    // this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
     this->len_j     = 0; 
+    CMap::inputMap(file_name);
 }
 
 CMap::~CMap()
@@ -154,14 +156,11 @@ SCoord CMap::getMapLen(){
 bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode ){
     bool flag = false;
     
-    cout << "get_map_node 1" << endl;
-
     if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
-        cout << "get_map_node 2" << endl;
         flag = true;
         // _pnode = &this->pmap[y].at(x);
         _pnode = this->map.at(y).at(x);
-        cout << "get_map_node 3" << endl;
+        
     }
     return flag;
 }

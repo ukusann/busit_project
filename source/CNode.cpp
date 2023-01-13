@@ -14,6 +14,13 @@ CNode::CNode(uint16_t id, unsigned int byte_info, SCoord s)
 : CPoint(s), id(id), byte_info(byte_info)  {
     this->gain = 0;
 }
+//----------------------------------------------------
+
+CNode::CNode(): CPoint(0,0), id(0), byte_info(0)
+{
+    this->gain = 0;
+}
+
 //====================================================
 
 //=================Destructor=========================
