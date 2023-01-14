@@ -27,8 +27,11 @@ public:
     bool    inputMap(std::string file_name);
 
     SCoord getMapLen();
+    void mapNodeOpen (SCoord pos);
+    void mapNodeClose(SCoord pos);
     std::vector<std::vector<CNode>> * getPointerMap();
-    bool   getMapNode(unsigned short int x, unsigned short int y, CNode &_pmap);
+    bool   getMapNode(SCoord pos, CNode &_pmap);
+    bool   getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode );
 
 };
 

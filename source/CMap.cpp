@@ -20,7 +20,6 @@ CMap::CMap(uint8_t map_id)
     this->file_name = "";
     this->len_i     = 0;
     this->len_j     = 0; 
-    CMap::inputMap(file_name);
 }
 
 CMap::~CMap()
@@ -58,9 +57,9 @@ bool CMap::loadMapFile(string file_name)
         }
         else
         {
-            len_i = temp_len_i;
-            len_j = temp_len_j;
-            unsigned short int id = 1;
+            len_i = temp_len_i; // y
+            len_j = temp_len_j; // x
+            unsigned int id = 1;
             for (uint16_t i = 0 ; i < len_i ; i++)
             {
                 vector<CNode> map_temp;
@@ -80,7 +79,7 @@ bool CMap::loadMapFile(string file_name)
                 // cout << endl;
                 map.push_back(map_temp);
             }
-            cout << this->file_name << endl;
+            //cout << this->file_name << endl;
         }
     }
     return flag;
@@ -142,6 +141,19 @@ bool CMap::inputMap(string file_name)
     return flag;
 }
 
+
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+
+
+void CMap::mapNodeOpen(SCoord pos){
+    this->map.at(pos.y).at(pos.x).openNode();
+}
+
+void CMap::mapNodeClose(SCoord pos){
+    this->map.at(pos.y).at(pos.x).closeNode();
+}
+
 //____________________________________________________
 
 //**************** Gets and Sets *********************
@@ -156,15 +168,26 @@ SCoord CMap::getMapLen(){
 bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode ){
     bool flag = false;
     
-    if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
+    if(x >= 0 && y >= 0 && x < this->len_j && y < this->len_i){
         flag = true;
         // _pnode = &this->pmap[y].at(x);
         _pnode = this->map[y][x];
-        cout << "get map node" << endl;
+        //cout << "get map node" << endl;
     }
     return flag;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool  CMap::getMapNode( SCoord pos, CNode &_pnode ){
+    bool flag = false;
+    
+    if(pos.x >= 0 && pos.y >= 0 && pos.x <= this->len_j && pos.y <= this->len_i){
+        flag = true;
+        _pnode = this->map[pos.y][pos.x];
+    }
+    return flag;
+}
 
 // ***********End of Public Functions: **********************
 //===========================================================

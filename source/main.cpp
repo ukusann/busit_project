@@ -196,19 +196,38 @@ int main ()
 
      CNode *i_n = new CNode;
      CNode *f_n = new CNode;
-
+     CNode *pnodet = new CNode;
+     
 
      
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
+
+     for (int i = 0; i < 27; i++)
+    {
+        for(int j = 0; j < 27; j++){
+          map.getMapNode(j, i, *pnodet);
+          int c = pnodet->getId();
+            if (c < 10)
+                cout << "  " << c++ << " ";
+            else if (c < 100)
+                cout << " " << c++ << " ";
+            else 
+                cout << c++ << " ";
+            
+        }
+        cout << endl;
+    }
+
      cout << "IN" << endl << endl;
-     map.getMapNode(1,5,*i_n);
-     map.getMapNode(13,26,*f_n);
+     map.getMapNode(5,1,*i_n);
+     map.getMapNode(26,13,*f_n);
           
      CGenerateRoute gr(&map, &r);     
      cout << "out" << endl << endl;
 
      CRoute r2 = gr.simpleRoute(*i_n, *f_n, 2);
+     r2.printRouteAndMem();
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
      cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
      cout << "Route 2 Time: " << r2.getRouteTime() << endl;
