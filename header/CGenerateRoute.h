@@ -25,6 +25,7 @@ private:
     unsigned short int lastOpen(CNode &pnode);
     void saveRoute();
     void optimizeRoute();
+    void resetMap();
 
 public:
     void printRouteAndMem();

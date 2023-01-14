@@ -73,7 +73,7 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
         {
             //cout << "Bigger than 0\n\n" << endl;
             if (nx_size > 1){                                // if more than 1 node is open...
-                decisionDistReservedBus(next_node,pnode);   // make a decision
+                decisionDistReservedBus(next_node,&f_node);   // make a decision
             //    cout << "Bigger than 1\n\n" << endl;
             }
             next_node[0].closeNode();
@@ -100,9 +100,8 @@ bool CGenerateRoute::makeRoute( CNode i_node, CNode f_node, bool opt, unsigned s
                 break;
             }
         }
-        //cout << "ID of pnode: " << pnode->getId() << " ID of f_node: " << f_node.getId() << " gain : "<< gain << endl;
-        if(gain == 70)
-            r_finished = false;
+      //  cout << "ID of pnode: " << pnode->getId() << " ID of f_node: " << f_node.getId() << " gain : "<< gain << endl;
+        
     }
 
     if (r_finished)   // if no ERROR occurred, saves the route
@@ -208,8 +207,10 @@ unsigned short int CGenerateRoute::directionMask(SCoord ppos, SCoord nxpos)
 // Ordenates the vector next_node by the most priority decision to the least
 void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pnode_f)
 {
+    //cout << "\n\n\n  <<<<< dicision >>>>> \n\n\n";
     for(unsigned int i = 0 ; i < (nx_node.size()-1) ; i++ )
     {
+        
         bool bubble_sort    = false;
         SCoord pos_f        = pnode_f->getPos();
         float dist_0        = nx_node[i   ].getDistance(pos_f);
@@ -219,7 +220,7 @@ void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pno
 
         if(dist_0 > dist_1)
             bubble_sort = true;
-        else if (node_info0 & M_RESERVED_BUS == 0 &&  node_info1 & M_RESERVED_BUS == M_RESERVED_BUS )
+        else if ( (node_info0 & M_RESERVED_BUS) == 0 &&  (node_info1 & M_RESERVED_BUS) == M_RESERVED_BUS )
             bubble_sort = true;
 
         if (bubble_sort)
@@ -229,6 +230,7 @@ void CGenerateRoute::decisionDistReservedBus(vector <CNode> &nx_node, CNode *pno
             nx_node[i+1] = temp_n; 
         }
     }
+    //cout << "\n\n\n  <<<<< dicision >>>>> \n\n\n";
 }
 
 //____________________________________________________
@@ -252,19 +254,19 @@ unsigned short int CGenerateRoute::lastOpen(CNode &pnode)
                     single_route->Mem_route.at(i).at(j) = single_route->Mem_route.at(i).at(0);
                     single_route->Mem_route.at(i).at(0) = temp;
 
-                   // cout << "Node found! ID = "<< pnode.getId() << endl;
-                    single_route->Mem_route.at(i).at(j).closeNode();
+          //          cout << "Node found! ID = "<< pnode.getId() << endl;
+                    single_route->Mem_route.at(i).at(0).closeNode();
                     this->pmap_info->mapNodeClose(pos);
                     pnode.closeNode();
                 }
                 return (unsigned short int)i;  // Return gain
-            }else
-                {this->pmap_info->mapNodeOpen(pos);}    
+            }    
         }
         
         for(unsigned short int j = 0 ; j < len_j ; j++){    // OPENS all closed nodes
             pos = single_route->Mem_route.at(i).at(j).getPoint();
-          //  cout << "remove node AT  x = " << pos.x << " y = " << pos.y << endl;
+            this->pmap_info->mapNodeOpen(pos);
+        //    cout << "remove node AT  x = " << pos.x << " y = " << pos.y << endl;
         }
         single_route->Mem_route.erase(single_route->Mem_route.begin() +single_route->Mem_route.size() ); // Erase the node
     }
@@ -291,7 +293,7 @@ void CGenerateRoute::saveRoute()
 //---------------- Optimize Route --------------------
 void CGenerateRoute::optimizeRoute()
 {
-    vector<vector<CNode>> temp_mem;
+    vector<vector<CNode>> temp_mem = single_route->Mem_route;
     CNode temp_pnode;
 
     unsigned short int gain         = single_route->Route.size();
@@ -315,6 +317,16 @@ void CGenerateRoute::optimizeRoute()
     return;
 }
 
+//____________________________________________________
+//------------------ Reset Map -----------------------
+void CGenerateRoute::resetMap()  {  // open all nodes
+    SCoord len = this->pmap_info->getMapLen();
+    cout << "\n\nMap len -> x = " << len.x << " y = " << len.y << endl;
+    for (unsigned int i ; i < len.y; i++)
+        for (unsigned int j ; j < len.x; j++)
+            this->pmap_info->mapNodeOpen(j, i);
+
+}
 
 //====================================================
 //====================================================
@@ -324,20 +336,25 @@ void CGenerateRoute::optimizeRoute()
 CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short int id)
 {
     bool err_flag = false;
+    single_route = new CRoute();
+    CRoute route(id);
     //-----------------------
     //      Mutex wait -> pmap (CMap)
     //-----------------------
 
-    if(CGenerateRoute::makeRoute(i_node,f_node,DISABLE_OPTIMIZATION, 0))
+    if(CGenerateRoute::makeRoute(i_node,f_node,DISABLE_OPTIMIZATION, 0)){
         CGenerateRoute::optimizeRoute();
+        route = *single_route;
+        }
     else
-        err_flag = true;
+        {err_flag = true;}
     
+    CGenerateRoute::resetMap();
     //-----------------------
     //      Mutex release -> pmap (CMap)
     //-----------------------
-   
-    return *single_route;
+    
+    return route;
 }
 
 //____________________________________________________
@@ -345,6 +362,13 @@ CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short in
 vector<CRoute> CGenerateRoute::multRoutes(vector<CNode> l_nodes)
 {
     vector<CRoute> vr;
+    unsigned short int size_ln = l_nodes.size();
+    cout << "Multi route : size = " << size_ln << endl;
+    for(unsigned short int i = 0 ; i < size_ln -1 ; i++){
+        vr.push_back(simpleRoute(l_nodes[i], l_nodes[i+1], i+1));
+        cout << "begin -> " << l_nodes[i].getId() << ", end -> " << l_nodes[i+1].getId() << endl;
+    }
+
     return vr;
 }
 

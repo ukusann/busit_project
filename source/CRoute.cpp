@@ -16,9 +16,14 @@ using namespace std;
 //=====================================================
 //=====================================================
 // ***********Beginning of Constructor/Destructor: ****
+    CRoute::CRoute(){
+        this->Route.clear();
+        this->Mem_route.clear();
+        this->r_id = 0;
+    }
 
     CRoute::CRoute(unsigned short int id)
-        : r_ID(id) 
+        : r_id(id) 
     {
         //this->pRoute = new vector<CNode>;
         //this->pMem_route = new vector<vector<CNode>>(0);
@@ -73,7 +78,7 @@ CNode CRoute::getNode(unsigned short int index)
 //----------------- Get Route ID ---------------------
 unsigned short int CRoute::getRouteID()  
 {
-    return this->r_ID;
+    return this->r_id;
 }
 
 //----------------- Get Total Gain -------------------

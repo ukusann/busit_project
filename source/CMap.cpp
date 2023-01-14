@@ -154,6 +154,15 @@ void CMap::mapNodeClose(SCoord pos){
     this->map.at(pos.y).at(pos.x).closeNode();
 }
 
+void CMap::mapNodeOpen(unsigned int x, unsigned int y){
+    this->map.at(y).at(x).openNode();
+}
+
+void CMap::mapNodeClose(unsigned int x, unsigned int y){
+    this->map.at(y).at(x).closeNode();
+}
+
+
 //____________________________________________________
 
 //**************** Gets and Sets *********************

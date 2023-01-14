@@ -29,6 +29,8 @@ public:
     SCoord getMapLen();
     void mapNodeOpen (SCoord pos);
     void mapNodeClose(SCoord pos);
+    void mapNodeOpen (unsigned int x, unsigned int y);
+    void mapNodeClose(unsigned int x, unsigned int y);
     std::vector<std::vector<CNode>> * getPointerMap();
     bool   getMapNode(SCoord pos, CNode &_pmap);
     bool   getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode );

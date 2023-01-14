@@ -190,7 +190,7 @@ int main ()
   return 0;
 }
 */
-
+     SCoord bus_st_pos[4] = { {1,15}, {26,13}, {14,17}, {5,1} };
      CMap map(1);
      CRoute r(1);
 
@@ -220,8 +220,8 @@ int main ()
     }
 
      cout << "IN" << endl << endl;
-     map.getMapNode(5,1,*i_n);
-     map.getMapNode(26,13,*f_n);
+     map.getMapNode(bus_st_pos[1],*i_n);
+     map.getMapNode(bus_st_pos[2],*f_n);
           
      CGenerateRoute gr(&map, &r);     
      cout << "out" << endl << endl;
@@ -231,6 +231,24 @@ int main ()
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
      cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
      cout << "Route 2 Time: " << r2.getRouteTime() << endl;
+
+// ===============================================================================================
+// Multiroute:
+     vector<CNode> list_n;
+
+     for(int i = 0 ; i < 4 ; i++ ){
+          CNode tempnode;
+          map.getMapNode(bus_st_pos[i], tempnode);
+          list_n.push_back(tempnode);
+          cout << "ID of node" <<tempnode.getId() << endl;
+     }
+     
+
+     vector<CRoute> multir = gr.multRoutes(list_n);
+     cout << "get here!\n\n";
+     for(int i = 0 ; i < 3 ; i++ )
+          multir[i].printRouteAndMem();
+   
      //================================================
 
      //TODO================Daemon test=======================
