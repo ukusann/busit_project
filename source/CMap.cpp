@@ -15,7 +15,7 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
 
-   // this->pmap       = new vector<vector<CNode>>(0);
+    this->map       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
@@ -24,7 +24,7 @@ CMap::CMap(uint8_t map_id)
 
 CMap::~CMap()
 {
-   // delete this->pmap;
+   delete this->map;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -77,7 +77,7 @@ bool CMap::loadMapFile(string file_name)
              //       cout << map_temp[i].getNodeInfo() << " ";
                 }
                 // cout << endl;
-                map.push_back(map_temp);
+                map->push_back(map_temp);
             }
             //cout << this->file_name << endl;
         }
@@ -100,7 +100,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map.begin(); itr != map.end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -147,19 +147,19 @@ bool CMap::inputMap(string file_name)
 
 
 void CMap::mapNodeOpen(SCoord pos){
-    this->map.at(pos.y).at(pos.x).openNode();
+    this->map->at(pos.y).at(pos.x).openNode();
 }
 
 void CMap::mapNodeClose(SCoord pos){
-    this->map.at(pos.y).at(pos.x).closeNode();
+    this->map->at(pos.y).at(pos.x).closeNode();
 }
 
 void CMap::mapNodeOpen(unsigned int x, unsigned int y){
-    this->map.at(y).at(x).openNode();
+    this->map->at(y).at(x).openNode();
 }
 
 void CMap::mapNodeClose(unsigned int x, unsigned int y){
-    this->map.at(y).at(x).closeNode();
+    this->map->at(y).at(x).closeNode();
 }
 
 
@@ -180,7 +180,7 @@ bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnod
     if(x >= 0 && y >= 0 && x < this->len_j && y < this->len_i){
         flag = true;
         // _pnode = &this->pmap[y].at(x);
-        _pnode = this->map[y][x];
+        _pnode = this->map->at(y).at(x);
         //cout << "get map node" << endl;
     }
     return flag;
@@ -193,7 +193,7 @@ bool  CMap::getMapNode( SCoord pos, CNode &_pnode ){
     
     if(pos.x >= 0 && pos.y >= 0 && pos.x <= this->len_j && pos.y <= this->len_i){
         flag = true;
-        _pnode = this->map[pos.y][pos.x];
+        _pnode = this->map->at(pos.y).at(pos.x);
     }
     return flag;
 }
