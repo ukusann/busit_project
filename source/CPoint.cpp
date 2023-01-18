@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-
+using namespace std;
 //=================Constructor========================
 CPoint::CPoint(uint16_t x, uint16_t y)
 {
@@ -23,16 +23,15 @@ CPoint::~CPoint(){}
 //=================Get Distance=======================
 float CPoint::getDistance(CPoint &p)
 {
-    return sqrt(pow(p.coord.x - this->coord.x, 2) + 
-            pow(p.coord.y - this->coord.y, 2));
+    return sqrt(pow(p.coord.x - this->coord.x, 2) + pow(p.coord.y - this->coord.y, 2));
 }
 
 //----------------------------------------------------
 
 float CPoint::getDistance(SCoord &c)
 {
-    return sqrt(pow(c.x - this->coord.x, 2) +
-            pow(c.y - this->coord.y, 2));
+
+    return sqrt(pow(c.x - this->coord.x, 2) + pow(c.y - this->coord.y, 2));
 }
 //====================================================
 

@@ -22,11 +22,13 @@ private:
     unsigned short int directionMask(SCoord ppos, SCoord nxpos);   
     void decisionDistReservedBus(std::vector <CNode> &l_node, CNode *pnode_f);
     
-    unsigned short int lastOpen(CNode *pnode);
+    unsigned short int lastOpen(CNode &pnode);
     void saveRoute();
     void optimizeRoute();
+    void resetMap();
 
 public:
+    void printRouteAndMem();
     CGenerateRoute(CMap *pmap, CRoute *route);
     ~CGenerateRoute();
 

@@ -15,17 +15,16 @@ using namespace std;
 CMap::CMap(uint8_t map_id)
 {
 
-    this->map       = new vector<vector<CNode>>(0);
+   // this->pmap       = new vector<vector<CNode>>(0);
     this->map_id    = map_id;
     this->file_name = "";
     this->len_i     = 0;
     this->len_j     = 0; 
-    CMap::inputMap(file_name);
 }
 
 CMap::~CMap()
 {
-   delete this->map;
+   // delete this->pmap;
 }
 
 // ***********End of Constructor/Destructor: ****************
@@ -48,7 +47,6 @@ bool CMap::loadMapFile(string file_name)
     {
         uint16_t temp_len_i;
         uint16_t temp_len_j;
-        unsigned short int id = 1;
 
         rd_map_file >> temp_len_j >> temp_len_i;
         
@@ -59,14 +57,14 @@ bool CMap::loadMapFile(string file_name)
         }
         else
         {
-            len_i = temp_len_i;
-            len_j = temp_len_j;
-            unsigned short int id = 1;
-            for (uint16_t j = 0 ; j < len_j ; j++)
+            len_i = temp_len_i; // y
+            len_j = temp_len_j; // x
+            unsigned int id = 1;
+            for (uint16_t i = 0 ; i < len_i ; i++)
             {
                 vector<CNode> map_temp;
 
-                for (uint16_t i = 0 ; i < len_i ; i++)
+                for (uint16_t j = 0 ; j < len_j ; j++)
                 {
                     
                     unsigned int temp_byte_info;
@@ -74,14 +72,14 @@ bool CMap::loadMapFile(string file_name)
 
                     map_temp.push_back( CNode( id++ , temp_byte_info, j, i) );
                     
-                    //cout << temp_byte_info << " ";
+               //     cout << temp_byte_info << " ";
 
-                    //cout << map_temp[i].getNodeInfo() << " ";
+             //       cout << map_temp[i].getNodeInfo() << " ";
                 }
                 // cout << endl;
-                map->push_back(map_temp);
+                map.push_back(map_temp);
             }
-            cout << this->file_name << endl;
+            //cout << this->file_name << endl;
         }
     }
     return flag;
@@ -102,7 +100,7 @@ bool CMap::saveMap()
     {
         this->file_map << len_j << " " << len_i << endl;
 
-       for (vector<vector<CNode>>::iterator itr = map->begin(); itr != map->end(); itr++)
+       for (vector<vector<CNode>>::iterator itr = map.begin(); itr != map.end(); itr++)
         {
             vector<CNode> tl = *itr;
 
@@ -143,6 +141,28 @@ bool CMap::inputMap(string file_name)
     return flag;
 }
 
+
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+
+
+void CMap::mapNodeOpen(SCoord pos){
+    this->map.at(pos.y).at(pos.x).openNode();
+}
+
+void CMap::mapNodeClose(SCoord pos){
+    this->map.at(pos.y).at(pos.x).closeNode();
+}
+
+void CMap::mapNodeOpen(unsigned int x, unsigned int y){
+    this->map.at(y).at(x).openNode();
+}
+
+void CMap::mapNodeClose(unsigned int x, unsigned int y){
+    this->map.at(y).at(x).closeNode();
+}
+
+
 //____________________________________________________
 
 //**************** Gets and Sets *********************
@@ -154,20 +174,29 @@ SCoord CMap::getMapLen(){
 }
 
 //-------- Get desired Node on the map[y][x]  --------
-bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode){
+bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode ){
     bool flag = false;
     
-    if(x >= 0 && y >= 0 && x <= this->len_j && y <= this->len_i){
+    if(x >= 0 && y >= 0 && x < this->len_j && y < this->len_i){
         flag = true;
         // _pnode = &this->pmap[y].at(x);
-        cout << "Before pnode atribution\n";
-        _pnode = this->map->at(y).at(x);
-        cout << "After pnode atribution\n";
-        
+        _pnode = this->map[y][x];
+        //cout << "get map node" << endl;
     }
     return flag;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool  CMap::getMapNode( SCoord pos, CNode &_pnode ){
+    bool flag = false;
+    
+    if(pos.x >= 0 && pos.y >= 0 && pos.x <= this->len_j && pos.y <= this->len_i){
+        flag = true;
+        _pnode = this->map[pos.y][pos.x];
+    }
+    return flag;
+}
 
 // ***********End of Public Functions: **********************
 //===========================================================
