@@ -12,5 +12,6 @@
         "cstdlib": "cpp",
         "iostream": "cpp",
         "string_view": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/server_test/fcgi-function"
 }
