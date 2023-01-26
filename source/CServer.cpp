@@ -142,33 +142,33 @@ FFUNC busReqCallback(ffunc_session_t * session)
 	/*admin variables*/
 	string admin_name;
 	string admin_pass;
-	bool login_check = 0;
 
 	// body process
-	getline((istringstream)body.data, line);
+	getline((istringstream)body.data, line); //get one line from body
 	stringstream check(line);
 	
-	while (getline(check, intermediate, '&'))
+	/* process body with structure 'username=XXX&pwd=XXX' */
+	while (getline(check, intermediate, '&'))	// Separate the lines by & or end of string
 	{	
 		int begin_info = 0;
-		size_t namePos = intermediate.find("username");
-		if(namePos != string::npos)
+		size_t namePos = intermediate.find("username"); // locate 'username' in body
+		if(namePos != string::npos) // checks if 'username' exists
 			for(string::iterator it = intermediate.begin() + namePos; it != intermediate.end(); it++)
 			{
 				if(*it == '=')
-					begin_info = 1;
+					begin_info = 1; // From this char it should record in the string
 				else if(begin_info)
-					admin_name.push_back(*it);
+					admin_name.push_back(*it); // Append char in the string
 			}
 		
-		size_t passPos = intermediate.find("pwd");
-		if(passPos!= string::npos)
+		size_t passPos = intermediate.find("pwd"); // locate 'pwd' in body
+		if(passPos!= string::npos) // checks if 'pwd' exists
 			for(string::iterator it = intermediate.begin() + passPos; it != intermediate.end(); it++)
 			{
 				if(*it == '=')
-					begin_info = 1;
+					begin_info = 1;	// From this char it should record in the string
 				else if(begin_info)
-					admin_pass.push_back(*it);
+					admin_pass.push_back(*it); // Append char in the string
 			}
 	}
 	// ffunc_write_out(session, "%s\n", admin_name.c_str());
