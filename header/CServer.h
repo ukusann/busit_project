@@ -81,7 +81,7 @@ private:
     "Content-Type: text/html\r\n\r\n"
     "<!DOCTYPE html>\n"
     "<html>\n"
-    "<body style=\"background-color:rgba(255, 190, 35, 0.7);\">\n"
+    "<body style=\"background-color:rgba(54, 160, 94, 0.692);\">\n"
         "<div style=\"border: 5px solid Black;background-color:rgba(0, 0, 0, 0.8);color:white;padding:20px;\">\n"
             "<h1><img src=\"../html_images/mini_busit.png\" alt=\"busit\" style=\"float:right;width:100px;height:100px;\">\n"
                 "BUSIT - Administrator Page\n"
