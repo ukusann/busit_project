@@ -66,6 +66,12 @@ string CServer::getAdminPage()
 	return this->admin_options;
 }
 
+//-----------------------------------------------------
+
+string CServer::getUserPage()
+{
+	return this->user_options;
+}
 // ***********End of Public Functions: ***************
 //====================================================
 //====================================================
@@ -186,20 +192,27 @@ FFUNC busReqCallback(ffunc_session_t * session)
 //-----------------------------------------------------
 
 FFUNC userReqCallback(ffunc_session_t * session) {
-	ffunc_write_out(session, "Status: 200 OK\r\n");
-	ffunc_write_out(session, "Content-Type: text/plain\r\n\r\n");/* \r\n\r\n  means go to response message*/
-	ffunc_write_out(session, "%s\n", "User callback"); 
-
 	CServer me;
-	std::vector<int> a;
-	a.push_back(1);
+	char *pmet = ffunc_get_fcgi_param(session, "REQUEST_METHOD");
+	string method(pmet);
 
-	if (session->query_str) {
-		char *out = (char*) ffunc_get_query_param(session, "userId", sizeof("userId")- 1);
-		if (out)
-			ffunc_write_out(session, "output= %s\n", out); 
+	char *puri = ffunc_get_fcgi_param(session, "REQUEST_URI");
+	string uri(puri);
+	
+	string query = "";
+	if(session->query_str)
+	{
+		query = string(session->query_str);
+
+		size_t found = uri.find(query);
+		uri.erase(found-1, query.length()+1);
 	}
+	if(uri == "/user")
+		ffunc_write_out(session, me.getUserPage().c_str());
+	else
+		ffunc_write_out(session, "%s\n", "Error in URL");
 }
+
 
 //-----------------------------------------------------
 

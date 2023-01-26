@@ -73,7 +73,7 @@ private:
         "</body>\n"
     "</html>\n";
 
-// ***********End of \bus strings ********************
+// ***********End of /bus strings ********************
 //====================================================
 //====================================================
 //**************** /admin Strings ********************
@@ -141,8 +141,49 @@ private:
    
     "</body>\n"
     "</html>\n";
-// ***********End of \admin strings ********************
-//====================================================
+// ***********End of /admin strings ********************
+//======================================================
+//======================================================
+//**************** /user Strings ***********************
+
+    std::string user_options = 
+    "Content-Type: text/html\r\n\r\n"
+    "<!DOCTYPE html>\n"
+    "<html>\n"
+    "<body style=\"background-color:rgba(54, 160, 94, 0.692);\">\n"
+        "<div style=\"border: 5px solid Black;background-color:rgba(0, 0, 0, 0.8);color:white;padding:20px;\">\n"
+            "<h1><img src=\"../html_images/mini_busit.png\" alt=\"busit\" style=\"float:right;width:100px;height:100px;\">\n"
+                "BUSIT - User Page\n"
+            "</h1>\n"
+            "<p>Welcome User!</p>\n"
+            "<p>Please choose the action you want to make:</p>\n"
+        "</div>\n" 
+        "<h1>\n"
+            "Options:\n"
+        "</h1>\n"
+
+         "<h2>\n"
+            "<a href=\"/URBS\" method=\"POST\">\n"
+                "Request Bus Stop\n"
+            "</a>\n" 
+        "</h2>\n"
+
+        "<h2>\n"
+            "<a href=\"/UCSR\" method=\"POST\">\n"
+                "Get Bus Schedule\n"
+            "</a>\n" 
+        "</h2>\n"
+
+        "<h2>\n"
+            "<a href=\"/UCAT\" method=\"POST\">\n"
+                "Check Bus Arrival Time\n"
+            "</a>\n" 
+        "</h2>\n"
+   
+    "</body>\n"
+    "</html>\n";
+// ***********End of /user strings ********************
+//======================================================
 public:
     CServer();
     ~CServer();
@@ -152,6 +193,7 @@ public:
     std::string getAnswerWrongPass();
     std::string getAnswerWrongName();
     std::string getAdminPage();
+    std::string getUserPage();
 
 };
 #endif  /*__CServer__*/
