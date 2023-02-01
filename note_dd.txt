@@ -1,0 +1,22 @@
+Note for DD:
+
+Uart: 
+    1 - add the "uart_overlay.dtbo" to the overlay folder
+    2 - go to cmdline.txt and delete all of uart commands for the console 
+    3 - go to the config.txt and at the end add this:
+        enable_uart=1
+        dtoverlay=disable-bt
+        dtoverlay=uart_overlay
+        dtoverlay=uart1
+
+    4 - 
+
+I2C: 
+    1- enable the "i2c-tools" in the makemenu 
+        -> Target packages -> 
+            - Enable "Show packages that are also provided by busybox"
+            - go to "Hardware handling"
+                -Enable "i2c-tools"
+                - Save
+    2- go to the config.txt and at the end add this:
+        dtparam=i2c1=on

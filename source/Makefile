@@ -13,8 +13,8 @@ output: threads.o CDaemons.o daemons_main.o CPoint.o CNode.o CMap.o 		\
 
 	#TODO ******busit.elf creation******
 	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CMap.o 		\
-	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o $(DEPS)main.o \
-	-o $(DEPS)busit.elf
+	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o 				\
+	$(DEPS)cmd.o $(DEPS)busit.o -o $(DEPS)busit.elf
 
 	#TODO ******daemon.elf creation*****
 	$(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o				\

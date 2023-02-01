@@ -19,14 +19,27 @@
 #include <unistd.h> 
 #include <cstdlib>
 #include <pthread.h>
+#include <future>         // threads future
 #include <sched.h>
 #include <errno.h>
+#include <string.h>
 
 #define QUEUE_NAME 		"/queue1"
 
 #define MAX_MSG_LEN 	40
 
 using namespace std;
+
+/*  BEGUIN OF GLOBAL VARIBLES */
+
+	// Device Driver
+	#define UART_DD 
+	#define GPIO_DD 
+	int fuart;  // uart
+	int fgpio;  // gpio
+
+/*  END OF GLOBAL VARIBLES */
+
 
 void CheckFail(int status)
 {
@@ -124,6 +137,10 @@ void SetupThread(int prio,pthread_attr_t *pthread_attr,struct sched_param *pthre
 	//step 5 is eliminated here
 }
 
+// ============================================================================
+/*  						  INIT GENERAL SYSTEM 						 	 */
+//_____________________________________________________________________________	
+
 
 
 int main (int argc, char *argv[])
@@ -177,3 +194,18 @@ int main (int argc, char *argv[])
     pthread_exit(NULL);
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

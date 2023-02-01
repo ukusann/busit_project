@@ -32,7 +32,7 @@ public:
     void mapNodeOpen (unsigned int x, unsigned int y);
     void mapNodeClose(unsigned int x, unsigned int y);
     std::vector<std::vector<CNode>> * getPointerMap();
-    bool   getMapNode(SCoord pos, CNode &_pmap);
+    bool   getMapNode(SCoord pos, CNode &_pnode);
     bool   getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode );
 
 };

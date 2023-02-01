@@ -1,9 +1,12 @@
 #include "CBusStop.h"
 #include <iostream>
 
+using namespace std;
 //=================Constructor========================
-CBusStop::CBusStop(std::string name, CPoint pos, unsigned int id)
-    : name(name), bus_stop_pos(pos), ID(id) {}
+CBusStop::CBusStop(std::string name, CNode n, unsigned int id)
+    : name(name), bus_stop_node(n), ID(id) {
+
+    }
 //====================================================
 
 //=================Destructor=========================
@@ -18,9 +21,9 @@ unsigned int CBusStop::getID()
 //====================================================
 
 //=================Get Pos============================
-CPoint CBusStop::getPos()
+SCoord CBusStop::getPos()
 {
-    return this->bus_stop_pos;
+    return this->bus_stop_node.getPos();
 }
 //====================================================
 
@@ -34,11 +37,9 @@ std::string CBusStop::getName()
 //=================Update Display=====================
 void CBusStop::updateDisplay()
 {
+    /**/
     std::cout << "CBusStop Info:\n" 
-            << "ID: " << this->ID << std::endl
-            << "Name: " << this->name << std::endl
-            << "Position: (" << this->bus_stop_pos.getPoint().x 
-            << ", " << this->bus_stop_pos.getPoint().y << ")" 
-            << std::endl;  
+            << "ID: "   << this->ID << endl
+            << "Name: " << this->name << endl;  
 }
 //====================================================
