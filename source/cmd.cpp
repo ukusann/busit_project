@@ -97,7 +97,7 @@ bool addBus(string param){
     
     for(int i = 0; i < busList.size(); i++)
 	{
-        if(busList.at(i).getBusID() == id)
+        if(busList.at(i).getBusID() == id) //checks if ID already exists
         {
             error = true;
             break;
@@ -114,17 +114,17 @@ bool addBus(string param){
         status = false;
         if(aux == 0)
 			{
-				p >> coord_temp.x;
+				p >> coord_temp.x; // gets the first coord element
 				aux = 1;
 			}
 			else if(aux == 1)
 			{
-                p >> coord_temp.y;
+                p >> coord_temp.y; // gets the second coord element
                 for(int i = 0; i < busStopList.size(); i++)
                 {
                     SCoord busStopPos = busStopList.at(i).getPos();
-                    if(busStopPos.x == coord_temp.x &&
-                         busStopPos.y == coord_temp.y)
+                    if(busStopPos.x == coord_temp.x && //checks if the Bus Stop coord
+                         busStopPos.y == coord_temp.y) // already exists 
                     {
                         status = true;
                         stops_list.push_back(i);
@@ -140,8 +140,8 @@ bool addBus(string param){
     }
     else if(status)
     {
-        busList.push_back(CBus(id, EBus::normal_bus));
-        for(int i = 0; i < stops_list.size(); i++)
+        busList.push_back(CBus(id, EBus::normal_bus)); //pushes back the new Bus
+        for(int i = 0; i < stops_list.size(); i++)     //inserts each bus stop in its route
         {
             busList.back().insertBusStop(busStopList.at(stops_list.at(i)));
         }
