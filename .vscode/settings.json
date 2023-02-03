@@ -27,7 +27,9 @@
         "streambuf": "cpp",
         "system_error": "cpp",
         "type_traits": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "cstring": "cpp",
+        "tuple": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}/server_test/fcgi-function"
 }

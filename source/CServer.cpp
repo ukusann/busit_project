@@ -587,7 +587,7 @@ FFUNC ADBSReqCallback(ffunc_session_t * session) {
 	// body process
 	getline((istringstream)body.data, line); //get one line from body
 	stringstream check(line);
-	
+
 	/* process body with structure 'busStopId=XXX&coord=X+X+X+X+X' */
 	while (getline(check, intermediate, '&'))	// Separate the lines by & or end of string
 	{	
@@ -976,7 +976,7 @@ FFUNC ESIDReqCallback(ffunc_session_t * session) {
 	getline((istringstream)body.data, line); //get one line from body
 	stringstream check(line);
 	
-	/* process body with structure 'busID=XXX&newBusID=X+X+X+X+X' */
+	/* process body with structure 'busStopID=XXX&newBusStopID=XXXX' */
 	while (getline(check, intermediate, '&'))	// Separate the lines by & or end of string
 	{	
 		int begin_info = 0;
@@ -1015,7 +1015,7 @@ FFUNC ESIDReqCallback(ffunc_session_t * session) {
 
 	if (method == "POST" && uri == "/ESID")
 	{
-		if(busId == 1)
+		if(busId == 1) // verify the existing bus stops
 			ffunc_write_out(session, me.getESIDwrongCurID().c_str());
 		else if(busId == 0 || newBusId == 0)
 			ffunc_write_out(session, me.getESIDinvalidNumber().c_str());

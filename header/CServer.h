@@ -638,7 +638,7 @@ private:
         "<form action=\"/ESID\" method=\"POST\">\n"
             "<fieldset style=\"background: #f6f8ff; border: 2px solid #4238ca;\">\n"
                 "<legend>Enter Bus Stop ID informations:</legend>\n"
-                "<label for=\"busStopID\">Enter current Bus ID:</label><br>\n"
+                "<label for=\"busStopID\">Enter current Bus Stop ID:</label><br>\n"
                 "<input type=\"number\" id=\"busStopID\" name=\"busStopID\" min=\"1\"><br>\n"
                 "<label for=\"newBusStopID\">Enter new Bus Stop ID:</label><br>\n"
                 "<input type=\"number\" id=\"newBusStopID\" name=\"newBusStopID\" min=\"1\"><br>\n"

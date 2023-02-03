@@ -30,11 +30,11 @@ using namespace std;
 
 // cmd
 typedef enum {ERROR = 0, ADBU, ADBS, EBID, EBDR, EBRM, ESID, 
-                         ESRM, URBS, UCSR, UCAT, INIT}cmd;
+                         ESRM, URBS, UCSR, UCAT, INIT} cmd;
 
 
 // Main System Operations:
-void addBus(string param);
+bool addBus(string param);
 void addBusStop(string param);
 void edBusId(string param);
 void edBusDefaultRoute(string param);
@@ -62,10 +62,10 @@ void (*operation[10])(string param) = {  addBus,      addBusStop,       edBusId,
     const SCoord default_bst_pos[4]  = { {1,15}, {26,13}, {14,17}, {5,1} };
     const string default_bst_name[4] = {"Stinky Street", "Poor Avenue",
                                          "Busit Street", "Slave Street"};
-    static vector<CBusStop> busSt;
+    static vector<CBusStop> busStopList;
 
     // Bus Stop
-    static vector<CBus> bus;
+    static vector<CBus> busList;
 
 
 // ==============================================================================================
@@ -86,9 +86,70 @@ void (*operation[10])(string param) = {  addBus,      addBusStop,       edBusId,
 // ---___---___---___---___---___---___---___---___---___---___---___---___---___---___---___---
 
 // add bus
-void addBus(string param){
+bool addBus(string param){
+    bool error = false;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    uint16_t id;
+    p >> id;
+    
+    for(int i = 0; i < busList.size(); i++)
+	{
+        if(busList.at(i).getBusID() == id)
+        {
+            error = true;
+            break;
+        }    
+    }
+
+    /*Stops Validation*/
+    int aux = 0;
+    SCoord coord_temp;
+    vector <int> stops_list;
+    bool status = false;
+    while (!p.eof())
+    {
+        status = false;
+        if(aux == 0)
+			{
+				p >> coord_temp.x;
+				aux = 1;
+			}
+			else if(aux == 1)
+			{
+                p >> coord_temp.y;
+                for(int i = 0; i < busStopList.size(); i++)
+                {
+                    SCoord busStopPos = busStopList.at(i).getPos();
+                    if(busStopPos.x == coord_temp.x &&
+                         busStopPos.y == coord_temp.y)
+                    {
+                        status = true;
+                        stops_list.push_back(i);
+                        break;
+                    }
+                }
+                  
+				aux = 0;
+			}
+    }
+    if(error){
+        return false;
+    }
+    else if(status)
+    {
+        busList.push_back(CBus(id, EBus::normal_bus));
+        for(int i = 0; i < stops_list.size(); i++)
+        {
+            busList.back().insertBusStop(busStopList.at(stops_list.at(i)));
+        }
+        return true;
+    }
+    else
+        return false;
+
 }
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // add bus stop
@@ -213,9 +274,9 @@ string getParameters(string buffer, cmd &_cmd){
         string stemp;
         ss >> stemp; // gets the number in string
 
-        // checks if ist a number:
+        // checks if its a number:
         for (size_t i = 0 ; i < stemp.size() ; i++){
-            if (stemp[i] < '0' || stemp[i] > '9' ){
+            if (stemp[i] < '0' || stemp[i] > '9'){
                 flag_err = true;
                 break;
             }

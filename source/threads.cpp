@@ -30,7 +30,7 @@
 
 using namespace std;
 
-/*  BEGUIN OF GLOBAL VARIBLES */
+/*  BEGIN OF GLOBAL VARIBLES */
 
 	// Device Driver
 	#define UART_DD 
@@ -45,14 +45,14 @@ void CheckFail(int status)
 {
 	if(status)
 	{
-		if(status==EPERM)
-			fprintf(stderr,"pthread_create() got EPERM\n");
-		else if(status==EINVAL)
-      			fprintf(stderr,"pthread_create() got EINVAL\n");
+		if(status == EPERM)
+			fprintf(stderr, "pthread_create() got EPERM\n");
+		else if(status == EINVAL)
+      			fprintf(stderr, "pthread_create() got EINVAL\n");
     		else
-      			fprintf(stderr,"pthread_create() got neither EPERM nor EINVAL\n");
+      			fprintf(stderr, "pthread_create() got neither EPERM nor EINVAL\n");
 
-		fprintf(stderr,"pthread_create() got error %d\n",status);
+		fprintf(stderr, "pthread_create() got error %d\n", status);
 		errno = status;
 		perror("pthread_create()");
 		exit(1);
