@@ -24,7 +24,7 @@ struct SSchedule
 class CBus
 {
 private:
-    const uint16_t BUS_ID;
+    uint16_t bus_id;
     EBus bus_type;
     //vector<CRoute> bus_routes; 
     std::vector<CBusStop> *pBusStopsList;
@@ -42,9 +42,11 @@ public:
     uint16_t getNumRoutes();
     uint16_t getBusID();
     EBus     getBusType();
-    double   getBusTimeArrival();
+    double   getBusArrivalTime();
     bool     insertBusStop(CBusStop);     
     bool     removeBusStop(CBusStop);
+    void     clearBusStopsList();
+    void     setBusId(uint16_t id);
     //bool     setRoutes(vector<CRoute> route);
 };
 
