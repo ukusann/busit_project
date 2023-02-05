@@ -10,18 +10,17 @@
 class CBusStop
 {
 private:
-    std::string name;
-    const unsigned int ID;
+    uint16_t ID;
     CNode bus_stop_node;
     //vector <CBus> expected_buses;
     
 public:
 
-    CBusStop (std::string name, CNode n, unsigned int id);
+    CBusStop (CNode n, uint16_t id);
     ~CBusStop();
-    unsigned int getID();
-    SCoord       getPos();
-    std::string  getName(); 
+    void     setID(uint16_t id);        
+    uint16_t getID();
+    SCoord   getPos();
     void updateDisplay();
 };
 

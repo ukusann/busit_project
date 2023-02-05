@@ -3,8 +3,8 @@
 
 using namespace std;
 //=================Constructor========================
-CBusStop::CBusStop(std::string name, CNode n, unsigned int id)
-    : name(name), bus_stop_node(n), ID(id) {
+CBusStop::CBusStop(CNode n, uint16_t id)
+    :bus_stop_node(n), ID(id) {
 
     }
 //====================================================
@@ -13,8 +13,15 @@ CBusStop::CBusStop(std::string name, CNode n, unsigned int id)
 CBusStop::~CBusStop(){}
 //====================================================
 
+//=================Set ID=============================
+void CBusStop::setID(uint16_t id)
+{
+    this->ID = id;
+}
+//====================================================
+
 //=================Get ID=============================
-unsigned int CBusStop::getID()
+uint16_t CBusStop::getID()
 {
     return this->ID;
 }
@@ -27,19 +34,11 @@ SCoord CBusStop::getPos()
 }
 //====================================================
 
-//=================Get Name===========================
-std::string CBusStop::getName()
-{
-    return this->name; 
-}
-//====================================================
-
 //=================Update Display=====================
 void CBusStop::updateDisplay()
 {
     /**/
     std::cout << "CBusStop Info:\n" 
-            << "ID: "   << this->ID << endl
-            << "Name: " << this->name << endl;  
+            << "ID: "   << this->ID << endl;  
 }
 //====================================================
