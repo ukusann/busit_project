@@ -34,7 +34,7 @@ typedef enum {ERROR = 0, ADBU, ADBS, EBID, EBDR, EBRM, ESID,
 
 
 // Main System Operations:
-bool addBus(string param);
+void addBus(string param);
 void addBusStop(string param);
 void edBusId(string param);
 void edBusDefaultRoute(string param);
@@ -86,8 +86,8 @@ void (*operation[10])(string param) = {  addBus,      addBusStop,       edBusId,
 // ---___---___---___---___---___---___---___---___---___---___---___---___---___---___---___---
 
 // add bus
-bool addBus(string param){
-    bool error = false;
+void addBus(string param){
+    bool error_flag = false;
     stringstream p;  // get the parameters
     p << param;
     
@@ -99,7 +99,7 @@ bool addBus(string param){
 	{
         if(busList.at(i).getBusID() == id) //checks if ID already exists
         {
-            error = true;
+            error_flag = true;
             break;
         }    
     }
@@ -109,7 +109,7 @@ bool addBus(string param){
     SCoord coord_temp;
     vector <int> stops_list;
     bool status = false;
-    while (!p.eof())
+    while (!p.eof() && ~error_flag)
     {
         status = false;
         if(aux == 0)
@@ -135,8 +135,8 @@ bool addBus(string param){
 				aux = 0;
 			}
     }
-    if(error){
-        return false;
+    if(error_flag){
+        //return false;
     }
     else if(status)
     {
@@ -145,52 +145,276 @@ bool addBus(string param){
         {
             busList.back().insertBusStop(busStopList.at(stops_list.at(i)));
         }
-        return true;
+        //return true;
     }
-    else
-        return false;
-
+    else{
+        //return false;
+    }
 }
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // add bus stop
 void addBusStop(string param){
+    bool error_flag = false;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    uint16_t id;
+    p >> id;
+    
+    for(int i = 0; i < busStopList.size(); i++)
+	{
+        if(busStopList.at(i).getID() == id) //checks if ID already exists
+        {
+            error_flag = true;
+            break;
+        }    
+    }
+
+    /*Stop Validation*/
+    SCoord coord_temp;
+    if (~error_flag)
+    {
+        
+        p >> coord_temp.x; // gets the first coord element
+        p >> coord_temp.y; // gets the second coord element
+        for(int i = 0; i < busStopList.size(); i++)
+        {
+            SCoord busStopPos = busStopList.at(i).getPos();
+            if(busStopPos.x == coord_temp.x && //checks if the Bus Stop coord
+                    busStopPos.y == coord_temp.y) // already exists 
+            {
+                error_flag = true;
+                break;
+            }
+        }
+	}
+    if(error_flag){
+        //return false; 
+    }
+    else{
+        busStopList.push_back(CBusStop(CNode(id, 0x40, coord_temp), id));
+        //return true;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // change bus id
 void edBusId(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    uint16_t id;
+    uint16_t newId;
+    int index = 0;
+    p >> id;
+    p >> newId;
+    if(id == newId)
+    {
+        error_flag = true;
+        return;
+        //return false;
+    }
+    for(int i = 0; i < busList.size(); i++)
+	{
+        if(busList.at(i).getBusID() == id) //checks if ID already exists
+        {
+            error_flag = false;
+            index = i;
+        } 
+        if(busList.at(i).getBusID() == newId)
+        {
+            error_flag = true;
+            break;
+        }
+    }
+
+    if(error_flag){
+        //return false;
+    }
+    else
+    {
+        busList.at(index).setBusId(newId);
+        //return true;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // change bus default route
 void edBusDefaultRoute(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    int index = 0;
+    uint16_t id;
+    p >> id;
+    
+    for(int i = 0; i < busList.size(); i++)
+	{
+        if(busList.at(i).getBusID() == id) //checks if ID already exists
+        {
+            error_flag = false;
+            index = i;
+            break;
+        }    
+    }
+
+    /*Stops Validation*/
+    int aux = 0;
+    SCoord coord_temp;
+    vector <int> stops_list;
+    bool status = false;
+    while (!p.eof() && ~error_flag)
+    {
+        status = false;
+        if(aux == 0)
+			{
+				p >> coord_temp.x; // gets the first coord element
+				aux = 1;
+			}
+			else if(aux == 1)
+			{
+                p >> coord_temp.y; // gets the second coord element
+                for(int i = 0; i < busStopList.size(); i++)
+                {
+                    SCoord busStopPos = busStopList.at(i).getPos();
+                    if(busStopPos.x == coord_temp.x && //checks if the Bus Stop coord
+                         busStopPos.y == coord_temp.y) // already exists 
+                    {
+                        status = true;
+                        stops_list.push_back(i);
+                        break;
+                    }
+                }
+                  
+				aux = 0;
+			}
+    }
+    if(error_flag){
+        //return false;
+    }
+    else if(status)
+    {
+        busList.at(index).clearBusStopsList();
+        for(int i = 0; i < stops_list.size(); i++)     //inserts each bus stop in its route
+            busList.at(index).insertBusStop(busStopList.at(stops_list.at(i)));
+        
+        //return true;
+    }
+    else{
+        //return false;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // remove bus
 void edBusRemove(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    int index = 0;
+    uint16_t id;
+    p >> id;
+    
+    for(int i = 0; i < busList.size(); i++)
+	{
+        if(busList.at(i).getBusID() == id) //checks if ID already exists
+        {
+            error_flag = false;
+            index = i;
+            break;
+        }    
+    }
+
+    if(error_flag){
+        //return false;
+    }
+    else
+    {
+        busList.erase(busList.begin() + index);        
+        //return true;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // change bus stop id
 void edBusStopId(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    uint16_t id;
+    uint16_t newId;
+    int index = 0;
+    p >> id;
+    p >> newId;
+    if(id == newId)
+    {
+        error_flag = true;
+        return;
+        //return false;
+    }
+    for(int i = 0; i < busStopList.size(); i++)
+	{
+        if(busStopList.at(i).getID() == id) //checks if ID already exists
+        {
+            error_flag = false;
+            index = i;
+        } 
+        if(busStopList.at(i).getID() == newId)
+        {
+            error_flag = true;
+            break;
+        }
+    }
+
+    if(error_flag){
+        //return false;
+    }
+    else
+    {
+        busStopList.at(index).setID(newId);
+        //return true;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 // remove bus stop
 void edBusStopRemove(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    int index = 0;
+    uint16_t id;
+    p >> id;
+    
+    for(int i = 0; i < busStopList.size(); i++)
+	{
+        if(busStopList.at(i).getID() == id) //checks if ID already exists
+        {
+            error_flag = false;
+            index = i;
+            break;
+        }    
+    }
+
+    if(error_flag){
+        //return false;
+    }
+    else
+    {
+        busStopList.erase(busStopList.begin() + index);        
+        //return true;
+    }
 }
 
 // - - - - - - - - - -    - - - - - - - - - -    - - - - - - - - - -    - - - - - - - - - -
