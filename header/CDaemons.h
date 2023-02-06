@@ -1,5 +1,10 @@
 #include <sys/syslog.h>
 #include <sys/types.h> 
+#include "CServer.h"
+#include "ffunc.h"
+
+#define ADMIN_NAME "matheus"
+#define ADMIN_PASS "1234"
 
 class CDaemons
 {
@@ -14,6 +19,5 @@ public:
     static void signalHandler(int sig);
     CDaemons();
     ~CDaemons();
-    void idle();
     pid_t getPid();
 };
