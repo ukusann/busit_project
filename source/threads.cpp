@@ -4,7 +4,7 @@
 #include "CRoute.h"
 #include "CMap.h"
 */
-#include "CDaemons.h"
+
 
 #include <cstring>
 #include <mqueue.h>
@@ -39,6 +39,27 @@ using namespace std;
 	int fgpio;  // gpio
 
 /*  END OF GLOBAL VARIBLES */
+
+
+void signalHandler(int sig)
+{
+	    switch(sig) {
+		case SIGHUP:
+			syslog(LOG_INFO,"Hangup signal catched");
+			break;
+
+        case SIGUSR1:
+            syslog(LOG_INFO,"User signal catched");
+			raise(SIGTERM);
+            break;
+
+		case SIGTERM:
+			syslog(LOG_INFO,"Terminate signal catched");
+			exit(0);
+			break;
+	}
+}
+
 
 
 void CheckFail(int status)
@@ -93,15 +114,15 @@ void *pMainSystem (void *arg)
 	//? *****begin code*****
 	
 	pid_t pid;
-     signal(SIGUSR1, CDaemons::signalHandler); // Register signal handler
-     signal(SIGTERM, CDaemons::signalHandler); // Register signal handler
-     pid = getpid();      //Process ID of itself
+    signal(SIGUSR1, signalHandler); // Register signal handler
+    signal(SIGTERM, signalHandler); // Register signal handler
+    pid = getpid();      //Process ID of itself
      printf("Busit PID: %d\n", pid);
      
      int total_length = 1024; 
 
      char line[total_length];
-     FILE * command = popen("pidof -s daemon.elf","r");
+     FILE * command = popen("pidof -s server.elf","r");
 
      fgets(line,total_length,command);
 
@@ -110,11 +131,11 @@ void *pMainSystem (void *arg)
      
      printf("Daemon PID: %d\n", pid2);
      
-     kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
+     //kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
 
-     //kill(pid2, SIGTERM);
+    kill(pid2, SIGTERM);
 
-     kill(pid, SIGTERM);
+    kill(pid, SIGTERM);
 
 	//? *****end code*****
 	return NULL;
