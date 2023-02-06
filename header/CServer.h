@@ -1,7 +1,7 @@
 #ifndef __CServer__
 #define __CServer__
 #include <string>
-#include "ffunc.h"
+
 
 
 class CServer
