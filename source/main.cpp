@@ -3,7 +3,8 @@
 // #include "CBusStop.h"
 // #include "CRoute.h"
 // #include "CMap.h"
-#include "CGenerateRoute.h"
+//#include "CGenerateRoute.h"
+#include "CCommands.h"
 
 #include <vector>
 #include <iostream>
@@ -156,40 +157,7 @@ int main()
      //TODO================CGenerateRoute test=======================
      //================================================
 
-// vector::at
 /*
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-void getVector(unsigned ind, int &r){
-    vector<vector<int>> *v;
-    vector<vector<int>> a;
-    v = &a;
-    vector<int> myvector (10);   // 10 zero-initialized ints
-
-      // assign some values:
-    for (unsigned i=0; i<myvector.size(); i++)
-        myvector.at(i)=i;
-    v->push_back(myvector);
-    r = v->at(0).at(ind);
-    cout << "my number is:" << r << endl;
-    return;  
-    }
-
-int main ()
-{
-    int a = 0;
-    int *r = &a;
-    getVector(2,*r);
-    
-  cout << "my number is:" << *r << endl;
-  
-
-  return 0;
-}
-*/
      SCoord bus_st_pos[4] = { {1,15}, {26,13}, {14,17}, {5,1} };
      CMap map(1);
      CRoute r(1);
@@ -248,7 +216,7 @@ int main ()
      cout << "get here!\n\n";
      for(int i = 0 ; i < 3 ; i++ )
           multir[i].printRouteAndMem();
-   
+*/  
      //================================================
 
      //TODO================Daemon test=======================
@@ -280,5 +248,54 @@ int main ()
 */
      //================================================
 
+     //TODO================CCommands test=======================
+     //================================================
+     const char *addBus            = "ADBU 2 1 15 26 13";
+     const char *addBusStop        = "ADBS 5 1 18";
+     const char *editBusID         = "EBID 2 3";
+     const char *editBusDefRt      = "EBDR 3 14 17 5 1";
+     const char *removeBus         = "EBRM 3";
+     const char *editBusStopID     = "ESID 5 9";
+     const char *removeBusStop     = "ESRM 9";
+
+     if(initCmd())
+     {
+          if(inputCmd(addBus))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";
+
+          if(inputCmd(addBusStop))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";
+
+          if(inputCmd(editBusID))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";
+
+          if(inputCmd(editBusDefRt))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";          
+                    
+          if(inputCmd(removeBus))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";  
+
+          if(inputCmd(editBusStopID))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";    
+
+          if(inputCmd(removeBusStop))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";                        
+     }     
+     else
+          cout << "Error in init cmd!\n";
     return 0;
 }

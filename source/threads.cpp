@@ -119,21 +119,24 @@ void *pMainSystem (void *arg)
     pid = getpid();      //Process ID of itself
      printf("Busit PID: %d\n", pid);
      
-     int total_length = 1024; 
+	int total_length = 1024; 
 
-     char line[total_length];
-     FILE * command = popen("pidof -s server.elf","r");
+	char line[total_length];
+	int counter = 0;
+	while(counter != 2)
+	{
+		FILE * command = popen("pidof -s server.elf","r");
+		fgets(line,total_length,command);
 
-     fgets(line,total_length,command);
+		pid_t pid2 = strtoul(line,NULL,10);
+		pclose(command);
+		
+		printf("Daemon PID: %d\n", pid2);
+		
+		kill(pid2, SIGTERM);
 
-     pid_t pid2 = strtoul(line,NULL,10);
-     pclose(command);
-     
-     printf("Daemon PID: %d\n", pid2);
-     
-     //kill(pid2, SIGUSR1);        // Send SIGUSR1 to daemon
-
-    kill(pid2, SIGTERM);
+		counter++;
+	}
 
     kill(pid, SIGTERM);
 

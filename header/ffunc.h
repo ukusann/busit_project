@@ -94,7 +94,7 @@ size_t len = 1+strlen(_ffunc_nmap_func[j]); \
 char *x =(char*) malloc(len); \
 (ffconf_)->ffunc_nmap_func[j] = (char*) (x ? memcpy(x, _ffunc_nmap_func[j], len) : NULL); \
 } \
-(ffconf_)->ffunc_nmap_func[i] = NULL; 
+(ffconf_)->ffunc_nmap_func[i] = NULL; \
 } while(0)
 
 #define ffunc_write_out(_csession, ...) FCGX_FPrintF(_csession->request->out, __VA_ARGS__)

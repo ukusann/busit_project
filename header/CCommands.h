@@ -5,6 +5,6 @@
 #define ERROR_CMD  0
 
 bool initCmd();
-bool inputCmd( const unsigned char* buffer);
+bool inputCmd( const char* buffer);
 
 #endif /*__cmd__*/

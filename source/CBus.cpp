@@ -1,22 +1,16 @@
 #include "CBus.h"
-
+#include <iostream>
 using namespace std;
 
 //=================Constructor========================
 CBus::CBus(uint16_t id, EBus bus_type = EBus::normal_bus)
     : bus_id(id), bus_type(bus_type)
-{
-    this->pBusStopsList = new vector<CBusStop>(0);
-    this->pSchedule     = new vector<SSchedule>(0); 
-}
+{}
 //====================================================
 
 //=================Destructor=========================
 CBus::~CBus()
-{
-    delete pBusStopsList;
-    delete pSchedule;
-}
+{}
 //====================================================
 
 //-----------------------------------------------------------
@@ -26,38 +20,38 @@ CBus::~CBus()
 //************Beginning of Private Functions*****************
 
 //=================Next Route=========================
-bool CBus::nextRoute()
-{
-  /*CODE HERE*/  
-};
+// bool CBus::nextRoute()
+// {
+//   /*CODE HERE*/  
+// }
 //====================================================
 
 //=================Validate Finish====================
-bool CBus::validadeFinish()
-{
-    /*CODE HERE*/
-}
+// bool CBus::validadeFinish()
+// {
+//     /*CODE HERE*/
+// }
 //====================================================
 
 //=================Request Generate Route=============
-bool CBus::requestGenerateRoute(CPoint pos_i, CPoint pos_f)
-{
-    /*CODE HERE*/
-}
+// bool CBus::requestGenerateRoute(CPoint pos_i, CPoint pos_f)
+// {
+//     /*CODE HERE*/
+// }
 //====================================================
 
 //=================Answer Pickup======================
-bool CBus::answerPickup()
-{
-    /*CODE HERE*/
-}
+// bool CBus::answerPickup()
+// {
+    // /*CODE HERE*/
+// }
 //====================================================
 
 //=================Create Schedule====================
-bool CBus::createSchedule()
-{
-    /*CODE HERE*/
-}
+// bool CBus::createSchedule()
+// {
+    // /*CODE HERE*/
+// }
 //====================================================
 
 //************End of Private Functions***********************
@@ -67,17 +61,17 @@ bool CBus::createSchedule()
 //************Beginning of Public Functions******************
 
 //=================Get Schedule====================
-vector<SSchedule> CBus::getSchedule()
-{
-    /*CODE HERE*/
-}
+// vector<SSchedule> CBus::getSchedule()
+// {
+    // /*CODE HERE*/
+// }
 //====================================================
 
 //=================Get Route Number===================
-uint16_t CBus::getNumRoutes()
-{
-    /*CODE HERE*/
-}
+// uint16_t CBus::getNumRoutes()
+// {
+//     /*CODE HERE*/
+// }
 //====================================================
 
 //=================Get Bus ID====================
@@ -95,23 +89,25 @@ EBus CBus::getBusType()
 //====================================================
 
 //=================Get Bus Arrival Time===============
-double CBus::getBusArrivalTime()
-{
-    /*CODE HERE*/
-}
+// double CBus::getBusArrivalTime()
+// {
+//     /*CODE HERE*/
+// }
 //====================================================
 
 //=================Insert Bus Stop====================
 bool CBus::insertBusStop(CBusStop bs)
 {
     bool errorFlag = false;
-    int bsSize = pBusStopsList->size(); 
+    int bsSize = BusStopsList.size(); 
     if(bsSize == 0)
-        pBusStopsList->push_back(bs);
+    {
+        BusStopsList.push_back(bs);
+    }
     else
     {
        for(int i = 0; i < bsSize; i++){
-            if(pBusStopsList->at(i).getID() == bs.getID())
+            if(BusStopsList.at(i).getID() == bs.getID())
             {
                 errorFlag = true;
                 break;
@@ -121,10 +117,11 @@ bool CBus::insertBusStop(CBusStop bs)
             return false; 
         else
         {
-            pBusStopsList->push_back(bs);
+            BusStopsList.push_back(bs);
             return true; 
         }
     }
+    return true;
 }
 //====================================================
 
@@ -132,16 +129,16 @@ bool CBus::insertBusStop(CBusStop bs)
 bool CBus::removeBusStop(CBusStop bs)
 {
     bool errorFlag = true;
-    int bsSize = pBusStopsList->size(); 
+    int bsSize = BusStopsList.size(); 
     if(bsSize == 0)
         return false;
     else
     {
        for(int i = 0; i < bsSize; i++){
-            if(pBusStopsList->at(i).getID() == bs.getID())
+            if(BusStopsList.at(i).getID() == bs.getID())
             {
                 errorFlag = false;
-                pBusStopsList->erase(pBusStopsList->begin() + i);
+                BusStopsList.erase(BusStopsList.begin() + i);
                 break;
             }   
        } 
@@ -158,7 +155,7 @@ bool CBus::removeBusStop(CBusStop bs)
 //=================Clear Bus Stops List=======================
 void CBus::clearBusStopsList()
 {
-    this->pBusStopsList->clear();
+    this->BusStopsList.clear();
 }
 //====================================================
 

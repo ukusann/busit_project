@@ -29,7 +29,17 @@
         "type_traits": "cpp",
         "utility": "cpp",
         "cstring": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "ctime": "cpp",
+        "future": "cpp",
+        "memory": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}/server_test/fcgi-function"
 }

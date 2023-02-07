@@ -9,16 +9,12 @@ DEPS = ../execute/
 # ***********Beginning of Executable creation: *************
 
 output: threads.o CPoint.o CNode.o CMap.o CRoute.o CGenerateRoute.o			\
-		CBusStop.o main.o CDaemons.elf
+		CBusStop.o CBus.o CCommands.o main.o CDaemons.elf
 
 	#TODO ******busit.elf creation******
 	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CMap.o 		\
-	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o 				\
-	$(DEPS)main.o -o $(DEPS)busit.elf
-
-	#TODO ******daemon.elf creation*****
-	# $(CC) -g -I $(KDIR) $(DEPS)CDaemons.o $(DEPS)daemons_main.o				\
-	#  -o $(DEPS)daemon.elf
+	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o $(DEPS)CBus.o \
+	$(DEPS)CCommands.o $(DEPS)main.o -o $(DEPS)busit.elf
 
 	#TODO ******server.elf creation*****
 	mv $(DEPS)CDaemons.elf $(DEPS)server.elf
@@ -46,10 +42,7 @@ clean: # 'make clean' removes all files in the executable folder
 	rm $(DEPS)*.o $(DEPS)*.elf
 
 run: # 'make run' executes busit.elf
-	sudo ./$(DEPS)busit.elf
-
-daemon: # 'make daemon' executes daemon.elf
-	sudo ./$(DEPS)daemon.elf
+	./$(DEPS)busit.elf
 
 thread: # 'make thread' executes threads.elf
 	sudo ./$(DEPS)threads.elf

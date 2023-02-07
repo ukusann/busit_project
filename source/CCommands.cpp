@@ -60,12 +60,11 @@ void (*operation[10])(string param) = {addBus, addBusStop, edBusId, edBusDefault
 
     // Bus Stop                          id = 1  id = 2   id = 3   id = 4
     const SCoord default_bst_pos[4]  = { {1,15}, {26,13}, {14,17}, {5,1} };
-    const string default_bst_name[4] = {"Stinky Street", "Poor Avenue",
-                                         "Busit Street", "Slave Street"};
-    static vector<CBusStop> busStopList;
+   
+    vector<CBusStop> busStopList;
 
     // Bus Stop
-    static vector<CBus> busList;
+    vector<CBus> busList;
 
 
 // ==============================================================================================
@@ -94,14 +93,17 @@ void addBus(string param){
     /*ID Validation*/
     uint16_t id;
     p >> id;
-    
-    for(int i = 0; i < busList.size(); i++)
-	{
-        if(busList.at(i).getBusID() == id) //checks if ID already exists
+    if(busList.size() != 0)
+    {
+        for(int i = 0; i < busList.size(); i++)
         {
-            error_flag = true;
-            break;
-        }    
+            if(busList.at(i).getBusID() == id) //checks if ID already exists
+            {
+                error_flag = true;
+                cout << "ID already exists!\n";
+                break;
+            }    
+        }
     }
 
     /*Stops Validation*/
@@ -128,6 +130,7 @@ void addBus(string param){
                     {
                         status = true;
                         stops_list.push_back(i);
+                        //cout << "stops list: " << i << endl;
                         break;
                     }
                 }
@@ -140,14 +143,28 @@ void addBus(string param){
     }
     else if(status)
     {
-        busList.push_back(CBus(id, EBus::normal_bus)); //pushes back the new Bus
+        busList.push_back({id, EBus::normal_bus}); //pushes back the new Bus
+        CBus lastBus = busList.back();
+        cout << "Bus ID: " << lastBus.getBusID() << endl 
+              << "Bus Type: " << ((lastBus.getBusType() == EBus::normal_bus) ? 
+              "normal bus" : "small bus") << endl;
         for(int i = 0; i < stops_list.size(); i++)     //inserts each bus stop in its route
         {
-            busList.back().insertBusStop(busStopList.at(stops_list.at(i)));
-        }
+            CBusStop tempBusStop = busStopList.at(stops_list.at(i)); 
+            if(lastBus.insertBusStop(tempBusStop))
+            {
+                cout << "Bus Stop " << (i+1) << " Info: " << endl 
+                << "ID: "  << tempBusStop.getID() << endl
+                << "Pos: " << "(" << tempBusStop.getPos().x
+                << ", "    << tempBusStop.getPos().y << ")" << endl;
+            }
+            else
+                cout << "Error inserting Bus Stop!" << endl;
+        }   
         //return true;
     }
     else{
+        cout << "Error! Invalid Coordinates!\n";
         //return false;
     }
 }
@@ -161,14 +178,17 @@ void addBusStop(string param){
     /*ID Validation*/
     uint16_t id;
     p >> id;
-    
-    for(int i = 0; i < busStopList.size(); i++)
-	{
-        if(busStopList.at(i).getID() == id) //checks if ID already exists
+    if(busStopList.size() != 0)
+    {
+        for(int i = 0; i < busStopList.size(); i++)
         {
-            error_flag = true;
-            break;
-        }    
+            if(busStopList.at(i).getID() == id) //checks if ID already exists
+            {
+                error_flag = true;
+                cout << "ID already exists!\n";
+                break;
+            }    
+        }
     }
 
     /*Stop Validation*/
@@ -184,6 +204,7 @@ void addBusStop(string param){
             if(busStopPos.x == coord_temp.x && //checks if the Bus Stop coord
                     busStopPos.y == coord_temp.y) // already exists 
             {
+                cout << "Bus Stop already exists!\n";
                 error_flag = true;
                 break;
             }
@@ -191,9 +212,14 @@ void addBusStop(string param){
 	}
     if(error_flag){
         //return false; 
-    }
-    else{
-        busStopList.push_back(CBusStop(CNode(id, 0x40, coord_temp), id));
+    }                     //  |---------CBusStop---------|
+    else{                 //   |-----Node-----------| 
+        busStopList.push_back({{id, 0x40, coord_temp}, id});
+        CBusStop tempBusStop = busStopList.back(); 
+        cout << "Bus Stop "  << " Info: " << endl 
+                << "ID: "  << tempBusStop.getID() << endl
+                << "Pos: " << "(" << tempBusStop.getPos().x
+                << ", "    << tempBusStop.getPos().y << ")" << endl;
         //return true;
     }
 }
@@ -214,29 +240,41 @@ void edBusId(string param){
     if(id == newId)
     {
         error_flag = true;
+        cout << "Id and new Id are the same!\n";
         return;
         //return false;
     }
-    for(int i = 0; i < busList.size(); i++)
-	{
-        if(busList.at(i).getBusID() == id) //checks if ID already exists
+    if(busList.size() != 0)
+    {
+        for(int i = 0; i < busList.size(); i++)
         {
-            error_flag = false;
-            index = i;
-        } 
-        if(busList.at(i).getBusID() == newId)
-        {
-            error_flag = true;
-            break;
+            if(busList.at(i).getBusID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+            } 
+            if(busList.at(i).getBusID() == newId)
+            {
+                error_flag = true;
+                cout << "New ID already exists!\n";
+                break;
+            }
         }
+    }
+    else
+    {
+        error_flag = true;
+        cout << "There are no Buses in the list!\n";
     }
 
     if(error_flag){
+        cout << "Invalid ID!\n";
         //return false;
     }
     else
     {
         busList.at(index).setBusId(newId);
+        cout << "New Id: " << newId << endl;
         //return true;
     }
 }
@@ -252,15 +290,17 @@ void edBusDefaultRoute(string param){
     int index = 0;
     uint16_t id;
     p >> id;
-    
-    for(int i = 0; i < busList.size(); i++)
-	{
-        if(busList.at(i).getBusID() == id) //checks if ID already exists
+    if(busList.size() != 0)
+    {
+        for(int i = 0; i < busList.size(); i++)
         {
-            error_flag = false;
-            index = i;
-            break;
-        }    
+            if(busList.at(i).getBusID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+                break;
+            }    
+        }
     }
 
     /*Stops Validation*/
@@ -295,17 +335,27 @@ void edBusDefaultRoute(string param){
 			}
     }
     if(error_flag){
+        cout << "Bus does not exist!\n";
         //return false;
     }
     else if(status)
     {
         busList.at(index).clearBusStopsList();
-        for(int i = 0; i < stops_list.size(); i++)     //inserts each bus stop in its route
-            busList.at(index).insertBusStop(busStopList.at(stops_list.at(i)));
+        for(int i = 0; i < stops_list.size(); i++) //inserts each bus stop in its route
+        {
+            CBusStop tempBusStop = busStopList.at(stops_list.at(i));
+            busList.at(index).insertBusStop(tempBusStop);
+            cout << "Bus Stop " << (i+1) << " Info: " << endl
+            << "ID: "  << tempBusStop.getID() << endl
+            << "Pos: " << "(" << tempBusStop.getPos().x
+            << ", "    << tempBusStop.getPos().y << ")" << endl;
+        
+        }    
         
         //return true;
     }
     else{
+        cout << "Error inserting Bus Stop!" << endl;
         //return false;
     }
 }
@@ -321,18 +371,21 @@ void edBusRemove(string param){
     int index = 0;
     uint16_t id;
     p >> id;
-    
-    for(int i = 0; i < busList.size(); i++)
-	{
-        if(busList.at(i).getBusID() == id) //checks if ID already exists
+    if(busList.size() != 0)
+    {
+        for(int i = 0; i < busList.size(); i++)
         {
-            error_flag = false;
-            index = i;
-            break;
-        }    
+            if(busList.at(i).getBusID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+                break;
+            }    
+        }
     }
 
     if(error_flag){
+        cout << "Bus does not exist!\n";
         //return false;
     }
     else
@@ -358,29 +411,42 @@ void edBusStopId(string param){
     if(id == newId)
     {
         error_flag = true;
+        cout << "Id and new Id are the same!\n";
         return;
         //return false;
     }
-    for(int i = 0; i < busStopList.size(); i++)
-	{
-        if(busStopList.at(i).getID() == id) //checks if ID already exists
+
+    if(busStopList.size() != 0)
+    {
+        for(int i = 0; i < busStopList.size(); i++)
         {
-            error_flag = false;
-            index = i;
-        } 
-        if(busStopList.at(i).getID() == newId)
-        {
-            error_flag = true;
-            break;
+            if(busStopList.at(i).getID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+            } 
+            if(busStopList.at(i).getID() == newId)
+            {
+                error_flag = true;
+                cout << "New ID already exists!\n";
+                break;
+            }
         }
+    }
+    else
+    {
+        error_flag = true;
+        cout << "There are no Buses in the list!\n";
     }
 
     if(error_flag){
+        cout << "Invalid ID!\n";
         //return false;
     }
     else
     {
         busStopList.at(index).setID(newId);
+        cout << "New Id: " << newId << endl;
         //return true;
     }
 }
@@ -396,18 +462,21 @@ void edBusStopRemove(string param){
     int index = 0;
     uint16_t id;
     p >> id;
-    
-    for(int i = 0; i < busStopList.size(); i++)
-	{
-        if(busStopList.at(i).getID() == id) //checks if ID already exists
+    if(busStopList.size() != 0)
+    {
+        for(int i = 0; i < busStopList.size(); i++)
         {
-            error_flag = false;
-            index = i;
-            break;
-        }    
+            if(busStopList.at(i).getID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+                break;
+            }    
+        }
     }
 
     if(error_flag){
+        cout << "Bus Stop does not exist!\n";
         //return false;
     }
     else
@@ -531,13 +600,27 @@ bool initCmd(){
         cout << "ERROR creating the input"<< endl;
         return false;
     }
+    //********prints map****************
+    // for(int i = 0; i < 27; i++)
+    // {
+    //     for(int j = 0; j < 27; j++)
+    //     {
+    //         CNode n;
+    //         map.getMapNode(j,i,n);
+    //         cout << n.getId() << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     // add the default bus stops:
-    for (int i = 0 ; i > 4 ; i++){
+    for (int i = 0 ; i < 4 ; i++){
         CNode pno;
 
         if (map.getMapNode(default_bst_pos[i], pno)){
-            busSt.push_back({default_bst_name[i], pno, i+1});
+            busStopList.push_back({pno, (uint16_t)(i+1)});
+            //********prints bus stops*******
+            // cout << "Pos: " << "(" << busStopList.at(i).getPos().x
+            // << ", "    << busStopList.at(i).getPos().y << ")" << endl;
         }
         else {return false;}
     }
@@ -549,7 +632,7 @@ bool initCmd(){
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 
 
-bool inputCmd( const unsigned char* buffer){
+bool inputCmd( const char* buffer){
 
     stringstream ss;
     string s = (char*)buffer;
@@ -564,17 +647,22 @@ bool inputCmd( const unsigned char* buffer){
         if (getCmd(scmd, _cmd)){
             // set parameters 
             s = getParameters(s, _cmd);
+            if(s == "!")
+                _cmd = ERROR;
             cout << "\ns = " << s <<endl;
         }
     }
 
 
     // call thread to execute:
-    if (_cmd != ERROR){
-        thread tOp( operation[_cmd], s );  // thread
-        tOp.detach();
+    if (_cmd != ERROR)
+    {
+        operation[_cmd - 1](s);
+        // thread tOp( operation[_cmd], s );  // thread
+        //tOp.detach();
         return true;                      // abandon child thread      
-    }else
+    }
+    else
         return false;   //  activate the PERROR
     
 }

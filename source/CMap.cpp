@@ -190,7 +190,6 @@ bool  CMap::getMapNode( unsigned short int x, unsigned short int y, CNode &_pnod
 
 bool  CMap::getMapNode( SCoord pos, CNode &_pnode ){
     bool flag = false;
-    
     if(pos.x >= 0 && pos.y >= 0 && pos.x <= this->len_j && pos.y <= this->len_i){
         flag = true;
         _pnode = this->map->at(pos.y).at(pos.x);

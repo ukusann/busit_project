@@ -27,22 +27,22 @@ private:
     uint16_t bus_id;
     EBus bus_type;
     //vector<CRoute> bus_routes; 
-    std::vector<CBusStop> *pBusStopsList;
-    std::vector<SSchedule> *pSchedule;
+    std::vector<CBusStop> BusStopsList;
+    std::vector<SSchedule> Schedule;
 
-    bool nextRoute();
-    bool validadeFinish();
-    bool requestGenerateRoute(CPoint pos_i, CPoint pos_f);
-    bool answerPickup();
-    bool createSchedule();
+    //bool nextRoute();
+    //bool validadeFinish();
+    //bool requestGenerateRoute(CPoint pos_i, CPoint pos_f);
+    //bool answerPickup();
+    //bool createSchedule();
 public:
     CBus(uint16_t id, EBus bus_type);
     ~CBus();
-    std::vector<SSchedule> getSchedule();
-    uint16_t getNumRoutes();
+    //std::vector<SSchedule> getSchedule();
+    //uint16_t getNumRoutes();
     uint16_t getBusID();
     EBus     getBusType();
-    double   getBusArrivalTime();
+    //double   getBusArrivalTime();
     bool     insertBusStop(CBusStop);     
     bool     removeBusStop(CBusStop);
     void     clearBusStopsList();
