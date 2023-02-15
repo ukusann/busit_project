@@ -1,0 +1,6 @@
+enable_uart=1
+dtoverlay=disable-bt
+dtoverlay=uart_overlay
+dtoverlay=uart1
+
+dtparam=spi=on

@@ -34,7 +34,7 @@ public:
     std::vector<std::vector<CNode>> * getPointerMap();
     bool   getMapNode(SCoord pos, CNode &_pnode);
     bool   getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode );
-
+    std::string printMap();
 };
 
 #endif /*__CMap__*/

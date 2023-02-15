@@ -320,10 +320,10 @@ void CGenerateRoute::optimizeRoute()
 //------------------ Reset Map -----------------------
 void CGenerateRoute::resetMap()  {  // open all nodes
     SCoord len = this->pmap_info->getMapLen();
-    cout << "\n\nMap len -> x = " << len.x << " y = " << len.y << endl;
-    for (unsigned int i ; i < len.y; i++)
-        for (unsigned int j ; j < len.x; j++)
+    for (unsigned int i = 0 ; i < len.y; i++)
+        for (unsigned int j = 0 ; j < len.x; j++){
             this->pmap_info->mapNodeOpen(j, i);
+        }
 
 }
 
@@ -344,11 +344,23 @@ CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short in
     if(CGenerateRoute::makeRoute(i_node,f_node,DISABLE_OPTIMIZATION, 0)){
         CGenerateRoute::optimizeRoute();
         route = *single_route;
+        
         }
     else
         {err_flag = true;}
+        int gain =route.getTotalGain();
+    if(!err_flag){ 
+        for (int a = 0 ; a < gain ; a++){
+            CNode n = route.getNode(a);
+            SCoord c = n.getPos();
+            this->pmap_info->mapNodeClose(c);
+        }
+
+        cout << "\n" << this->pmap_info->printMap() << endl;
     
-    CGenerateRoute::resetMap();
+        CGenerateRoute::resetMap();
+        
+    }
     //-----------------------
     //      Mutex release -> pmap (CMap)
     //-----------------------
@@ -362,10 +374,9 @@ vector<CRoute> CGenerateRoute::multRoutes(vector<CNode> l_nodes)
 {
     vector<CRoute> vr;
     unsigned short int size_ln = l_nodes.size();
-    cout << "Multi route : size = " << size_ln << endl;
     for(unsigned short int i = 0 ; i < size_ln -1 ; i++){
         vr.push_back(simpleRoute(l_nodes[i], l_nodes[i+1], i+1));
-        cout << "begin -> " << l_nodes[i].getId() << ", end -> " << l_nodes[i+1].getId() << endl;
+  //      cout << "begin -> " << l_nodes[i].getId() << ", end -> " << l_nodes[i+1].getId() << endl;
     }
 
     return vr;

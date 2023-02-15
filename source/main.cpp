@@ -3,7 +3,7 @@
 // #include "CBusStop.h"
 // #include "CRoute.h"
 // #include "CMap.h"
-//#include "CGenerateRoute.h"
+#include "CGenerateRoute.h"
 #include "CCommands.h"
 
 #include <vector>
@@ -157,7 +157,7 @@ int main()
      //TODO================CGenerateRoute test=======================
      //================================================
 
-/*
+
      SCoord bus_st_pos[4] = { {1,15}, {26,13}, {14,17}, {5,1} };
      CMap map(1);
      CRoute r(1);
@@ -170,32 +170,19 @@ int main()
      
      if (map.inputMap("map_1") == false) 
           cout << "ERROR creating the input"<< endl;
+     else
+         cout << map.printMap();
 
-     for (int i = 0; i < 27; i++)
-    {
-        for(int j = 0; j < 27; j++){
-          map.getMapNode(j, i, *pnodet);
-          int c = pnodet->getId();
-            if (c < 10)
-                cout << "  " << c++ << " ";
-            else if (c < 100)
-                cout << " " << c++ << " ";
-            else 
-                cout << c++ << " ";
-            
-        }
-        cout << endl;
-    }
+     
 
      cout << "IN" << endl << endl;
      map.getMapNode(bus_st_pos[1],*i_n);
      map.getMapNode(bus_st_pos[2],*f_n);
           
-     CGenerateRoute gr(&map, &r);     
-     cout << "out" << endl << endl;
+     CGenerateRoute gr(&map, &r);
 
      CRoute r2 = gr.simpleRoute(*i_n, *f_n, 2);
-     r2.printRouteAndMem();
+    // r2.printRouteAndMem();
      cout << "Route 2 ID: " << r2.getRouteID() << endl;
      cout << "Route 2 total gain: " << r2.getTotalGain() << endl;
      cout << "Route 2 Time: " << r2.getRouteTime() << endl;
@@ -213,10 +200,10 @@ int main()
      
 
      vector<CRoute> multir = gr.multRoutes(list_n);
-     cout << "get here!\n\n";
+    /*
      for(int i = 0 ; i < 3 ; i++ )
           multir[i].printRouteAndMem();
-*/  
+  */
      //================================================
 
      //TODO================Daemon test=======================
@@ -250,6 +237,7 @@ int main()
 
      //TODO================CCommands test=======================
      //================================================
+     /*
      const char *addBus            = "ADBU 2 1 15 26 13";
      const char *addBusStop        = "ADBS 5 1 18";
      const char *editBusID         = "EBID 2 3";
@@ -297,5 +285,7 @@ int main()
      }     
      else
           cout << "Error in init cmd!\n";
+     */
     return 0;
+    
 }

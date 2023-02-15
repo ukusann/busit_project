@@ -1,34 +1,43 @@
 CC = g++ 
 KDIR := ../header  
-KDIR_SERVER	 := ../server_test/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/include/
-KDIR_SERVER2 := ../server_testFastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/
+#KDIR_SERVER	 := ../server_test/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/include/
+#KDIR_SERVER2 := ../server_testFastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/
 DEPS = ../execute/
 
 #===========================================================
 #===========================================================
 # ***********Beginning of Executable creation: *************
 
-output: threads.o CPoint.o CNode.o CMap.o CRoute.o CGenerateRoute.o			\
-		CBusStop.o CBus.o CCommands.o main.o CDaemons.elf
+output: CPoint.o CNode.o CMap.o CRoute.o CGenerateRoute.o			\
+		CBusStop.o CBus.o main.o
+
+
+#output: threads.o CPoint.o CNode.o CMap.o CRoute.o CGenerateRoute.o			\
+#		CBusStop.o CBus.o CCommands.o main.o CDaemons.elf
 
 	#TODO ******busit.elf creation******
 	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CMap.o 		\
 	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o $(DEPS)CBus.o \
+	$(DEPS)main.o -o $(DEPS)busit.elf
+
+
+#	$(CC) -g -I $(KDIR) $(DEPS)CPoint.o $(DEPS)CNode.o $(DEPS)CMap.o 		\
+	$(DEPS)CRoute.o $(DEPS)CGenerateRoute.o $(DEPS)CBusStop.o $(DEPS)CBus.o \
 	$(DEPS)CCommands.o $(DEPS)main.o -o $(DEPS)busit.elf
 
 	#TODO ******server.elf creation*****
-	mv $(DEPS)CDaemons.elf $(DEPS)server.elf
+#	mv $(DEPS)CDaemons.elf $(DEPS)server.elf
 
 	#TODO ******thread.elf creation*****
-	$(CC) -g -I $(KDIR) $(DEPS)threads.o 					\
+#	$(CC) -g -I $(KDIR) $(DEPS)threads.o 					\
 	-o $(DEPS)threads.elf
 
 # ***********End of Executable creation: *******************
 #===========================================================
 #===========================================================
 # ***********Beginning of obj creation: ********************
-CDaemons.elf: CDaemons.cpp
-	$(CC) -g -I $(KDIR) CServer.cpp ffunc.c -L/usr/local/include -lfcgi -pthread -ldl -rdynamic -I $(KDIR_SERVER) -I $(KDIR_SERVER2) $< -o $(DEPS)$@ 
+#CDaemons.elf: CDaemons.cpp
+#	$(CC) -g -I $(KDIR) CServer.cpp ffunc.c -L/usr/local/include -lfcgi -pthread -ldl -rdynamic -I $(KDIR_SERVER) -I $(KDIR_SERVER2) $< -o $(DEPS)$@ 
 
 
 %.o: %.cpp
@@ -44,11 +53,11 @@ clean: # 'make clean' removes all files in the executable folder
 run: # 'make run' executes busit.elf
 	./$(DEPS)busit.elf
 
-thread: # 'make thread' executes threads.elf
-	sudo ./$(DEPS)threads.elf
+#thread: # 'make thread' executes threads.elf
+#	sudo ./$(DEPS)threads.elf
 
-server: # 'make server' executes server.elf
-	sudo ./$(DEPS)server.elf
+#server: # 'make server' executes server.elf
+#	sudo ./$(DEPS)server.elf
 
 default: help
 
