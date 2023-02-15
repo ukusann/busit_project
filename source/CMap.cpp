@@ -65,21 +65,15 @@ bool CMap::loadMapFile(string file_name)
                 vector<CNode> map_temp;
 
                 for (uint16_t j = 0 ; j < len_j ; j++)
-                {
-                    
+                {       
                     unsigned int temp_byte_info;
                     rd_map_file >> temp_byte_info;
 
                     map_temp.push_back( CNode( id++ , temp_byte_info, j, i) );
                     
-               //     cout << temp_byte_info << " ";
-
-             //       cout << map_temp[i].getNodeInfo() << " ";
                 }
-                // cout << endl;
                 map->push_back(map_temp);
             }
-            //cout << this->file_name << endl;
         }
     }
     return flag;
@@ -197,6 +191,32 @@ bool  CMap::getMapNode( SCoord pos, CNode &_pnode ){
     return flag;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+string  CMap::printMap(){
+    string s;
+
+    s.append( "\r\n\t\t\t\t * MAP: " + this->file_name + " *\r\n\r\n");
+    for(int i = 0 ; i < this->len_i ; i++ ){
+        s.append("| ");
+        for(int j = 0 ; j < this->len_j ; j++ ){
+            unsigned int bi = this->map->at(i).at(j).getNodeInfo();
+            if (bi < 1)
+                s.append("   ");
+            else if(!this->map->at(i).at(j).isOpen())
+                s.append(" --");
+            else if( (bi & 15) < 10){
+                s.append("  ");
+                s.append(to_string(bi));
+            }else{
+                s.append(" ");
+                s.append(to_string(bi));
+            }
+        }
+        s.append("  |\r\n");
+    }
+    return s;
+}
 // ***********End of Public Functions: **********************
 //===========================================================
 //===========================================================
