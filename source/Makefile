@@ -1,7 +1,9 @@
 CC = g++ 
+RASP_CC = /home/matheus/buildroot/buildroot-2021.08/output/host/bin/aarch64-linux-g++
 KDIR := ../header  
-KDIR_SERVER	 := ../server_test/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/include/
-KDIR_SERVER2 := ../server_testFastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/
+KDIR_COMP 	 :=	/home/matheus/buildroot/buildroot-2021.08/output/build/linux-custom
+KDIR_SERVER	 := ../server/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/include/
+KDIR_SERVER2 := ../server/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/
 DEPS = ../execute/
 
 #===========================================================
@@ -54,7 +56,7 @@ default: help
 
 .PHONY: help 
 
-help: # 'make help' Show help for each of the Makefile commands.
+help: # 'make help' Shows help for each of the Makefile commands.
 	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
 # ***********End of make commands: *************************
