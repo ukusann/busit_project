@@ -16,17 +16,22 @@
 "-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n"
 "# "
 */
-
 #include <iostream>
-#include <string.h>
 #include <sstream>
 #include <thread>
 #include <vector>
+#include <mqueue.h>
+#include <unistd.h>
+#include <string.h>
 
 #include "CCommands.h"
 #include "CGenerateRoute.h"
 #include "CBus.h"
 using namespace std;
+
+//Message Queue:
+#define MSG_QUEUE_NAME  "/errorMsg"
+#define MSG_QUEUE_MAX_LEN 10000
 
 // cmd
 typedef enum {ERROR = 0, ADBU, ADBS, EBID, EBDR, EBRM, ESID, 
@@ -491,8 +496,36 @@ void edBusStopRemove(string param){
 
 // Request bus stop
 void requestBusStop(string param){
+    bool error_flag = true;
     stringstream p;  // get the parameters
     p << param;
+    
+    /*ID Validation*/
+    int index = 0;
+    uint16_t id;
+    p >> id;
+    if(busStopList.size() != 0)
+    {
+        for(int i = 0; i < busStopList.size(); i++)
+        {
+            if(busStopList.at(i).getID() == id) //checks if ID already exists
+            {
+                error_flag = false;
+                index = i;
+                break;
+            }    
+        }
+    }
+
+    if(error_flag){
+        cout << "Bus Stop does not exist!\n";
+        //return false;
+    }
+    else
+    {
+        cout << "A bus will pick you up soon!\n";   
+        //return true;
+    }
 }
 
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
@@ -632,13 +665,35 @@ bool initCmd(){
 // ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...   ...
 
 
-bool inputCmd( const char* buffer){
+bool inputCmd(future<string> &buffer){
 
     stringstream ss;
-    string s = (char*)buffer;
+    string s = buffer.get();
 
     cmd _cmd = ERROR;
-    
+
+    mqd_t msgq_id;
+    unsigned int msgprio = 1;
+    pid_t my_pid = getpid();
+    char msgcontent[MSG_QUEUE_MAX_LEN];
+
+    msgq_id = mq_open(MSG_QUEUE_NAME, O_CREAT | O_RDWR, 0666, NULL); // opens an existing message queue to read
+
+    /* checks if message queue could be opened*/
+    if (msgq_id == (mqd_t)-1) 
+    {
+        perror("In mq_open()");
+        exit(1);
+    }
+
+    snprintf(msgcontent, MSG_QUEUE_MAX_LEN, "Hello from process PUT.");
+   
+
+    if(mq_send(msgq_id, msgcontent, strlen(msgcontent)+1, msgprio) == -1)
+        perror("In mq_send()");
+    /* closing the queue        -- mq_close() */
+    mq_close(msgq_id); 
+
     // get command
     if(s.size() > 4){ 
 
@@ -657,29 +712,14 @@ bool inputCmd( const char* buffer){
     // call thread to execute:
     if (_cmd != ERROR)
     {
-        operation[_cmd - 1](s);
-        // thread tOp( operation[_cmd], s );  // thread
-        //tOp.detach();
-        return true;                      // abandon child thread      
+       // operation[_cmd - 1](s);
+        thread execute_cmd(operation[_cmd - 1], (s)); // launch the thread
+        execute_cmd.detach();                         // run the thread apart from this thread
+        return true;                    
     }
     else
         return false;   //  activate the PERROR
     
 }
 
-
-
 // =========================================================================================
-/**
- * Test main func:
- * note: change the return of inputCmd as a string
-*/
-/*
-int main (){
-    const char* buffr = "UCSR 12 ";
-    const unsigned char * c = (const unsigned char *)buffr;
-    string s = inputCmd(c);
-    
-    cout << s << endl;
-    
-}*/

@@ -15,7 +15,6 @@ using namespace std;
 //===========================================================
 // ***********Beginning of Constructor/Destructor: **********
 CDaemons::CDaemons()
-    : fd(0)
 {
     setInfo();
 }
@@ -63,7 +62,6 @@ void CDaemons::setInfo()
 	close(STDOUT_FILENO); // close std output file descriptor
 	close(STDERR_FILENO); // close std error file descriptor
 
-    this->len = strlen(ctime(&this->timebuf));
 }
 
 //-----------------------------------------------------------
@@ -110,31 +108,7 @@ FFUNC init_logger_in_instance() {
 	fprintf(stderr, "%s\n", "init logging");
 }
 
-//-----------------------------------------------------
 
-FFUNC postError(ffunc_session_t * session) {
-	ffunc_write_out(session, "Status: 500 Internal Server Error\r\n");
-	ffunc_write_out(session, "Content-Type: text/plain\r\n\r\n");
-	ffunc_write_out(session, "%s\n", "you hitting error");
-}
-
-//-----------------------------------------------------
-
-FFUNC mainReqCallback(ffunc_session_t * session) {
-	ffunc_write_out(session, "Status: 200 OK\r\n");
-	ffunc_write_out(session, "Content-Type: text/plain\r\n\r\n");/* \r\n\r\n  means go to response message*/
-	ffunc_write_out(session, "%s\n", "Main Callback");
-
-	CServer me;
-	std::vector<int> a;
-	a.push_back(1);
-
-	if (session->query_str) {
-		char *out = (char*) ffunc_get_query_param(session, "userId", sizeof("userId")- 1);
-		if (out)
-			ffunc_write_out(session, "output= %s\n", out); //cjson undefined because only use it's own file
-	}
-}
 
 //-----------------------------------------------------
 
@@ -196,8 +170,6 @@ FFUNC busReqCallback(ffunc_session_t * session)
 					admin_pass.push_back(*it); // Append char in the string
 			}
 	}
-	// ffunc_write_out(session, "%s\n", admin_name.c_str());
-	// ffunc_write_out(session, "%s\n", admin_pass.c_str());
 	
 
 	if (method == "POST" && uri == "/bus")
@@ -209,8 +181,6 @@ FFUNC busReqCallback(ffunc_session_t * session)
 				ffunc_write_out(session, me.getAnswerWrongPass().c_str());
 		else
 			ffunc_write_out(session, me.getAnswerWrongName().c_str());
-
-		//ffunc_write_out(session, "Query String %s\n", query.c_str());
 	}
 }
 
@@ -936,9 +906,10 @@ int ffunc_main(int argc, char *argv[], ffunc_config_t *ffunc_conf)
 		ffunc_conf->backlog 		= 160;
 		ffunc_conf->max_thread 		= 64;
 		ffunc_conf->max_read_buffer = 131072;
-		ffunc_parse_function(ffunc_conf, "postError", "mainReqCallback", "userReqCallback", "busReqCallback", 
-							"adminReqCallback", "ADBUReqCallback", "ADBSReqCallback", "EBIDReqCallback", "EBDRReqCallback",
-							"EBRMReqCallback", "ESIDReqCallback", "ESRMReqCallback");
+		ffunc_parse_function(ffunc_conf, "userReqCallback", "busReqCallback", 
+							"adminReqCallback", "ADBUReqCallback", "ADBSReqCallback", 
+							"EBIDReqCallback", "EBDRReqCallback", "EBRMReqCallback", 
+							"ESIDReqCallback", "ESRMReqCallback");
 	}
 
 	catch(invalid_argument &e)
