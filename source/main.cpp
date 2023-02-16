@@ -350,6 +350,8 @@ int main()
      const char *removeBus         = "EBRM 3";
      const char *editBusStopID     = "ESID 5 9";
      const char *removeBusStop     = "ESRM 9";
+     const char *requestBusStop    = "URBS 4"; 
+     
 
      if(initCmd())
      {
@@ -386,7 +388,12 @@ int main()
           if(inputCmd(removeBusStop))
                cout << "Success!\n";
           else
-               cout << "Error in input cmd!\n";                        
+               cout << "Error in input cmd!\n";
+          
+          if(inputCmd(requestBusStop))
+               cout << "Success!\n";
+          else
+               cout << "Error in input cmd!\n";                           
      }     
      else
           cout << "Error in init cmd!\n";
