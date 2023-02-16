@@ -1,5 +1,8 @@
+#intel compiler
 CC = g++ 
-RASP_CC = /home/matheus/buildroot/buildroot-2021.08/output/host/bin/aarch64-linux-g++
+
+#raspi compiler
+#CC = /home/matheus/buildroot/buildroot-2021.08/output/host/bin/aarch64-linux-g++
 KDIR := ../header  
 KDIR_COMP 	 :=	/home/matheus/buildroot/buildroot-2021.08/output/build/linux-custom
 KDIR_SERVER	 := ../server/FastCGI.com-master/original_snapshot/fcgi-2.4.1-SNAP-0910052249/include/
@@ -22,9 +25,9 @@ output: threads.o CPoint.o CNode.o CMap.o CRoute.o CGenerateRoute.o			\
 	#TODO ******server.elf creation*****
 	mv $(DEPS)CDaemons.elf $(DEPS)server.elf
 
-	#TODO ******thread.elf creation*****
+	#TODO ******shutdownServer.elf creation*****
 	$(CC) -g -I $(KDIR) $(DEPS)threads.o 					\
-	-o $(DEPS)threads.elf
+	-o $(DEPS)shutdownServer.elf
 
 # ***********End of Executable creation: *******************
 #===========================================================
@@ -48,8 +51,8 @@ busit: # 'make busit' executes busit.elf
 	sudo ./$(DEPS)busit.elf
 
 
-thread: # 'make thread' executes threads.elf
-	sudo ./$(DEPS)threads.elf
+shutdownServer: # 'make shutdownServer' executes shutdownServer.elf
+	sudo ./$(DEPS)shutdownServer.elf
 
 server: # 'make server' executes server.elf
 	sudo ./$(DEPS)server.elf

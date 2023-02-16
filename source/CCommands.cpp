@@ -27,11 +27,12 @@
 #include "CCommands.h"
 #include "CGenerateRoute.h"
 #include "CBus.h"
-using namespace std;
 
 //Message Queue:
 #define MSG_QUEUE_NAME  "/errorMsg"
 #define MSG_QUEUE_MAX_LEN 10000
+
+using namespace std;
 
 // cmd
 typedef enum {ERROR = 0, ADBU, ADBS, EBID, EBDR, EBRM, ESID, 
@@ -589,7 +590,7 @@ bool getCmd(string scmd, cmd &_cmd){
 bool conditionParam(unsigned short int num_param, cmd &_cmd){
     bool flag = false;
     cout << "num_param = " << num_param  << "  ;  cmd = " << _cmd << endl;
-    if ( (_cmd == ADBU || _cmd == EBDR ) && num_param > 4 && (num_param % 2) == 1 )
+    if ( (_cmd == ADBU || _cmd == EBDR ) && num_param > 4 && (num_param % 2) == 0 )
         flag = true;
     if ( _cmd == ADBS  && num_param == 3 )
         flag = true;

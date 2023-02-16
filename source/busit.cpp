@@ -34,7 +34,8 @@ int fuart;      // uart file
 int fleds;      // gpio file
 
 //Message Queue:
-#define MSG_QUEUE_NAME  "/errorMsg"
+#define MSG_QUEUE_ERROR_NAME  "/errorMsg"
+#define MSG_QUEUE_SERVER_NAME  "/serverCmd"
 #define MSG_QUEUE_MAX_LEN 10000
  
 // -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
@@ -164,61 +165,101 @@ DD_UART_INIT_ERROR:
 */
 void MainSystem(){
     /****Message Queue****/
-    mqd_t msgq_id;
-    char msgcontent[MSG_QUEUE_MAX_LEN];
-    int message_status;
-    unsigned int sender;
     const struct timespec t{0,5};
     const struct timespec *time{&t};
+    //Error message queue
+    mqd_t error_msgq_id;
+    char error_msgcontent[MSG_QUEUE_MAX_LEN];
+    int error_message_status;
+    unsigned int sender_1;
+    //---------------------
+    mqd_t serverCMD_msgq_id;
+    char serverCMD_msgcontent[MSG_QUEUE_MAX_LEN];
+    int serverCMD_message_status;
+    unsigned int sender_2;
     //=====================
     bool error = false;
     while(error == false)
     {
-        msgq_id = mq_open(MSG_QUEUE_NAME, O_CREAT | O_RDWR, 0666, NULL); // opens an existing message queue to read
+        /****ERROR message ****/
+        error_msgq_id = mq_open(MSG_QUEUE_ERROR_NAME, O_CREAT | O_RDWR, 0666, NULL); // opens an existing message queue to read
 
         /* checks if message queue could be opened*/
-        if (msgq_id == (mqd_t)-1) 
+        if (error_msgq_id == (mqd_t)-1) 
         {
             perror("In mq_open()");
             exit(1);
         }
 
-        message_status = mq_timedreceive(msgq_id, msgcontent, MSG_QUEUE_MAX_LEN, &sender,  time); // gets the message from message queue
+        error_message_status = mq_timedreceive(error_msgq_id, error_msgcontent, MSG_QUEUE_MAX_LEN, &sender_1,  time); // gets the message from message queue
 
         /*checks if message queue could be read*/
-        if (message_status != -1) 
+        if (error_message_status != -1) 
         {
-            string str(msgcontent);
+            string str(error_msgcontent);
             promise<string> error;                                                                    // creates a promise
             future<string> getErrorMsgFuture = error.get_future();                                    // sets promise to future
             future<void> threadError = async(launch::async, PError, ref(getErrorMsgFuture));  // creates a thread with the future variable
        
-            mq_close(msgq_id);
-            if (mq_unlink(MSG_QUEUE_NAME) == -1)
+            mq_close(error_msgq_id);
+            if (mq_unlink(MSG_QUEUE_ERROR_NAME) == -1)
                 perror("Removing queue error");
             
             error.set_value(str);    
         }
-        mq_close(msgq_id);
+        mq_close(error_msgq_id);
+        //==============================================================
+        //==============================================================
+        
+        /****CMD message ****/
+        serverCMD_msgq_id = mq_open(MSG_QUEUE_SERVER_NAME, O_CREAT | O_RDWR, 0666, NULL); // opens an existing message queue to read
 
-        promise<string> command;                                                                    // creates a promise
-        future<string> getCommand_future = command.get_future();                                    // sets promise to future
-        future<bool> inputCommand_future = async(launch::async, inputCmd, ref(getCommand_future));  // creates a thread with the future variable
-        string input;                                                                                
-        getline(cin, input);            // gets input from console
-
-        /* checks if the string sent is an exit command */
-        if(input.compare("exit") == 0)                                 
+        /* checks if message queue could be opened*/
+        if (serverCMD_msgq_id == (mqd_t)-1) 
         {
-            command.set_value("");      // fulfills promise with null string
-            error = true;               // ends thread
+            perror("In mq_open()");
+            exit(1);
         }
-        else
+
+        serverCMD_message_status = mq_timedreceive(serverCMD_msgq_id, serverCMD_msgcontent, MSG_QUEUE_MAX_LEN, &sender_2,  time); // gets the message from message queue
+
+        /*checks if message queue could be read*/
+        if (serverCMD_message_status != -1) 
         {
-            command.set_value(input);               // fulfills promise with input value
+            promise<string> command;                                                                    // creates a promise
+            future<string> getCommand_future = command.get_future();                                    // sets promise to future
+            future<bool> inputCommand_future = async(launch::async, inputCmd, ref(getCommand_future));  // creates a thread with the future variable
+            string str(serverCMD_msgcontent);
+            cout << str << endl;
+            
+            mq_close(serverCMD_msgq_id);
+            if (mq_unlink(MSG_QUEUE_SERVER_NAME) == -1)
+                perror("Removing queue error");
+            command.set_value(str);               // fulfills promise with input value
             if (inputCommand_future.get() == false) // checks if command is a valid command
                 cout << "Error in command!" << endl; 
+               
         }
+        mq_close(serverCMD_msgq_id); 
+               
+        //==============================================================
+        //==============================================================
+     
+        // string input;                                                                                
+        // getline(cin, input);            // gets input from console
+
+        // /* checks if the string sent is an exit command */
+        // if(input.compare("exit") == 0)                                 
+        // {
+        //     command.set_value("");      // fulfills promise with null string
+        //     error = true;               // ends thread
+        // }
+        // else
+        // {
+        //     command.set_value(input);               // fulfills promise with input value
+        //     if (inputCommand_future.get() == false) // checks if command is a valid command
+        //         cout << "Error in command!" << endl; 
+        // }
     }
 }
 //  ---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---__---

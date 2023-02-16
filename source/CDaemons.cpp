@@ -7,6 +7,11 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
+#include <mqueue.h>
+
+//Message Queue:
+#define MSG_QUEUE_NAME  "/serverCmd"
+#define MSG_QUEUE_MAX_LEN 10000
 
 using namespace std;
 
@@ -236,6 +241,14 @@ FFUNC adminReqCallback(ffunc_session_t * session) {
 //-----------------------------------------------------
 
 FFUNC ADBUReqCallback(ffunc_session_t * session) {
+	/****Message Queue****/
+    mqd_t msgq_id;
+    unsigned int msgprio = 1;
+    pid_t my_pid = getpid();
+    char msgcontent[MSG_QUEUE_MAX_LEN];
+    //=====================
+
+	
 	CServer me;
 	char *pmet = ffunc_get_fcgi_param(session, "REQUEST_METHOD");
 	string method(pmet);
@@ -349,6 +362,35 @@ FFUNC ADBUReqCallback(ffunc_session_t * session) {
 		}
 		else if(busId == 0 || busStops.size() == 0)
 			ffunc_write_out(session, me.getADBUinvalidNumber().c_str());
+		else
+		{
+			string cmd = "ADBU "; 
+			cmd += busID_str;
+			cmd.append(" ");
+			for(vector<int>::iterator it = busStops.begin(); it != busStops.end(); it++)
+			{
+				string tmp = to_string(*it);
+				tmp.append(" ");
+				cmd += tmp;
+			}
+
+			msgq_id = mq_open(MSG_QUEUE_NAME, O_CREAT | O_RDWR, 0666, NULL); // opens an existing message queue to read
+
+			/* checks if message queue could be opened*/
+			if (msgq_id == (mqd_t)-1) 
+			{
+				perror("In mq_open()");
+				exit(1);
+			}
+
+			snprintf(msgcontent, MSG_QUEUE_MAX_LEN, cmd.c_str());
+
+			if(mq_send(msgq_id, msgcontent, strlen(msgcontent)+1, msgprio) == -1)
+				perror("In mq_send()");
+			/* closing the queue        -- mq_close() */
+			mq_close(msgq_id); 
+		}
+
 	}		
 }
 

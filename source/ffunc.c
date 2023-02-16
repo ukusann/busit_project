@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <string.h>
-#include <execinfo.h>
+//#include <execinfo.h>
 #include <unistd.h> /* needed to define getpid() */
 #include <signal.h>
 // #include <setjmp.h>
@@ -305,7 +305,7 @@ FFUNC_WORKER_RESTART:
     }
 
     if (!has_init_signal) {
-        ffunc_add_signal_handler();
+        //ffunc_add_signal_handler();
     }
     write(procpip[1], FFUNC_APP_INITIALIZING, FFUNC_APP_INIT_PIPE_BUF_SIZE);
     child_pid = fork();
@@ -430,44 +430,44 @@ hook_socket(int sock_port, char *sock_port_str, int backlog, int max_thread, cha
     return EXIT_SUCCESS;
 }
 
-static void
-ffunc_signal_backtrace(int sfd) {
-    size_t i, ptr_size;
-    void *buffer[10];
-    char **strings;
+// static void
+// ffunc_signal_backtrace(int sfd) {
+//     size_t i, ptr_size;
+//     void *buffer[10];
+//     char **strings;
 
-    ptr_size = backtrace(buffer, 1024);
-    fprintf(stderr, "backtrace() returned %zd addresses\n", ptr_size);
+//     ptr_size = backtrace(buffer, 1024);
+//     fprintf(stderr, "backtrace() returned %zd addresses\n", ptr_size);
 
-    strings = backtrace_symbols(buffer, ptr_size);
-    if (strings == NULL) {
-        fprintf(stderr, "backtrace_symbols= %s", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
+//     strings = backtrace_symbols(buffer, ptr_size);
+//     if (strings == NULL) {
+//         fprintf(stderr, "backtrace_symbols= %s", strerror(errno));
+//         exit(EXIT_FAILURE);
+//     }
 
-    for (i = 0; i < ptr_size; i++)
-        fprintf(stderr, "%s\n", strings[i]);
+//     for (i = 0; i < ptr_size; i++)
+//         fprintf(stderr, "%s\n", strings[i]);
 
-    free(strings);
-    exit(EXIT_FAILURE);
-}
+//     free(strings);
+//     exit(EXIT_FAILURE);
+// }
 
-static void
-ffunc_add_signal_handler() {
-    memset(&sa, 0, sizeof(struct sigaction));
-    sa.sa_handler = ffunc_signal_backtrace;
-    sigemptyset(&sa.sa_mask);
+// static void
+// ffunc_add_signal_handler() {
+//     memset(&sa, 0, sizeof(struct sigaction));
+//     sa.sa_handler = ffunc_signal_backtrace;
+//     sigemptyset(&sa.sa_mask);
 
-    sigaction(SIGABRT, &sa, NULL);
-    sigaction(SIGFPE, &sa, NULL);
-    sigaction(SIGILL, &sa, NULL);
-    sigaction(SIGIOT, &sa, NULL);
-    sigaction(SIGSEGV, &sa, NULL);
-#ifdef SIGBUS
-    sigaction(SIGBUS, &sa, NULL);
-#endif
-    has_init_signal = 1;
-}
+//     sigaction(SIGABRT, &sa, NULL);
+//     sigaction(SIGFPE, &sa, NULL);
+//     sigaction(SIGILL, &sa, NULL);
+//     sigaction(SIGIOT, &sa, NULL);
+//     sigaction(SIGSEGV, &sa, NULL);
+// #ifdef SIGBUS
+//     sigaction(SIGBUS, &sa, NULL);
+// #endif
+//     has_init_signal = 1;
+// }
 
 int
 main(int argc, char *argv[]) {
