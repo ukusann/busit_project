@@ -16,6 +16,7 @@
 #include <time.h>
 #include <future>
 #include <string.h>
+#include <string>
 #include "CCommands.h"
 using namespace std;
 
@@ -64,10 +65,9 @@ void signalhandler (int sig){
 /**
  * ERROR Condition thread: PERROR
 */
-string PError(){
-    string err_msg;
-
-    return err_msg;
+void PError(future<string> &str){
+    string err_msg = str.get();
+    cout << err_msg << endl;
 }
 // ==================================================================================================================
 // ==================================================================================================================
@@ -119,18 +119,18 @@ bool initBusit(){
 
     /* Device Drivers */
         // Uart
-        system("scp ../DD/uartmodule.ko /dev/");    // copies the .ko to the /dev/
-        system("chmod 666 /dev/uartmodule.ko");     // all users can read and write but cannot execute the file
-        system("insmod /dev/uartmodule.ko");        // insert the DD
-        fuart = open(UART_FILE, O_RDONLY);          // opens only to read 
-        if (fuart < 0)  {goto DD_UART_INIT_ERROR;}  // fails to open the file
+        // system("scp ../DD/uartmodule.ko /dev/");    // copies the .ko to the /dev/
+        // system("chmod 666 /dev/uartmodule.ko");     // all users can read and write but cannot execute the file
+        // system("insmod /dev/uartmodule.ko");        // insert the DD
+        // fuart = open(UART_FILE, O_RDONLY);          // opens only to read 
+        // if (fuart < 0)  {goto DD_UART_INIT_ERROR;}  // fails to open the file
 
-        // GPIO - leds
-        system("scp ../DD/gpiomodule.ko /dev/");    // copies the .ko to the /dev/
-        system("chmod 666 /dev/gpiomodule.ko");     // all users can read and write but cannot execute the file
-        system("insmod /dev/gpiomodule.ko");        // insert the DD
-        fleds = open(LED_FILE, O_WRONLY);           // opens only to write
-        if (fleds < 0)  {goto DD_GPIO_INIT_ERROR;}  // fails to open the file
+        // // GPIO - leds
+        // system("scp ../DD/gpiomodule.ko /dev/");    // copies the .ko to the /dev/
+        // system("chmod 666 /dev/gpiomodule.ko");     // all users can read and write but cannot execute the file
+        // system("insmod /dev/gpiomodule.ko");        // insert the DD
+        // fleds = open(LED_FILE, O_WRONLY);           // opens only to write
+        // if (fleds < 0)  {goto DD_GPIO_INIT_ERROR;}  // fails to open the file
 
     /* Server */
     
@@ -145,14 +145,14 @@ bool initBusit(){
         if (initCmd())
             return true;
 
-// I2C_INIT_ERROR:
-//     closeI2C();
-// SERVER_INIT_ERROR:
-//     closeServer();
-// DD_GPIO_INIT_ERROR:
-//     closeLedDD();
-// DD_UART_INIT_ERROR:
-//     closeUartDD();
+I2C_INIT_ERROR:
+    closeI2C();
+SERVER_INIT_ERROR:
+    closeServer();
+DD_GPIO_INIT_ERROR:
+    closeLedDD();
+DD_UART_INIT_ERROR:
+    closeUartDD();
     
     return false;
 }
@@ -188,12 +188,17 @@ void MainSystem(){
         /*checks if message queue could be read*/
         if (message_status != -1) 
         {
-            printf("Received message (%d bytes) from %d: %s\n", message_status, sender, msgcontent);
+            string str(msgcontent);
+            promise<string> error;                                                                    // creates a promise
+            future<string> getErrorMsgFuture = error.get_future();                                    // sets promise to future
+            future<void> threadError = async(launch::async, PError, ref(getErrorMsgFuture));  // creates a thread with the future variable
+       
             mq_close(msgq_id);
             if (mq_unlink(MSG_QUEUE_NAME) == -1)
                 perror("Removing queue error");
+            
+            error.set_value(str);    
         }
-
         mq_close(msgq_id);
 
         promise<string> command;                                                                    // creates a promise
