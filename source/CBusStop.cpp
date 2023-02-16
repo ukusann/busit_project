@@ -34,6 +34,13 @@ SCoord CBusStop::getPos()
 }
 //====================================================
 
+//================Get Node ID=========================
+unsigned short int CBusStop::getBSnodeId()
+{
+    return this->bus_stop_node.getId();
+}
+//====================================================
+
 //=================Update Display=====================
 void CBusStop::updateDisplay()
 {

@@ -20,6 +20,7 @@ public:
     ~CBusStop();
     void     setID(uint16_t id);        
     uint16_t getID();
+    unsigned short int getBSnodeId();
     SCoord   getPos();
     void updateDisplay();
 };

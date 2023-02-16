@@ -2,6 +2,7 @@
 #define __CBus__
 
 #include "CBusStop.h"
+#include "CRoute.h"
 #include <vector>
 #include <inttypes.h>
 #include <string>
@@ -26,7 +27,7 @@ class CBus
 private:
     uint16_t bus_id;
     EBus bus_type;
-    //vector<CRoute> bus_routes; 
+    std::vector<CRoute> bus_routes; 
     std::vector<CBusStop> BusStopsList;
     std::vector<SSchedule> Schedule;
 
@@ -47,7 +48,7 @@ public:
     bool     removeBusStop(CBusStop);
     void     clearBusStopsList();
     void     setBusId(uint16_t id);
-    //bool     setRoutes(vector<CRoute> route);
+    void     setRoutes(std::vector<CRoute> route);
 };
 
 #endif /*__CBus__*/

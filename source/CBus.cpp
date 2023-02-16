@@ -5,7 +5,8 @@ using namespace std;
 //=================Constructor========================
 CBus::CBus(uint16_t id, EBus bus_type = EBus::normal_bus)
     : bus_id(id), bus_type(bus_type)
-{}
+{
+}
 //====================================================
 
 //=================Destructor=========================
@@ -163,5 +164,13 @@ void CBus::clearBusStopsList()
 void CBus::setBusId(uint16_t id)
 {
     this->bus_id = id;
+}
+//====================================================
+
+//=================Set Route=======================
+void CBus::setRoutes(vector<CRoute> route)
+{
+   this->bus_routes = route;
+
 }
 //====================================================

@@ -5,6 +5,10 @@
 // #include "CMap.h"
 #include "CGenerateRoute.h"
 #include "CCommands.h"
+#include "CBus.h"
+#include "CBusStop.h"
+#include <sstream>
+
 
 #include <vector>
 #include <iostream>
@@ -19,6 +23,20 @@
 
 
 using namespace std;
+
+#define MAP_DEFAULT_NAME "map_1"
+static CMap map(1);
+
+// Bus Stop                          id = 1  id = 2   id = 3   id = 4
+const SCoord default_bst_pos[4]  = { {1,15}, {26,13}, {14,17}, {5,1} };
+
+vector<CBusStop> busStopList;
+
+// Bus Stop
+vector<CBus> busList;
+
+
+
 
 void signal_handler(int sig) {
 	switch(sig) {
@@ -36,6 +54,96 @@ void signal_handler(int sig) {
 			break;
 	}
 }
+
+
+
+void addBus(string param){
+     bool error_flag = false;
+     string err_msg;
+     stringstream p;  // get the parameters
+     int id;
+     vector<CRoute> multir;   // Bus routes
+     vector<CBusStop> busSt;  // Bus's list of bus stops
+     vector<SCoord> pos;      // Input positions
+     p << param;              // Set the parameters
+     vector<CNode> vnode;     // Routes beguin and end nodes
+
+     // Get the param:
+     p >> id;
+     while (!p.eof()){
+          unsigned short int x,y;
+          p >> x >> y;
+          pos.push_back({x,y});
+     }
+
+     // See if the Bus Stops exists:
+     for(int i = 0; i < pos.size() ;i++){
+          if (map.mapIsBusStop(pos.at(i))){   // test  if is a bus stop
+               CNode temp_n;
+               map.getMapNode(pos.at(i), temp_n);
+               vnode.push_back(temp_n);           // Saves the node               
+          }
+          else {
+               error_flag = true;
+               err_msg = "ERROR: No Bus Stop on the default Bus Route";
+               break;
+          }
+     }
+
+     // Generate a multi-route:
+     if (!error_flag){
+          CRoute r(id);
+          CGenerateRoute gr(&map, &r);       // sets the map
+          multir = gr.multRoutes(vnode);     // generate the route
+          if(multir.empty()){                // teste if a route was generated 
+               error_flag = true;
+               err_msg    = "ERROR: Can't generate a route ";
+          }
+     }
+     // Saves and sets the Bus:
+     if (!error_flag){
+          CBus bus (id, EBus::normal_bus);   // Creates a Bus
+          bus.setRoutes(multir);             // Set the routes
+          for(int i = 0 ; i < vnode.size() ; i++){ // Set the bus list of bus stops
+               for(int j = 0 ; j < busStopList.size() ; j++){
+                    if (vnode[i].getId() == busStopList[j].getBSnodeId())   
+                         bus.insertBusStop(busStopList[j]);                
+               }               
+          }
+          busList.push_back(bus);            // Saves the bus         
+     }
+     if (error_flag)
+          cout << err_msg << endl;
+}
+
+
+
+bool initCmd(){
+
+     // input map
+     if (map.inputMap(MAP_DEFAULT_NAME) == false) {
+          cout << "ERROR creating the input"<< endl;
+          return false;
+     }
+
+     // add the default bus stops:
+     for (int i = 0 ; i < 4 ; i++){
+          CNode pno;
+
+          if (map.getMapNode(default_bst_pos[i], pno)){
+               
+               busStopList.push_back({pno, (uint16_t)(i+1)});
+               map.mapBusStop(default_bst_pos[i], true);
+          }
+          else {return false;}
+     }
+     cout << map.printMap();
+
+    return true;
+    
+}
+
+
 
 int main()
 {
@@ -156,7 +264,7 @@ int main()
 */
      //TODO================CGenerateRoute test=======================
      //================================================
-
+/*
 
      SCoord bus_st_pos[4] = { {1,15}, {26,13}, {14,17}, {5,1} };
      CMap map(1);
@@ -200,10 +308,7 @@ int main()
      
 
      vector<CRoute> multir = gr.multRoutes(list_n);
-    /*
-     for(int i = 0 ; i < 3 ; i++ )
-          multir[i].printRouteAndMem();
-  */
+    */
      //================================================
 
      //TODO================Daemon test=======================
@@ -286,6 +391,21 @@ int main()
      else
           cout << "Error in init cmd!\n";
      */
+
+    // =====================================================================
+    // Add Bus Test:
+    // - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - -
+     // Init
+     initCmd();
+
+     // InputCMD
+     addBus("3 1 15 26 13 14 17 5 1");
+
+    
+    // - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // End of Add Bus Test
+    // =====================================================================
+    
     return 0;
     
 }

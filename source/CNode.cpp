@@ -85,3 +85,4 @@ void CNode::setGain(uint16_t G)
 //---------------- Set Node Info ---------------------
 void CNode::setNodeInfo(unsigned int byte_info)
     {this->byte_info = byte_info;}
+

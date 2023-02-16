@@ -6,6 +6,7 @@
 #define  DIR_SAVE_MAP   "../maps/saved_maps/"
 #define  F_TYPE_TXT     ".txt"
 
+#define BS_MASK 0x40
 using namespace std;
 
 //===========================================================
@@ -139,6 +140,7 @@ bool CMap::inputMap(string file_name)
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 
+//**************** Byte Info *********************
 
 void CMap::mapNodeOpen(SCoord pos){
     this->map->at(pos.y).at(pos.x).openNode();
@@ -156,6 +158,37 @@ void CMap::mapNodeClose(unsigned int x, unsigned int y){
     this->map->at(y).at(x).closeNode();
 }
 
+void CMap::mapBusStop(SCoord pos, bool flag){
+    unsigned short int b_inf = this->map->at(pos.y).at(pos.x).getNodeInfo();
+    if (flag){
+        this->map->at(pos.y).at(pos.x).setNodeInfo(b_inf | BS_MASK );
+    }else
+        this->map->at(pos.y).at(pos.x).setNodeInfo(b_inf & (~BS_MASK) );
+}
+
+void CMap::mapBusStop(unsigned int x, unsigned int y, bool flag){
+    unsigned short int b_inf = this->map->at(y).at(x).getNodeInfo();
+    if (flag){
+        this->map->at(y).at(x).setNodeInfo(b_inf | BS_MASK );
+    }else
+        this->map->at(y).at(x).setNodeInfo(b_inf & (~BS_MASK) );
+}
+
+bool CMap::mapIsBusStop(SCoord pos){
+    unsigned short int b_inf = this->map->at(pos.y).at(pos.x).getNodeInfo();
+    if (b_inf & BS_MASK == 0)
+        return false;
+    else
+        return true;
+}
+
+bool CMap::mapIsBusStop(unsigned int x, unsigned int y){
+    unsigned short int b_inf = this->map->at(y).at(x).getNodeInfo();
+    if (b_inf & BS_MASK == 0)
+        return false;
+    else
+        return true;
+}
 
 //____________________________________________________
 
@@ -199,12 +232,15 @@ string  CMap::printMap(){
     s.append( "\r\n\t\t\t\t * MAP: " + this->file_name + " *\r\n\r\n");
     for(int i = 0 ; i < this->len_i ; i++ ){
         s.append("| ");
+         
         for(int j = 0 ; j < this->len_j ; j++ ){
             unsigned int bi = this->map->at(i).at(j).getNodeInfo();
             if (bi < 1)
                 s.append("   ");
             else if(!this->map->at(i).at(j).isOpen())
                 s.append(" --");
+            else if((bi & BS_MASK ) > 0)
+                s.append(" BS");
             else if( (bi & 15) < 10){
                 s.append("  ");
                 s.append(to_string(bi));

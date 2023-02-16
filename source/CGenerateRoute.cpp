@@ -355,8 +355,8 @@ CRoute CGenerateRoute::simpleRoute(CNode i_node, CNode f_node, unsigned short in
             SCoord c = n.getPos();
             this->pmap_info->mapNodeClose(c);
         }
-
-        cout << "\n" << this->pmap_info->printMap() << endl;
+        
+        cout << "terminou\n" << this->pmap_info->printMap() << endl;
     
         CGenerateRoute::resetMap();
         
