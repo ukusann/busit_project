@@ -14,6 +14,8 @@
 #include <mutex>
 #include <mqueue.h>	
 #include <time.h>
+#include <future>
+#include <string.h>
 #include "CCommands.h"
 using namespace std;
 
@@ -116,23 +118,23 @@ void closeI2C(){
 bool initBusit(){
 
     /* Device Drivers */
-        // Uart                                 
-/*        system("scp uartmodule.ko /dev/");          // copies the .ko to the /dev/
+        // Uart
+        system("scp ../DD/uartmodule.ko /dev/");    // copies the .ko to the /dev/
         system("chmod 666 /dev/uartmodule.ko");     // all users can read and write but cannot execute the file
         system("insmod /dev/uartmodule.ko");        // insert the DD
         fuart = open(UART_FILE, O_RDONLY);          // opens only to read 
         if (fuart < 0)  {goto DD_UART_INIT_ERROR;}  // fails to open the file
-*/
+
         // GPIO - leds
-/*        system("scp gpiomodule.ko /dev/");          // copies the .ko to the /dev/
+        system("scp ../DD/gpiomodule.ko /dev/");    // copies the .ko to the /dev/
         system("chmod 666 /dev/gpiomodule.ko");     // all users can read and write but cannot execute the file
         system("insmod /dev/gpiomodule.ko");        // insert the DD
         fleds = open(LED_FILE, O_WRONLY);           // opens only to write
         if (fleds < 0)  {goto DD_GPIO_INIT_ERROR;}  // fails to open the file
-*/
+
     /* Server */
     
-    /* I2C */
+    /* SPI */
 
 
     /* Signal */

@@ -31,6 +31,13 @@ public:
     void mapNodeClose(SCoord pos);
     void mapNodeOpen (unsigned int x, unsigned int y);
     void mapNodeClose(unsigned int x, unsigned int y);
+    
+    void mapBusStop(SCoord pos, bool flag);
+    void mapBusStop(unsigned int x, unsigned int y, bool flag);
+    
+    bool mapIsBusStop(SCoord pos);
+    bool mapIsBusStop(unsigned int x, unsigned int y);
+
     std::vector<std::vector<CNode>> * getPointerMap();
     bool   getMapNode(SCoord pos, CNode &_pnode);
     bool   getMapNode( unsigned short int x, unsigned short int y, CNode &_pnode );
